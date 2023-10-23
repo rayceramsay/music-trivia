@@ -1,4 +1,6 @@
 package view;
 
-public class ViewManager {
+import java.beans.PropertyChangeListener;
+
+public class ViewManager implements PropertyChangeListener {
 }
