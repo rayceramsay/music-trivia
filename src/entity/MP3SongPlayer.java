@@ -17,7 +17,7 @@ public class MP3SongPlayer implements SongPlayer {
             this.player = new AdvancedPlayer(audioInputStream);
             this.playbackThread = new Thread(() -> {
                 try {
-                    this.player.play(msToFrames(10000));
+                    this.player.play(msToFrames(10000)); // 10 secs
                 } catch (JavaLayerException e) {
                     throw new RuntimeException(e);
                 }
@@ -31,10 +31,8 @@ public class MP3SongPlayer implements SongPlayer {
     @Override
     public void stopAudio() {
         if (this.player != null && playbackThread != null && playbackThread.isAlive()) {
-            System.out.println("in stopAudio");
             this.player.close();
             this.playbackThread.interrupt();
-            System.out.println("stopAudio is done");
         }
     }
 

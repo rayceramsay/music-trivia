@@ -20,10 +20,12 @@ public class Song {
     }
 
     public void playAudio() {
-        songPlayer.playAudio(audioSource);
+        this.songPlayer.playAudio(audioSource);
     }
 
-    public void stopAudio() { this.songPlayer.stopAudio(); }
+    public void stopAudio() {
+        this.songPlayer.stopAudio();
+    }
 
     @Override
     public String toString() {
