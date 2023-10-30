@@ -1,0 +1,67 @@
+@startuml
+
+class Game {
+    -GameConfiguration config
+    -List<GameRound> rounds
+    -int score
+    -boolean isCompleted
+}
+
+class GameConfiguration {
+    -String preferredGenre
+    -GameDifficulty difficulty
+    -GameMode gameMode
+}
+
+class Round {
+    -Prompt prompt
+    -List<Answer> answerOptions
+    -int correctOptionIndex
+    -Answer userAnswer
+}
+
+class Prompt {
+    -String promptText
+    -Media[] promptMedia
+}
+
+class Answer {
+    -String value
+}
+
+enum GameDifficulty {
+    +EASY,
+    +MEDIUM,
+    +HARD
+}
+
+enum GameMode {
+    +ROUNDS,
+    +LIVES
+}
+
+interface Media {}
+note left
+    Used to embed things like audio and images,
+    e.g. a song clip (audio) or album cover (image) from Spotify
+end note
+
+Game --* GameConfiguration
+Game --* Round
+GameConfiguration --* GameDifficulty
+GameConfiguration --* GameMode
+Round --* Prompt
+Round --* Answer
+Prompt --* Media
+
+'class Song extends Media {}
+'class Image extends Media {}
+'
+'class SpotifySong extends Song {}
+'class LocalSong extends Song {}
+'class SoundCloudSong extends Song {}
+'class SpotifyImage extends Image {}
+'class LocalImage extends Image {}
+'class GoogleImage extends Image {}
+
+@enduml
