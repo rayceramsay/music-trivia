@@ -1,21 +1,32 @@
 package entity;
 
+import java.util.Objects;
+
 public class TextInputRound implements Round {
 
     private String userAnswer;
+    private final Song song;
+    private final String question;
+    private final String correctAnswer;
+    public TextInputRound(Song song, String question, String userAnswer, String correctAnswer){
+        this.song = song;
+        this.question = question;
+        this.correctAnswer = correctAnswer;
+        this.userAnswer = userAnswer;
+    }
     @Override
     public String getQuestion() {
-        return null;
+        return question;
     }
 
     @Override
-    public String getSong() {
-        return null;
+    public Song getSong() {
+        return song;
     }
 
     @Override
     public String getCorrectAnswer() {
-        return null;
+        return correctAnswer;
     }
 
     @Override
@@ -30,6 +41,6 @@ public class TextInputRound implements Round {
 
     @Override
     public boolean isAnswerCorrect(String answer) {
-        return false;
+        return Objects.equals(userAnswer, correctAnswer);
     }
 }

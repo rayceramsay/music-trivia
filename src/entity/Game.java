@@ -6,7 +6,7 @@ import java.util.List;
 public interface Game {
 
     // GETTERS
-    int getID();
+    String getID();
     String getDifficulty();
     String getGenre();
     int getInitialLives();

@@ -1,32 +1,37 @@
 package entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class CommonGame implements Game {
-    private int ID;
+    private final String ID;
     private int score;
-    public String difficulty;
-    public String genre;
-    public int InitialLives;
-    public int max_rounds;
-    public int current_lives;
-    public int rounds_played = 0;
+    private final String difficulty;
+    private final String genre;
+    private final int initialLives;
+    private final int maxRounds;
+    private int currentLives;
+    private int roundsPlayed = 0;
+    private Round round;
+    private ArrayList<Round> allRounds;
+
     private final LocalDateTime createdAt;
     private LocalDateTime FinishedAt;
 
-    // TODO add arguments to constructor?
     CommonGame(String genre, String difficulty, int max_rounds,
-               int initialLives,  LocalDateTime creationTime) {
+               int initialLives) {
+        this.ID = UUID.randomUUID().toString();
         this.genre = genre;
         this.difficulty = difficulty;
-        this.max_rounds = max_rounds;
-        this.InitialLives = initialLives;
-        this.createdAt = creationTime;
+        this.maxRounds = max_rounds;
+        this.initialLives = initialLives;
+        this.createdAt = LocalDateTime.now();
     }
 
     @Override
-    public int getID() {
+    public String getID() {
         return ID;
     }
 
@@ -42,34 +47,32 @@ public class CommonGame implements Game {
 
     @Override
     public int getInitialLives() {
-        return InitialLives;
+        return initialLives;
     }
 
     @Override
-    public int getMaxRounds() {return max_rounds;}
+    public int getMaxRounds() {return maxRounds;}
 
     @Override
     public int getCurrentLives() {
-        return current_lives;
+        return currentLives;
     }
 
     @Override
     public int getRoundsPlayed() {
-        return rounds_played;
+        return roundsPlayed;
     }
 
     @Override
     public int getScore() {return score;}
 
-    // TODO
     @Override
     public Round getRound() {
-        return null;
+        return round;
     }
-    // TODO
     @Override
     public List<Round> getRounds() {
-        return null;
+        return allRounds;
     }
 
     @Override
@@ -82,7 +85,7 @@ public class CommonGame implements Game {
 
     @Override
     public void setCurrentLives(int lives) {
-        current_lives = lives;
+        currentLives = lives;
     }
 
     @Override
@@ -91,8 +94,7 @@ public class CommonGame implements Game {
     }
 
     @Override
-    public void setCurrentRound(Round round) {}
-    // TODO
+    public void setCurrentRound(Round round) {this.round = round;}
     @Override
     public void setFinishedAt(LocalDateTime finishedAt) {
         FinishedAt = finishedAt;

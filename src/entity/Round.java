@@ -4,7 +4,7 @@ public interface Round {
 
     // GETTERS
     String getQuestion();
-    String getSong();
+    Song getSong();
     String getCorrectAnswer();
     String getUserAnswer();
 
