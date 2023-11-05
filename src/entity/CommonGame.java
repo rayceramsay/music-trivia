@@ -18,7 +18,7 @@ public class CommonGame implements Game {
     private final LocalDateTime createdAt;
     private LocalDateTime finishedAt;
 
-    CommonGame(String genre, String difficulty, int maxRounds,
+   public CommonGame(String genre, String difficulty, int maxRounds,
                int initialLives) {
         this.ID = UUID.randomUUID().toString();
         this.genre = genre;
