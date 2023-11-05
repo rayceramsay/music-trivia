@@ -13,7 +13,6 @@ public class CommonGame implements Game {
     private final int initialLives;
     private final int maxRounds;
     private int currentLives;
-    private int roundsPlayed = 0;
     private ArrayList<Round> allRounds;
     private final LocalDateTime createdAt;
     private LocalDateTime finishedAt;
@@ -58,7 +57,7 @@ public class CommonGame implements Game {
 
     @Override
     public int getRoundsPlayed() {
-        return roundsPlayed;
+        return allRounds.size();
     }
 
     @Override
