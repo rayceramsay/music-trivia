@@ -1,12 +1,10 @@
 package view;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.game_settings.*;
-import interface_adapter.menu.MenuController;
-import interface_adapter.menu.MenuViewModel;
+import interface_adapter.game_settings.GameSettingsController;
+import interface_adapter.game_settings.GameSettingsViewModel;
 
 import javax.swing.*;
-import javax.swing.text.View;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -135,13 +133,16 @@ public class GameSettingsView extends JPanel implements ActionListener, Property
         playGame.addActionListener(this);
         back.addActionListener(this);
 
-
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(back)) {
             viewManagerModel.setActiveView("menu");
+            viewManagerModel.firePropertyChanged();
+        }
+        if (e.getSource().equals(playGame)) {
+            viewManagerModel.setActiveView("round");
             viewManagerModel.firePropertyChanged();
         }
     }

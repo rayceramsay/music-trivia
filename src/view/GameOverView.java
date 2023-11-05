@@ -1,5 +1,7 @@
 package view;
 
+import interface_adapter.ViewManagerModel;
+import interface_adapter.game_over.GameOverController;
 import interface_adapter.game_over.GameOverState;
 import interface_adapter.game_over.GameOverViewModel;
 
@@ -13,11 +15,17 @@ import java.beans.PropertyChangeListener;
 public class GameOverView extends JPanel implements ActionListener, PropertyChangeListener {
     public final String viewName = "game over";
     private final GameOverViewModel gameOverViewModel;
+    private final GameOverController gameOverController;
+    private final ViewManagerModel viewManagerModel;
 
     JLabel scoreInfo;
     final JButton mainMenu;
     final JButton playAgain;
-    public GameOverView(GameOverViewModel gameOverViewModel) {
+    public GameOverView(GameOverController gameOverController,
+                        GameOverViewModel gameOverViewModel,
+                        ViewManagerModel viewManagerModel) {
+        this.gameOverController = gameOverController;
+        this.viewManagerModel = viewManagerModel;
         this.gameOverViewModel = gameOverViewModel;
         this.gameOverViewModel.addPropertyChangeListener(this);
 
@@ -47,8 +55,12 @@ public class GameOverView extends JPanel implements ActionListener, PropertyChan
         this.add(buttons);
     }
 
-    public void actionPerformed(ActionEvent evt) {
-        System.out.println("Click " + evt.getActionCommand());
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource().equals(mainMenu)) {
+            viewManagerModel.setActiveView("menu");
+            viewManagerModel.firePropertyChanged();
+        }
     }
 
     @Override
