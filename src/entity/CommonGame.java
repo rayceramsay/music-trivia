@@ -14,18 +14,16 @@ public class CommonGame implements Game {
     private final int maxRounds;
     private int currentLives;
     private int roundsPlayed = 0;
-    private Round round;
     private ArrayList<Round> allRounds;
-
     private final LocalDateTime createdAt;
-    private LocalDateTime FinishedAt;
+    private LocalDateTime finishedAt;
 
-    CommonGame(String genre, String difficulty, int max_rounds,
+    CommonGame(String genre, String difficulty, int maxRounds,
                int initialLives) {
         this.ID = UUID.randomUUID().toString();
         this.genre = genre;
         this.difficulty = difficulty;
-        this.maxRounds = max_rounds;
+        this.maxRounds = maxRounds;
         this.initialLives = initialLives;
         this.createdAt = LocalDateTime.now();
     }
@@ -65,11 +63,8 @@ public class CommonGame implements Game {
 
     @Override
     public int getScore() {return score;}
-
     @Override
-    public Round getRound() {
-        return round;
-    }
+    public Round getCurrentRound() {return allRounds.get(allRounds.size() - 1);}
     @Override
     public List<Round> getRounds() {
         return allRounds;
@@ -80,7 +75,7 @@ public class CommonGame implements Game {
 
     @Override
     public LocalDateTime getFinishedAt() {
-        return FinishedAt;
+        return finishedAt;
     }
 
     @Override
@@ -92,12 +87,11 @@ public class CommonGame implements Game {
     public void setScore(int score) {
         this.score = score;
     }
-
     @Override
-    public void setCurrentRound(Round round) {this.round = round;}
+    public void setCurrentRound(Round round) {allRounds.add(round);}
     @Override
     public void setFinishedAt(LocalDateTime finishedAt) {
-        FinishedAt = finishedAt;
+        this.finishedAt = finishedAt;
     }
 
     // TODO, implement

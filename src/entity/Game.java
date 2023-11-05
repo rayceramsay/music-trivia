@@ -14,7 +14,7 @@ public interface Game {
     int getCurrentLives();
     int getRoundsPlayed();
     int getScore();
-    Round getRound();
+    Round getCurrentRound();
     List<Round> getRounds();
     LocalDateTime getCreatedAt();
     LocalDateTime getFinishedAt();
