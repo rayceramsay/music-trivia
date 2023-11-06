@@ -1,7 +1,6 @@
 package view;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.game_settings.GameSettingsController;
 import interface_adapter.game_settings.GameSettingsViewModel;
 
 import javax.swing.*;
@@ -17,7 +16,6 @@ public class GameSettingsView extends JPanel implements ActionListener, Property
     public final String viewName = "game settings";
 
 
-    private final GameSettingsController gameSettingsController;
     private final GameSettingsViewModel gameSettingsViewModel;
 
     private final ViewManagerModel viewManagerModel;
@@ -40,14 +38,12 @@ public class GameSettingsView extends JPanel implements ActionListener, Property
     public final JLabel roundsLabel;
 
 
-    public GameSettingsView (GameSettingsController gameSettingsController,
-                             GameSettingsViewModel gameSettingsViewModel,
+    public GameSettingsView (GameSettingsViewModel gameSettingsViewModel,
                              ViewManagerModel viewManagerModel) {
 
         this.setLayout(new GridBagLayout());
 
         this.gameSettingsViewModel = gameSettingsViewModel;
-        this.gameSettingsController = gameSettingsController;
         this.viewManagerModel = viewManagerModel;
 
         String[] genreOptions = {"Hip-Hop", "Rock", "Pop"};

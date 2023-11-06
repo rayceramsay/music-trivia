@@ -1,7 +1,6 @@
 package view;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.round.RoundController;
 import interface_adapter.round.RoundViewModel;
 
 import javax.swing.*;
@@ -14,7 +13,6 @@ import java.beans.PropertyChangeListener;
 public class RoundView extends JPanel implements ActionListener, PropertyChangeListener {
     public final String viewName = "round";
     private final RoundViewModel roundViewModel;
-    private final RoundController roundController;
     private final ViewManagerModel viewManagerModel;
 
     final JButton playSong;
@@ -23,10 +21,8 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
     JLabel livesInfo;
     JLabel genreInfo;
     final int borderWidth = 2;
-    public RoundView(RoundController roundController,
-                     RoundViewModel roundViewModel,
+    public RoundView(RoundViewModel roundViewModel,
                      ViewManagerModel viewManagerModel) {
-        this.roundController = roundController;
         this.viewManagerModel = viewManagerModel;
         this.roundViewModel = roundViewModel;
         this.roundViewModel.addPropertyChangeListener(this);

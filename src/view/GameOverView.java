@@ -1,7 +1,6 @@
 package view;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.game_over.GameOverController;
 import interface_adapter.game_over.GameOverState;
 import interface_adapter.game_over.GameOverViewModel;
 
@@ -15,16 +14,13 @@ import java.beans.PropertyChangeListener;
 public class GameOverView extends JPanel implements ActionListener, PropertyChangeListener {
     public final String viewName = "game over";
     private final GameOverViewModel gameOverViewModel;
-    private final GameOverController gameOverController;
     private final ViewManagerModel viewManagerModel;
 
     JLabel scoreInfo;
     final JButton mainMenu;
     final JButton playAgain;
-    public GameOverView(GameOverController gameOverController,
-                        GameOverViewModel gameOverViewModel,
+    public GameOverView(GameOverViewModel gameOverViewModel,
                         ViewManagerModel viewManagerModel) {
-        this.gameOverController = gameOverController;
         this.viewManagerModel = viewManagerModel;
         this.gameOverViewModel = gameOverViewModel;
         this.gameOverViewModel.addPropertyChangeListener(this);

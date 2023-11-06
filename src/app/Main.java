@@ -1,13 +1,9 @@
 package app;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.game_over.GameOverController;
 import interface_adapter.game_over.GameOverViewModel;
-import interface_adapter.game_settings.GameSettingsController;
 import interface_adapter.game_settings.GameSettingsViewModel;
-import interface_adapter.menu.MenuController;
 import interface_adapter.menu.MenuViewModel;
-import interface_adapter.round.RoundController;
 import interface_adapter.round.RoundViewModel;
 import view.*;
 
@@ -32,23 +28,19 @@ public class Main{
 
         // Create Views
         MenuViewModel menuViewModel = new MenuViewModel();
-        MenuController menuController = new MenuController();
-        MenuView menuView = new MenuView(menuController, menuViewModel, viewManagerModel);
+        MenuView menuView = new MenuView(menuViewModel, viewManagerModel);
         views.add(menuView, menuView.viewName);
 
-        GameSettingsController gameSettingsController = new GameSettingsController();
         GameSettingsViewModel gameSettingsViewModel = new GameSettingsViewModel();
-        GameSettingsView gameSettingsView = new GameSettingsView(gameSettingsController, gameSettingsViewModel, viewManagerModel);
+        GameSettingsView gameSettingsView = new GameSettingsView(gameSettingsViewModel, viewManagerModel);
         views.add(gameSettingsView, gameSettingsView.viewName);
 
-        GameOverController gameOverController = new GameOverController();
         GameOverViewModel gameOverViewModel = new GameOverViewModel();
-        GameOverView gameOverView = new GameOverView(gameOverController, gameOverViewModel, viewManagerModel);
+        GameOverView gameOverView = new GameOverView(gameOverViewModel, viewManagerModel);
         views.add(gameOverView, gameOverView.viewName);
 
-        RoundController roundController = new RoundController();
         RoundViewModel roundViewModel = new RoundViewModel();
-        RoundView roundView = new RoundView(roundController, roundViewModel, viewManagerModel);
+        RoundView roundView = new RoundView(roundViewModel, viewManagerModel);
         views.add(roundView, roundView.viewName);
 
         viewManagerModel.setActiveView(roundView.viewName);
