@@ -1,12 +1,9 @@
 package view;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.game_settings.*;
-import interface_adapter.menu.MenuController;
-import interface_adapter.menu.MenuViewModel;
+import interface_adapter.game_settings.GameSettingsViewModel;
 
 import javax.swing.*;
-import javax.swing.text.View;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,7 +16,6 @@ public class GameSettingsView extends JPanel implements ActionListener, Property
     public final String viewName = "game settings";
 
 
-    private final GameSettingsController gameSettingsController;
     private final GameSettingsViewModel gameSettingsViewModel;
 
     private final ViewManagerModel viewManagerModel;
@@ -42,14 +38,12 @@ public class GameSettingsView extends JPanel implements ActionListener, Property
     public final JLabel roundsLabel;
 
 
-    public GameSettingsView (GameSettingsController gameSettingsController,
-                             GameSettingsViewModel gameSettingsViewModel,
+    public GameSettingsView (GameSettingsViewModel gameSettingsViewModel,
                              ViewManagerModel viewManagerModel) {
 
         this.setLayout(new GridBagLayout());
 
         this.gameSettingsViewModel = gameSettingsViewModel;
-        this.gameSettingsController = gameSettingsController;
         this.viewManagerModel = viewManagerModel;
 
         String[] genreOptions = {"Hip-Hop", "Rock", "Pop"};
@@ -135,13 +129,16 @@ public class GameSettingsView extends JPanel implements ActionListener, Property
         playGame.addActionListener(this);
         back.addActionListener(this);
 
-
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(back)) {
             viewManagerModel.setActiveView("menu");
+            viewManagerModel.firePropertyChanged();
+        }
+        if (e.getSource().equals(playGame)) {
+            viewManagerModel.setActiveView("round");
             viewManagerModel.firePropertyChanged();
         }
     }

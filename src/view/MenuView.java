@@ -1,7 +1,6 @@
 package view;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.menu.MenuController;
 import interface_adapter.menu.MenuViewModel;
 
 import javax.swing.*;
@@ -15,7 +14,6 @@ public class MenuView extends JPanel implements ActionListener, PropertyChangeLi
 
     public final String viewName = "menu";
 
-    private final MenuController menuController;
     private final MenuViewModel menuViewModel;
 
     private final ViewManagerModel viewManagerModel;
@@ -24,9 +22,8 @@ public class MenuView extends JPanel implements ActionListener, PropertyChangeLi
     public final JButton loadGame;
     public final JButton careerStats;
 
-    public MenuView(MenuController menuController, MenuViewModel menuViewModel, ViewManagerModel viewManagerModel) {
+    public MenuView(MenuViewModel menuViewModel, ViewManagerModel viewManagerModel) {
 
-        this.menuController = menuController;
         this.menuViewModel = menuViewModel;
         this.viewManagerModel = viewManagerModel;
 
