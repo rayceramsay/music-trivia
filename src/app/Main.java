@@ -1,10 +1,18 @@
 package app;
 
+import data_access.InMemoryGameDataAccessObject;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.game_over.GameOverViewModel;
 import interface_adapter.game_settings.GameSettingsViewModel;
 import interface_adapter.menu.MenuViewModel;
 import interface_adapter.round.RoundViewModel;
+import interface_adapter.submit_answer.SubmitAnswerController;
+import interface_adapter.submit_answer.SubmitAnswerPresenter;
+import interface_adapter.submit_answer.SubmitAnswerViewModel;
+import use_case.submit_answer.SubmitAnswerGameDataAccessInterface;
+import use_case.submit_answer.SubmitAnswerInputBoundary;
+import use_case.submit_answer.SubmitAnswerInteractor;
+import use_case.submit_answer.SubmitAnswerOutputBoundary;
 import view.*;
 
 import javax.swing.*;
@@ -12,7 +20,6 @@ import java.awt.*;
 
 public class Main{
     public static void main(String[] args){
-
         JFrame application = new JFrame("Spotify Bandits");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -40,7 +47,12 @@ public class Main{
         views.add(gameOverView, gameOverView.viewName);
 
         RoundViewModel roundViewModel = new RoundViewModel();
-        RoundView roundView = new RoundView(roundViewModel, viewManagerModel);
+        SubmitAnswerViewModel submitAnswerViewModel = new SubmitAnswerViewModel();
+        SubmitAnswerOutputBoundary submitAnswerPresenter = new SubmitAnswerPresenter(submitAnswerViewModel);
+        SubmitAnswerGameDataAccessInterface gameDao = new InMemoryGameDataAccessObject();
+        SubmitAnswerInputBoundary submitAnswerInteractor = new SubmitAnswerInteractor(gameDao, submitAnswerPresenter);
+        SubmitAnswerController submitAnswerController = new SubmitAnswerController(submitAnswerInteractor);
+        RoundView roundView = new RoundView(roundViewModel, submitAnswerViewModel, submitAnswerController);
         views.add(roundView, roundView.viewName);
 
         viewManagerModel.setActiveView(roundView.viewName);

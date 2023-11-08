@@ -12,7 +12,7 @@ public class SubmitAnswerInteractorTest {
     private final String INCORRECT_ANSWER = "incorrect";
     private final int INITIAL_LIVES = 10;
     private final int INITIAL_SCORE = 0;
-    private SubmitAnswerDataAccessInterface gameDao;
+    private SubmitAnswerGameDataAccessInterface gameDao;
     private Game game;
 
     /**
@@ -39,17 +39,12 @@ public class SubmitAnswerInteractorTest {
 
         SubmitAnswerOutputBoundary correctPresenter = new SubmitAnswerOutputBoundary() {
             @Override
-            public void prepareCorrectView(SubmitAnswerOutputData outputData) {
+            public void prepareView(SubmitAnswerOutputData outputData) {
                 assertEquals(INITIAL_SCORE + 1, game.getScore());
                 assertEquals(INITIAL_LIVES, game.getCurrentLives());
                 assertEquals(CORRECT_ANSWER, outputData.getCorrectAnswer());
                 assertTrue(outputData.isUserAnswerCorrect());
                 assertEquals(CORRECT_ANSWER, game.getCurrentRound().getUserAnswer());
-            }
-
-            @Override
-            public void prepareIncorrectView(SubmitAnswerOutputData outputData) {
-                fail("Use case incorrect is unexpected.");
             }
         };
 
@@ -68,12 +63,7 @@ public class SubmitAnswerInteractorTest {
 
         SubmitAnswerOutputBoundary correctPresenter = new SubmitAnswerOutputBoundary() {
             @Override
-            public void prepareCorrectView(SubmitAnswerOutputData outputData) {
-                fail("Use case correct is unexpected.");
-            }
-
-            @Override
-            public void prepareIncorrectView(SubmitAnswerOutputData outputData) {
+            public void prepareView(SubmitAnswerOutputData outputData) {
                 assertEquals(INITIAL_SCORE, game.getScore());
                 assertEquals(INITIAL_LIVES - 1, game.getCurrentLives());
                 assertEquals(CORRECT_ANSWER, outputData.getCorrectAnswer());

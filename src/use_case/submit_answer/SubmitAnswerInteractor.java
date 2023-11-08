@@ -4,12 +4,12 @@ import entity.Game;
 import entity.Round;
 
 public class SubmitAnswerInteractor implements SubmitAnswerInputBoundary {
-    private final SubmitAnswerDataAccessInterface submitAnswerDataAccessObject;
+    private final SubmitAnswerGameDataAccessInterface gameDataAccessObject;
     private final SubmitAnswerOutputBoundary submitAnswerPresenter;
 
-    public SubmitAnswerInteractor(SubmitAnswerDataAccessInterface submitAnswerDataAccessObject,
+    public SubmitAnswerInteractor(SubmitAnswerGameDataAccessInterface gameDataAccessObject,
                                   SubmitAnswerOutputBoundary submitAnswerPresenter) {
-        this.submitAnswerDataAccessObject = submitAnswerDataAccessObject;
+        this.gameDataAccessObject = gameDataAccessObject;
         this.submitAnswerPresenter = submitAnswerPresenter;
     }
 
@@ -23,7 +23,7 @@ public class SubmitAnswerInteractor implements SubmitAnswerInputBoundary {
     public void execute(SubmitAnswerInputData inputData) {
         String userAnswer = inputData.getUserAnswer();
         String gameId = inputData.getGameId();
-        Game game = submitAnswerDataAccessObject.getGameByID(gameId);
+        Game game = gameDataAccessObject.getGameByID(gameId);
         Round currentRound = game.getCurrentRound();
 
         currentRound.setUserAnswer(userAnswer);
@@ -34,12 +34,11 @@ public class SubmitAnswerInteractor implements SubmitAnswerInputBoundary {
 
         if (isUserAnswerCorrect) {
             game.incrementScore();
-            submitAnswerDataAccessObject.save(game);
-            submitAnswerPresenter.prepareCorrectView(outputData);
         } else {
             game.decrementLives();
-            submitAnswerDataAccessObject.save(game);
-            submitAnswerPresenter.prepareIncorrectView(outputData);
         }
+
+        gameDataAccessObject.save(game);
+        submitAnswerPresenter.prepareView(outputData);
     }
 }

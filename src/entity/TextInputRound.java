@@ -36,6 +36,12 @@ public class TextInputRound implements Round {
 
     @Override
     public boolean isUserAnswerCorrect() {
-        return userAnswer.equals(correctAnswer);
+        String cleanedUserAnswer = cleanString(userAnswer);
+        return cleanedUserAnswer.equalsIgnoreCase(correctAnswer);
+    }
+
+    private String cleanString(String string) {
+        // Strip non-printable characters and bordering white space
+        return string.replaceAll("\\p{C}", "").trim();
     }
 }
