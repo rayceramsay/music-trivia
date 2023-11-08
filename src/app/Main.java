@@ -6,13 +6,7 @@ import interface_adapter.game_over.GameOverViewModel;
 import interface_adapter.game_settings.GameSettingsViewModel;
 import interface_adapter.menu.MenuViewModel;
 import interface_adapter.round.RoundViewModel;
-import interface_adapter.submit_answer.SubmitAnswerController;
-import interface_adapter.submit_answer.SubmitAnswerPresenter;
 import interface_adapter.submit_answer.SubmitAnswerViewModel;
-import use_case.submit_answer.SubmitAnswerGameDataAccessInterface;
-import use_case.submit_answer.SubmitAnswerInputBoundary;
-import use_case.submit_answer.SubmitAnswerInteractor;
-import use_case.submit_answer.SubmitAnswerOutputBoundary;
 import view.*;
 
 import javax.swing.*;
@@ -33,6 +27,8 @@ public class Main{
         ViewManagerModel viewManagerModel = new ViewManagerModel();
         new ViewManager(views, cardLayout, viewManagerModel);
 
+        InMemoryGameDataAccessObject gameDataAccessObject = new InMemoryGameDataAccessObject();
+
         // Create Views
         MenuViewModel menuViewModel = new MenuViewModel();
         MenuView menuView = new MenuView(menuViewModel, viewManagerModel);
@@ -48,11 +44,7 @@ public class Main{
 
         RoundViewModel roundViewModel = new RoundViewModel();
         SubmitAnswerViewModel submitAnswerViewModel = new SubmitAnswerViewModel();
-        SubmitAnswerOutputBoundary submitAnswerPresenter = new SubmitAnswerPresenter(submitAnswerViewModel);
-        SubmitAnswerGameDataAccessInterface gameDao = new InMemoryGameDataAccessObject();
-        SubmitAnswerInputBoundary submitAnswerInteractor = new SubmitAnswerInteractor(gameDao, submitAnswerPresenter);
-        SubmitAnswerController submitAnswerController = new SubmitAnswerController(submitAnswerInteractor);
-        RoundView roundView = new RoundView(roundViewModel, submitAnswerViewModel, submitAnswerController);
+        RoundView roundView = RoundViewFactory.create(roundViewModel, submitAnswerViewModel, gameDataAccessObject);
         views.add(roundView, roundView.viewName);
 
         viewManagerModel.setActiveView(roundView.viewName);
