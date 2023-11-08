@@ -10,12 +10,17 @@ import static org.junit.Assert.*;
 public class SubmitAnswerInteractorTest {
     private final String CORRECT_ANSWER = "correct";
     private final String INCORRECT_ANSWER = "incorrect";
+    private final int INITIAL_LIVES = 10;
+    private final int INITIAL_SCORE = 0;
     private SubmitAnswerDataAccessInterface gameDao;
     private Game game;
 
+    /**
+     * Initialize each test to have an existing game with the current round already set and a data access object.
+     */
     @Before
     public void init() {
-        game = new CommonGame("pop", "hard", 15, 10);
+        game = new CommonGame("pop", "hard", 15, INITIAL_LIVES);
         Song song = new CommonSong(CORRECT_ANSWER, "me", new FileMP3PlayableAudio("path/song.mp3"));
         Round round = new TextInputRound(song, "What song is this?", CORRECT_ANSWER);
         game.setCurrentRound(round);
@@ -35,8 +40,8 @@ public class SubmitAnswerInteractorTest {
         SubmitAnswerOutputBoundary correctPresenter = new SubmitAnswerOutputBoundary() {
             @Override
             public void prepareCorrectView(SubmitAnswerOutputData outputData) {
-                assertEquals(1, game.getScore());
-                assertEquals(10, game.getCurrentLives());
+                assertEquals(INITIAL_SCORE + 1, game.getScore());
+                assertEquals(INITIAL_LIVES, game.getCurrentLives());
                 assertEquals(CORRECT_ANSWER, outputData.getCorrectAnswer());
                 assertTrue(outputData.isUserAnswerCorrect());
                 assertEquals(CORRECT_ANSWER, game.getCurrentRound().getUserAnswer());
@@ -69,8 +74,8 @@ public class SubmitAnswerInteractorTest {
 
             @Override
             public void prepareIncorrectView(SubmitAnswerOutputData outputData) {
-                assertEquals(0, game.getScore());
-                assertEquals(9, game.getCurrentLives());
+                assertEquals(INITIAL_SCORE, game.getScore());
+                assertEquals(INITIAL_LIVES - 1, game.getCurrentLives());
                 assertEquals(CORRECT_ANSWER, outputData.getCorrectAnswer());
                 assertFalse(outputData.isUserAnswerCorrect());
                 assertEquals(INCORRECT_ANSWER, game.getCurrentRound().getUserAnswer());
