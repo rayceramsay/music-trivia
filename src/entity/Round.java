@@ -12,6 +12,6 @@ public interface Round {
     void setUserAnswer(String userAnswer);
 
     //OTHER
-    boolean isAnswerCorrect(String answer);
+    boolean isUserAnswerCorrect();
 
 }

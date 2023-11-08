@@ -1,5 +1,8 @@
 package use_case.submit_answer;
 
+import entity.Game;
+import entity.Round;
+
 public class SubmitAnswerInteractor implements SubmitAnswerInputBoundary {
     private final SubmitAnswerDataAccessInterface submitAnswerDataAccessObject;
     private final SubmitAnswerOutputBoundary submitAnswerPresenter;
@@ -10,14 +13,33 @@ public class SubmitAnswerInteractor implements SubmitAnswerInputBoundary {
         this.submitAnswerPresenter = submitAnswerPresenter;
     }
 
+    /**
+     * Check the correctness of the user's answer and update/save the game accordingly. Report back the user's
+     * correctness and what the correct answer is.
+     *
+     * @param inputData The input data object holding the game ID and user answer
+     */
     @Override
     public void execute(SubmitAnswerInputData inputData) {
-        // TODO implement submit answer use case logic (i.e. prepare the game for its next steps and then inform the
-        //  user about the results from the current round)
-        //   - Check if answer is correct -> handle game score and lives accordingly
-        //   - Check if game is over -> either mark the game as finished or create the next round to be played
-        //   - Save game to persistence layer
-        //   - Send data to presenter indicating whether the user's answer was correct, what the correct answer was,
-        //   and whether the game is over
+        String userAnswer = inputData.getUserAnswer();
+        String gameId = inputData.getGameId();
+        Game game = submitAnswerDataAccessObject.getGameByID(gameId);
+        Round currentRound = game.getCurrentRound();
+
+        currentRound.setUserAnswer(userAnswer);
+
+        boolean isUserAnswerCorrect = currentRound.isUserAnswerCorrect();
+        String correctAnswer = currentRound.getCorrectAnswer();
+        SubmitAnswerOutputData outputData = new SubmitAnswerOutputData(isUserAnswerCorrect, correctAnswer);
+
+        if (isUserAnswerCorrect) {
+            game.incrementScore();
+            submitAnswerDataAccessObject.save(game);
+            submitAnswerPresenter.prepareCorrectView(outputData);
+        } else {
+            game.decrementLives();
+            submitAnswerDataAccessObject.save(game);
+            submitAnswerPresenter.prepareIncorrectView(outputData);
+        }
     }
 }

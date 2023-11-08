@@ -15,7 +15,5 @@ public class InMemoryGameDataAccessObject implements SubmitAnswerDataAccessInter
     }
 
     @Override
-    public void save(Game game) {
-        games.put(game.getID(), game);
-    }
+    public void save(Game game) { games.put(game.getID(), game); }
 }

@@ -6,25 +6,23 @@ import java.util.List;
 import java.util.UUID;
 
 public class CommonGame implements Game {
-    private final String ID;
-    private int score;
-    private final String difficulty;
+    private final String ID = UUID.randomUUID().toString();
     private final String genre;
-    private final int initialLives;
+    private final String difficulty;
     private final int maxRounds;
+    private final int initialLives;
     private int currentLives;
-    private ArrayList<Round> allRounds;
-    private final LocalDateTime createdAt;
+    private int score;
+    private final ArrayList<Round> allRounds = new ArrayList<>();
+    private final LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime finishedAt;
 
-   public CommonGame(String genre, String difficulty, int maxRounds,
-               int initialLives) {
-        this.ID = UUID.randomUUID().toString();
+    public CommonGame(String genre, String difficulty, int maxRounds, int initialLives) {
         this.genre = genre;
         this.difficulty = difficulty;
         this.maxRounds = maxRounds;
         this.initialLives = initialLives;
-        this.createdAt = LocalDateTime.now();
+        this.currentLives = initialLives;
     }
 
     @Override
@@ -48,7 +46,7 @@ public class CommonGame implements Game {
     }
 
     @Override
-    public int getMaxRounds() {return maxRounds;}
+    public int getMaxRounds() { return maxRounds; }
 
     @Override
     public int getCurrentLives() {
@@ -61,41 +59,45 @@ public class CommonGame implements Game {
     }
 
     @Override
-    public int getScore() {return score;}
+    public int getScore() { return score; }
+
     @Override
-    public Round getCurrentRound() {return allRounds.get(allRounds.size() - 1);}
-    @Override
-    public List<Round> getRounds() {
-        return allRounds;
+    public Round getCurrentRound() {
+        int roundsSize = allRounds.size();
+        if (roundsSize == 0) {
+            return null;
+        }
+
+        return allRounds.get(roundsSize - 1);
     }
 
     @Override
-    public LocalDateTime getCreatedAt() {return createdAt;}
+    public List<Round> getRounds() { return allRounds; }
 
     @Override
-    public LocalDateTime getFinishedAt() {
-        return finishedAt;
-    }
+    public LocalDateTime getCreatedAt() { return createdAt; }
 
     @Override
-    public void setCurrentLives(int lives) {
-        currentLives = lives;
-    }
+    public LocalDateTime getFinishedAt() { return finishedAt; }
 
     @Override
-    public void setScore(int score) {
-        this.score = score;
-    }
-    @Override
-    public void setCurrentRound(Round round) {allRounds.add(round);}
-    @Override
-    public void setFinishedAt(LocalDateTime finishedAt) {
-        this.finishedAt = finishedAt;
-    }
+    public void setCurrentLives(int lives) { currentLives = lives; }
 
-    // TODO, implement
     @Override
-    public boolean isGameOver() {
-        return false;
-    }
+    public void setScore(int score) { this.score = score; }
+
+    @Override
+    public void setCurrentRound(Round round) { allRounds.add(round); }
+
+    @Override
+    public void setFinishedAt(LocalDateTime finishedAt) { this.finishedAt = finishedAt; }
+
+    @Override
+    public boolean isGameOver() { return allRounds.size() >= maxRounds || currentLives <= 0; }
+
+    @Override
+    public void incrementScore() { this.score += 1; }
+
+    @Override
+    public void decrementLives() { this.currentLives -= 1; }
 }

@@ -27,5 +27,7 @@ public interface Game {
 
     //OTHER
     boolean isGameOver();
+    void incrementScore();
+    void decrementLives();
 
 }
