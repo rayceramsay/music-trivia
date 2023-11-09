@@ -12,4 +12,8 @@ Game modes include:
 - Play until you get X number of questions wrong
 - Play X number of rounds per game
 
+Prompt options include:
+- Given a short snippet of a song, choose/input its title
+- Given the name of a song, choose which song it is
+
 ### First Use Case
