@@ -1,6 +1,5 @@
 package view;
 
-import data_access.InMemoryGameDataAccessObject;
 import interface_adapter.round.RoundViewModel;
 import interface_adapter.submit_answer.SubmitAnswerController;
 import interface_adapter.submit_answer.SubmitAnswerPresenter;

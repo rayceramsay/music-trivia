@@ -12,7 +12,7 @@ public class SubmitAnswerInteractorTest {
     private final String INCORRECT_ANSWER = "incorrect";
     private final int INITIAL_LIVES = 10;
     private final int INITIAL_SCORE = 0;
-    private SubmitAnswerGameDataAccessInterface gameDao;
+    private SubmitAnswerGameDataAccessInterface gameDataAccessObject;
     private Game game;
 
     /**
@@ -25,8 +25,8 @@ public class SubmitAnswerInteractorTest {
         Round round = new TextInputRound(song, "What song is this?", CORRECT_ANSWER);
         game.setCurrentRound(round);
 
-        gameDao = new InMemoryGameDataAccessObject();
-        gameDao.save(game);
+        gameDataAccessObject = new InMemoryGameDataAccessObject();
+        gameDataAccessObject.save(game);
     }
 
     /**
@@ -48,7 +48,7 @@ public class SubmitAnswerInteractorTest {
             }
         };
 
-        SubmitAnswerInputBoundary interactor = new SubmitAnswerInteractor(gameDao, correctPresenter);
+        SubmitAnswerInputBoundary interactor = new SubmitAnswerInteractor(gameDataAccessObject, correctPresenter);
         interactor.execute(inputData);
     }
 
@@ -72,7 +72,7 @@ public class SubmitAnswerInteractorTest {
             }
         };
 
-        SubmitAnswerInputBoundary interactor = new SubmitAnswerInteractor(gameDao, correctPresenter);
+        SubmitAnswerInputBoundary interactor = new SubmitAnswerInteractor(gameDataAccessObject, correctPresenter);
         interactor.execute(inputData);
     }
 }
