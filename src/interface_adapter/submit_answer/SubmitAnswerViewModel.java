@@ -6,6 +6,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 public class SubmitAnswerViewModel extends ViewModel {
+    public static final String STATE_PROPERTY = "submitAnswerState";
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
     private SubmitAnswerState state = new SubmitAnswerState();
 
@@ -13,7 +14,7 @@ public class SubmitAnswerViewModel extends ViewModel {
 
     @Override
     public void firePropertyChanged() {
-        support.firePropertyChange("submitAnswerState", null, this.state);
+        support.firePropertyChange(STATE_PROPERTY, null, this.state);
     }
 
     @Override

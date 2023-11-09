@@ -9,10 +9,7 @@ import interface_adapter.submit_answer.SubmitAnswerViewModel;
 import javax.swing.*;
 import java.awt.*;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -114,10 +111,21 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals("submitAnswerState")) {
+        if (evt.getPropertyName().equals(SubmitAnswerViewModel.STATE_PROPERTY)) {
             SubmitAnswerState submitAnswerState = (SubmitAnswerState) evt.getNewValue();
-            JOptionPane.showMessageDialog(this, submitAnswerState.getCorrectnessMessage(),
-                    submitAnswerState.getCorrectnessTitle(), JOptionPane.PLAIN_MESSAGE);
+
+            // Create dialog displaying the correctness of the user's answer
+            JOptionPane optionPane = new JOptionPane(submitAnswerState.getCorrectnessMessage(),
+                    JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{"Next"});
+            JDialog dialog = optionPane.createDialog(this, submitAnswerState.getCorrectnessTitle());
+            optionPane.addPropertyChangeListener(e -> {
+                if (JOptionPane.VALUE_PROPERTY.equals(e.getPropertyName())) {
+                    System.out.println("Execute post round use case here...");
+                }
+            });
+
+            dialog.setVisible(true);
         }
     }
+
 }
