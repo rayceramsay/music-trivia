@@ -38,4 +38,8 @@ public class GameSettingsViewModel extends ViewModel {
     public GameSettingsState getState() {
         return state;
     }
+
+    public void setState(GameSettingsState state) {
+        this.state = state;
+    }
 }
