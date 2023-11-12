@@ -1,19 +1,21 @@
 package entity;
 
 public class CommonSong implements Song {
-    private String title;
-    private String artist;
-    private PlayableAudio audio;
+    private final String title;
+    private final String artist;
+    private final PlayableAudio audio;
 
-    CommonSong(String title, String artist, PlayableAudio audio) {
+    public CommonSong(String title, String artist, PlayableAudio audio) {
         this.title = title;
         this.artist = artist;
         this.audio = audio;
     }
+
     @Override
     public String getTitle() {
         return title;
     }
+
     @Override
     public String getArtist() {
         return artist;

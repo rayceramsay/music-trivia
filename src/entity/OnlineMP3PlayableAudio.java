@@ -1,12 +1,12 @@
 package entity;
 
 public class OnlineMP3PlayableAudio implements PlayableAudio{
+    private final String audioUrl;
 
-    private String previewWindow;
+    public OnlineMP3PlayableAudio(String audioUrl) { this.audioUrl = audioUrl; }
+
     @Override
-    public String getPath() {
-        return previewWindow;
-    }
+    public String getPath() { return audioUrl; }
 
     @Override
     public void play() {

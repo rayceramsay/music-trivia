@@ -1,23 +1,20 @@
-package interface_adapter.round;
+package interface_adapter.submit_answer;
 
 import interface_adapter.ViewModel;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-public class RoundViewModel extends ViewModel {
-    public String TITLE_LABEL = "What song is this?";
-
+public class SubmitAnswerViewModel extends ViewModel {
+    public static final String STATE_PROPERTY = "submitAnswerState";
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
-    private RoundState state = new RoundState();
+    private SubmitAnswerState state = new SubmitAnswerState();
 
-    public RoundViewModel() {
-        super("round");
-    }
+    public SubmitAnswerViewModel() { super("round"); }
 
     @Override
     public void firePropertyChanged() {
-        support.firePropertyChange("roundState", null, this.state);
+        support.firePropertyChange(STATE_PROPERTY, null, this.state);
     }
 
     @Override
@@ -25,11 +22,11 @@ public class RoundViewModel extends ViewModel {
         support.addPropertyChangeListener(listener);
     }
 
-    public RoundState getState() {
+    public SubmitAnswerState getState() {
         return state;
     }
 
-    public void setState(RoundState state) {
+    public void setState(SubmitAnswerState state) {
         this.state = state;
     }
 }

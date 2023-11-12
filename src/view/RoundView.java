@@ -1,20 +1,23 @@
 package view;
 
-import interface_adapter.ViewManagerModel;
+import interface_adapter.round.RoundState;
 import interface_adapter.round.RoundViewModel;
+import interface_adapter.submit_answer.SubmitAnswerController;
+import interface_adapter.submit_answer.SubmitAnswerState;
+import interface_adapter.submit_answer.SubmitAnswerViewModel;
 
 import javax.swing.*;
 import java.awt.*;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 public class RoundView extends JPanel implements ActionListener, PropertyChangeListener {
     public final String viewName = "round";
     private final RoundViewModel roundViewModel;
-    private final ViewManagerModel viewManagerModel;
+    private final SubmitAnswerViewModel submitAnswerViewModel;
+    private final SubmitAnswerController submitAnswerController;
 
     final JButton playSong;
     final JButton submit;
@@ -22,11 +25,15 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
     JLabel livesInfo;
     JLabel genreInfo;
     final int borderWidth = 2;
-    public RoundView(RoundViewModel roundViewModel,
-                     ViewManagerModel viewManagerModel) {
-        this.viewManagerModel = viewManagerModel;
+
+    public RoundView(RoundViewModel roundViewModel, SubmitAnswerViewModel submitAnswerViewModel,
+                     SubmitAnswerController submitAnswerController) {
         this.roundViewModel = roundViewModel;
+        this.submitAnswerViewModel = submitAnswerViewModel;
+        this.submitAnswerController = submitAnswerController;
+
         this.roundViewModel.addPropertyChangeListener(this);
+        this.submitAnswerViewModel.addPropertyChangeListener(this);
 
         // Prompt
         JLabel prompt = new JLabel(roundViewModel.TITLE_LABEL);
@@ -40,11 +47,28 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         answerSection.setMinimumSize(new Dimension(300,10));
         answerSection.setMaximumSize(new Dimension(getMaximumSize().width, 10));
 
-        JTextField answer = new JFormattedTextField();
-        answerSection.add(answer);
+        JTextField answerInputField = new JFormattedTextField();
+        answerInputField.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                RoundState roundState = roundViewModel.getState();
+                String userAnswer = answerInputField.getText() + e.getKeyChar();
+                roundState.setUserAnswer(userAnswer);
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {}
+
+            @Override
+            public void keyReleased(KeyEvent e) {}
+        });
+        answerSection.add(answerInputField);
 
         submit = new JButton("Submit");
-        submit.addActionListener(this);
+        submit.addActionListener(event -> {
+            RoundState roundState = roundViewModel.getState();
+            submitAnswerController.execute(roundState.getUserAnswer(), roundState.getGameId());
+        });
         answerSection.add(submit);
 
         // Round Info Section
@@ -73,7 +97,6 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         genreCell.add(genreInfo);
         infoSection.add(genreCell);
 
-
         // Set view layout
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.add(prompt);
@@ -82,11 +105,27 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         this.add(new JPanel());
         this.add(infoSection);
     }
+
     @Override
-    public void actionPerformed(ActionEvent e) {
-    }
+    public void actionPerformed(ActionEvent e) {}
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getPropertyName().equals(SubmitAnswerViewModel.STATE_PROPERTY)) {
+            SubmitAnswerState submitAnswerState = (SubmitAnswerState) evt.getNewValue();
+
+            // Create dialog displaying the correctness of the user's answer
+            JOptionPane optionPane = new JOptionPane(submitAnswerState.getCorrectnessMessage(),
+                    JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{"Next"});
+            JDialog dialog = optionPane.createDialog(this, submitAnswerState.getCorrectnessTitle());
+            optionPane.addPropertyChangeListener(e -> {
+                if (JOptionPane.VALUE_PROPERTY.equals(e.getPropertyName())) {
+                    System.out.println("Execute post round use case here...");
+                }
+            });
+
+            dialog.setVisible(true);
+        }
     }
+
 }
