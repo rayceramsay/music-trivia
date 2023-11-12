@@ -26,9 +26,7 @@ public class FinishRoundInteractorTest {
      * Test that the game ends when the max number of rounds has been reached even when the user has more than 0 lives.
      * Verify in test:
      * - Game is over
-     * - Game has hit max number of rounds played
-     * - Lives is not 0
-     * - Game has set a finished time
+     * - Output data matches game data
      */
     @Test
     public void gameFinishedWithMaxRoundsTest() {
@@ -42,10 +40,14 @@ public class FinishRoundInteractorTest {
         FinishRoundOutputBoundary gameOverPresenter = new FinishRoundOutputBoundary() {
             @Override
             public void prepareGameOverView(FinishRoundOutputData outputData) {
+                // Verify game is over atributes
                 assertTrue(game.isGameOver());
                 assertEquals(game.getRoundsPlayed(), game.getMaxRounds());
                 assertNotEquals(0, game.getCurrentLives());
                 assertNotNull(game.getFinishedAt());
+
+                // Verify output data
+                assertEquals(game.getScore(), outputData.getScore());
             }
             @Override
             public void prepareNextRoundView(FinishRoundOutputData outputData) {
@@ -62,9 +64,7 @@ public class FinishRoundInteractorTest {
      * has not been reached.
      * Verify in test:
      * - Game is over
-     * - Game has not hit max number of rounds played
-     * - Lives is 0
-     * - Game has set a finished time
+     * - Output data matches game data
      */
     @Test
     public void gameFinishedWithNoLivesTest() {
@@ -79,10 +79,14 @@ public class FinishRoundInteractorTest {
         FinishRoundOutputBoundary gameOverPresenter = new FinishRoundOutputBoundary() {
             @Override
             public void prepareGameOverView(FinishRoundOutputData outputData) {
+                // Verify game is over atrributes
                 assertTrue(game.isGameOver());
                 assertNotEquals(game.getRoundsPlayed(), game.getMaxRounds());
                 assertEquals(0, game.getCurrentLives());
                 assertNotNull(game.getFinishedAt());
+
+                // Verify output data
+                assertEquals(game.getScore(), outputData.getScore());
             }
             @Override
             public void prepareNextRoundView(FinishRoundOutputData outputData) {
@@ -99,9 +103,7 @@ public class FinishRoundInteractorTest {
      * while the max number of rounds has been reached.
      * Verify in test:
      * - Game is over
-     * - Game has hit max number of rounds played
-     * - Lives is  0
-     * - Game has set a finished time
+     * - Output data matches game data
      */
     @Test
     public void gameFinishedWithNoLivesAndMaxRoundsTest() {
@@ -116,10 +118,14 @@ public class FinishRoundInteractorTest {
         FinishRoundOutputBoundary gameOverPresenter = new FinishRoundOutputBoundary() {
             @Override
             public void prepareGameOverView(FinishRoundOutputData outputData) {
+                // Verify game is over atrributes
                 assertTrue(game.isGameOver());
                 assertEquals(game.getRoundsPlayed(), game.getMaxRounds());
                 assertEquals(0, game.getCurrentLives());
                 assertNotNull(game.getFinishedAt());
+
+                // Verify output data
+                assertEquals(game.getScore(), outputData.getScore());
             }
             @Override
             public void prepareNextRoundView(FinishRoundOutputData outputData) {
@@ -136,12 +142,8 @@ public class FinishRoundInteractorTest {
      * max round that a next 'hard' round (text input round) is generated and set as the current round.
      * Verify in test:
      *  - Game is not over
-     *  - Number of rounds played has not hit max
-     *  - Lives are not 0
-     *  - Game has not set a finished time
-     *  - A new round has been generated and set as the new current round (old round is not the current round anymore)
-     *  - Number of rounds has increased by 1
-     *  - New round is a new 'hard' round (ie TextInputRound)
+     *  - New round has been properly created and game has updated accordingly
+     *  - Output data is same as game data
      */
     @Test
     public void nextHardRoundGeneratedTest() {
@@ -150,7 +152,6 @@ public class FinishRoundInteractorTest {
         Game game = new CommonGame("pop", "hard", maxRounds, initialLives);
         game.setCurrentRound(round);
         gameDataAccessObject.save(game);
-        int previousNumberOfRounds = game.getRoundsPlayed();
 
         FinishRoundInputData inputData = new FinishRoundInputData(game.getID());
         FinishRoundOutputBoundary gameOverPresenter = new FinishRoundOutputBoundary() {
@@ -160,14 +161,21 @@ public class FinishRoundInteractorTest {
             }
             @Override
             public void prepareNextRoundView(FinishRoundOutputData outputData) {
+                // Verify game is not over attributes
                 assertFalse(game.isGameOver());
                 assertNotEquals(game.getRoundsPlayed(), game.getMaxRounds());
                 assertNotEquals(0, game.getCurrentLives());
                 assertNull(game.getFinishedAt());
 
-                assertEquals(game.getRoundsPlayed(), previousNumberOfRounds + 1);
+                // Verify info about new current round
+                assertEquals(game.getRoundsPlayed(), 2);
                 assertNotEquals(game.getCurrentRound(), round);
                 assertEquals(game.getCurrentRound().getClass(), TextInputRound.class);
+
+                // Verify output data
+                assertEquals(game.getGenre(), outputData.getGenre());
+                assertEquals(outputData.getRoundNumber(), 2);
+                assertEquals(outputData.getLives(), game.getCurrentLives());
             }
         };
 
@@ -180,12 +188,8 @@ public class FinishRoundInteractorTest {
      * max round that a next 'medium' round (four mc round) is generated and set as the current round.
      * Verify in test:
      *  - Game is not over
-     *  - Number of rounds played has not hit max
-     *  - Lives are not 0
-     *  - Game has not set a finished time
-     *  - A new round has been generated and set as the new current round (old round is not the current round anymore)
-     *  - Number of rounds has increased by 1
-     *  - New round is a new 'hard' round (ie TextInputRound)
+     *  - New round has been properly created and game has updated accordingly
+     *  - Output data is same as game data
      */
     @Test
     public void nextMediumRoundGeneratedTest() {
@@ -203,14 +207,21 @@ public class FinishRoundInteractorTest {
             }
             @Override
             public void prepareNextRoundView(FinishRoundOutputData outputData) {
+                // Verify game is not over attributes
                 assertFalse(game.isGameOver());
                 assertNotEquals(game.getRoundsPlayed(), game.getMaxRounds());
                 assertNotEquals(0, game.getCurrentLives());
                 assertNull(game.getFinishedAt());
 
-                assertEquals(game.getRoundsPlayed(), 2);
+                // Verify info about new current round
+                assertEquals(2, game.getRoundsPlayed());
                 assertNotEquals(game.getCurrentRound(), round);
                 assertEquals(game.getCurrentRound().getClass(), FourMultipleChoiceRound.class);
+
+                // Verify output data
+                assertEquals(game.getGenre(), outputData.getGenre());
+                assertEquals(outputData.getRoundNumber(), 2);
+                assertEquals(outputData.getLives(), game.getCurrentLives());
             }
         };
 
@@ -223,12 +234,8 @@ public class FinishRoundInteractorTest {
      * max round that a next 'easy' round (2 mc round) is generated and set as the current round.
      * Verify in test:
      *  - Game is not over
-     *  - Number of rounds played has not hit max
-     *  - Lives are not 0
-     *  - Game has not set a finished time
-     *  - A new round has been generated and set as the new current round (old round is not the current round anymore)
-     *  - Number of rounds has increased by 1
-     *  - New round is a new 'hard' round (ie TextInputRound)
+     *  - New round has been properly created and game has updated accordingly
+     *  - Output data is same as game data
      */
     @Test
     public void nextEasyRoundGeneratedTest() {
@@ -246,14 +253,22 @@ public class FinishRoundInteractorTest {
             }
             @Override
             public void prepareNextRoundView(FinishRoundOutputData outputData) {
+                // Verify game is not over attributes
                 assertFalse(game.isGameOver());
                 assertNotEquals(game.getRoundsPlayed(), game.getMaxRounds());
                 assertNotEquals(0, game.getCurrentLives());
                 assertNull(game.getFinishedAt());
 
+                // Verify info about new current round
                 assertEquals(game.getRoundsPlayed(), 2);
                 assertNotEquals(game.getCurrentRound(), round);
                 assertEquals(game.getCurrentRound().getClass(), TwoMultipleChoiceRound.class);
+
+                // Verify output data
+                assertEquals(game.getGenre(), outputData.getGenre());
+                assertEquals(outputData.getRoundNumber(), 2);
+                assertEquals(game.getCurrentLives(), outputData.getLives());
+
             }
         };
 

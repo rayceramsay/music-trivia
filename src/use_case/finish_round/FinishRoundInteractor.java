@@ -24,6 +24,7 @@ public class FinishRoundInteractor implements FinishRoundInputBoundary{
 
         if(game.isGameOver()){
             game.setFinishedAt(LocalDateTime.now());
+            gameDataAccessObject.save(game);
 
             FinishRoundOutputData outputData = new FinishRoundOutputData();
             outputData.setScore(game.getScore());
@@ -42,6 +43,7 @@ public class FinishRoundInteractor implements FinishRoundInputBoundary{
                 nextRound = roundFactory.createEasyRound(gameGenre);
             }
             game.setCurrentRound(nextRound);
+            gameDataAccessObject.save(game);
 
             FinishRoundOutputData outputData = new FinishRoundOutputData();
             outputData.setGenre(gameGenre);
