@@ -12,7 +12,7 @@ public class CreateGameController {
     }
 
     public void execute(String difficulty, String genre, int lives, int rounds) {
-        CreateGameInputData inputData = new CreateGameInputData(difficulty, genre, lives, rounds);
+        CreateGameInputData inputData = new CreateGameInputData(genre, difficulty, lives, rounds);
         createGameInteractor.execute(inputData);
     }
 }

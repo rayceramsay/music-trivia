@@ -49,6 +49,7 @@ public class GameSettingsView extends JPanel implements ActionListener, Property
 
         this.gameSettingsViewModel = gameSettingsViewModel;
         this.viewManagerModel = viewManagerModel;
+        gameSettingsViewModel.addPropertyChangeListener(this);
 
         String[] genreOptions = {"Hip-Hop", "Rock", "Pop"};
         String[] difficultyOptions = {"Easy", "Medium", "Hard"};
@@ -130,6 +131,7 @@ public class GameSettingsView extends JPanel implements ActionListener, Property
             }
         });
 
+
         // ROUNDS SPINNER
 
         roundsSpinnerNumberModel = new SpinnerNumberModel(10, 5, 15, 1);
@@ -202,6 +204,9 @@ public class GameSettingsView extends JPanel implements ActionListener, Property
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-
+        difficultySelector.getActionListeners()[0].actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null));
+        genreSelector.getActionListeners()[0].actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null));
+        livesSpinner.getChangeListeners()[0].stateChanged(new ChangeEvent(this));
+        roundsSpinner.getChangeListeners()[0].stateChanged(new ChangeEvent(this));
     }
 }

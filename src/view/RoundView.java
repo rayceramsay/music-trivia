@@ -73,7 +73,6 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         genreCell.add(genreInfo);
         infoSection.add(genreCell);
 
-
         // Set view layout
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.add(prompt);
@@ -88,5 +87,8 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        roundInfo.setText("Round: " + roundViewModel.getState().getCurrentRoundNumber() + "/" + roundViewModel.getState().getMaxRounds());
+        livesInfo.setText("Lives left:" + roundViewModel.getState().getCurrentLives());
+        genreInfo.setText("Genre: " + roundViewModel.getState().getGenre());
     }
 }

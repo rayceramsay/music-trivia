@@ -2,6 +2,7 @@ package interface_adapter.game_settings;
 
 import interface_adapter.ViewModel;
 import interface_adapter.menu.MenuState;
+import view.GameSettingsView;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -19,20 +20,20 @@ public class GameSettingsViewModel extends ViewModel {
 
     private GameSettingsState state = new GameSettingsState();
 
+    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
+
     public GameSettingsViewModel() {
-        super("game settings view");
+        super("game settings");
     }
 
     @Override
     public void firePropertyChanged() {
-
+        support.firePropertyChange("gameSettingsState", null, this.state);
     }
-
-    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
-        support.firePropertyChange("state", null, this.state);
+        support.addPropertyChangeListener(listener);
     }
 
     public GameSettingsState getState() {
