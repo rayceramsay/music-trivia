@@ -26,6 +26,7 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
     JLabel roundInfo;
     JLabel livesInfo;
     JLabel genreInfo;
+    JTextField answerInputField;
     final int borderWidth = 2;
 
     public RoundView(RoundViewModel roundViewModel,
@@ -52,7 +53,7 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         answerSection.setMinimumSize(new Dimension(300,10));
         answerSection.setMaximumSize(new Dimension(getMaximumSize().width, 10));
 
-        JTextField answerInputField = new JFormattedTextField();
+        answerInputField = new JFormattedTextField();
         answerInputField.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -85,19 +86,19 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         infoSection.setLayout(new GridLayout(1, 3, borderWidth, borderWidth));
 
 
-        roundInfo = new JLabel("Round: " + roundViewModel.getState().getCurrentRoundNumber() + "/" + roundViewModel.getState().getMaxRounds());
+        roundInfo = new JLabel("Round: ");
         JPanel roundCell = new JPanel();
         roundCell.setBackground(this.getBackground());
         roundCell.add(roundInfo);
         infoSection.add(roundCell);
 
-        livesInfo = new JLabel("Lives left:" + roundViewModel.getState().getCurrentLives());
+        livesInfo = new JLabel("Lives left:");
         JPanel livesCell = new JPanel();
         livesCell.setBackground(this.getBackground());
         livesCell.add(livesInfo);
         infoSection.add(livesCell);
 
-        genreInfo = new JLabel("Genre: "  + roundViewModel.getState().getGenre());
+        genreInfo = new JLabel("Genre: ");
         JPanel genreCell = new JPanel();
         genreCell.setBackground(this.getBackground());
         genreCell.add(genreInfo);
@@ -129,16 +130,19 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
                     // Call finish round controller
                     RoundState roundState = roundViewModel.getState();
                     finishRoundController.execute(roundState.getGameId());
-
-                    // Update view text with new state info
-                    roundInfo.setText("Round: " + roundViewModel.getState().getCurrentRoundNumber() + "/" + roundViewModel.getState().getMaxRounds());
-                    livesInfo.setText("Lives left:" + roundViewModel.getState().getCurrentLives());
-                    genreInfo.setText("Genre: "  + roundViewModel.getState().getGenre());
+                    answerInputField.setText("");
+                    this.updateRoundTextInfo();
                 }
             });
-
             dialog.setVisible(true);
         }
+        this.updateRoundTextInfo();
+    }
+
+    private void updateRoundTextInfo(){
+        roundInfo.setText("Round: " + roundViewModel.getState().getCurrentRoundNumber() + "/" + roundViewModel.getState().getMaxRounds());
+        livesInfo.setText("Lives left:" + roundViewModel.getState().getCurrentLives());
+        genreInfo.setText("Genre: "  + roundViewModel.getState().getGenre());
     }
 
 }
