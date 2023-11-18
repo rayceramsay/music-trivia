@@ -96,6 +96,9 @@ public class CommonGame implements Game {
     public boolean isGameOver() { return allRounds.size() >= maxRounds || currentLives <= 0; }
 
     @Override
+    public boolean isLoadable() { return finishedAt == null; }
+
+    @Override
     public void incrementScore() { this.score += 1; }
 
     @Override
