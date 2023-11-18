@@ -50,9 +50,8 @@ public class Main{
         views.add(gameOverView, gameOverView.viewName);
         views.add(roundView, roundView.viewName);
 
-
         // Set starting view
-        viewManagerModel.setActiveView(roundView.viewName);
+        viewManagerModel.setActiveView(menuView.viewName);
         viewManagerModel.firePropertyChanged();
 
         // Start app
