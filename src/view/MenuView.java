@@ -1,44 +1,40 @@
 package view;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.menu.MenuViewModel;
+import interface_adapter.get_loadable_games.GetLoadableGamesController;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
-public class MenuView extends JPanel implements ActionListener, PropertyChangeListener {
+public class MenuView extends JPanel implements ActionListener {
 
     public final String viewName = "menu";
 
-    private final MenuViewModel menuViewModel;
-
     private final ViewManagerModel viewManagerModel;
+    private final GetLoadableGamesController getLoadableGamesController;
 
-    public final JButton newGame;
-    public final JButton loadGame;
-    public final JButton careerStats;
+    private final JButton newGame;
+    private final JButton loadGame;
+    private final JButton careerStats;
 
-    public MenuView(MenuViewModel menuViewModel, ViewManagerModel viewManagerModel) {
-
-        this.menuViewModel = menuViewModel;
+    public MenuView(ViewManagerModel viewManagerModel, GetLoadableGamesController getLoadableGamesController) {
         this.viewManagerModel = viewManagerModel;
-
-        menuViewModel.addPropertyChangeListener(this);
+        this.getLoadableGamesController = getLoadableGamesController;
 
         this.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.setAlignmentY(Component.CENTER_ALIGNMENT);
 
-        newGame = new JButton(menuViewModel.NEWGAME_BUTTON_LABEL);
+        newGame = new JButton("NEW GAME");
         newGame.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.add(newGame);
-        loadGame = new JButton(menuViewModel.LOADGAME_BUTTON_LABEL);
+
+        loadGame = new JButton("LOAD GAME");
         loadGame.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.add(loadGame);
-        careerStats = new JButton(menuViewModel.CAREERSTATS_BUTTON_LABEL);
+
+        careerStats = new JButton("CAREER STATS");
         careerStats.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.add(careerStats);
 
@@ -46,11 +42,8 @@ public class MenuView extends JPanel implements ActionListener, PropertyChangeLi
         loadGame.addActionListener(this);
         careerStats.addActionListener(this);
 
-
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
     }
-
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -58,11 +51,8 @@ public class MenuView extends JPanel implements ActionListener, PropertyChangeLi
             viewManagerModel.setActiveView("game settings");
             viewManagerModel.firePropertyChanged();
         }
-
-    }
-
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-
+        if (e.getSource().equals(loadGame)) {
+            getLoadableGamesController.execute();
+        }
     }
 }

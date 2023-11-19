@@ -1,7 +1,6 @@
 package interface_adapter.game_settings;
 
 import interface_adapter.ViewModel;
-import interface_adapter.menu.MenuState;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;

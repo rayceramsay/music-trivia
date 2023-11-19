@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 public class GetLoadableGamesOutputData {
+
     private final List<Map<String, String>> loadableGamesData; // keys: gameID, genre, difficulty, initialLives,
                                                               // currentLives, maxRounds, currentRoundNumber, createdAt
 

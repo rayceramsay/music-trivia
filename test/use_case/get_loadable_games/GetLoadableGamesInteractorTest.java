@@ -98,8 +98,8 @@ public class GetLoadableGamesInteractorTest {
         GetLoadableGamesOutputBoundary presenter = new GetLoadableGamesOutputBoundary() {
             @Override
             public void prepareGamesExistView(GetLoadableGamesOutputData outputData) {
-                String[] requiredKeys = new String[]{"gameID", "difficulty", "genre", "initialLives", "currentLives",
-                        "maxRounds", "currentRoundNumber", "createdAt"};
+                String[] requiredKeys = new String[]{"ID", "difficulty", "genre", "initialLives", "currentLives",
+                        "maxRounds", "currentRound", "createdAt"};
                 List<String> gamesDataKeys = new ArrayList<>(outputData.getLoadableGamesData().get(0).keySet());
 
                 assertTrue(gamesDataKeys.containsAll(List.of(requiredKeys)));
