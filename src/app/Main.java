@@ -59,18 +59,5 @@ public class Main{
         application.setLocationRelativeTo(null); // app opens on center of screen
         application.pack();
         application.setVisible(true);
-
-        Game game = new CommonGame("pop", "hard", 10, 3);
-        Song song = new CommonSong("Closer", "The Chainsmokers", new FileMP3PlayableAudio("path/song.mp3"));
-        Round round = new TextInputRound(song, "What song is this?", "Closer");
-        game.setCurrentRound(round);
-        gameDataAccessObject.save(game);
-
-        RoundState roundState = roundViewModel.getState();
-        roundState.setGenre("pop");
-        roundState.setMaxRounds(10);
-        roundState.setInitialLives(3);
-        roundState.setGameId(game.getID());
-        roundViewModel.firePropertyChanged();
     }
 }
