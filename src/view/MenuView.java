@@ -44,6 +44,7 @@ public class MenuView extends JPanel implements ActionListener, PropertyChangeLi
 
         newGame.addActionListener(this);
         loadGame.addActionListener(this);
+
         careerStats.addActionListener(this);
 
 
