@@ -8,6 +8,7 @@ import interface_adapter.game_settings.GameSettingsViewModel;
 import interface_adapter.menu.MenuViewModel;
 import interface_adapter.round.RoundState;
 import interface_adapter.round.RoundViewModel;
+import interface_adapter.statistics.StatisticsViewModel;
 import interface_adapter.submit_answer.SubmitAnswerViewModel;
 import view.*;
 
@@ -34,12 +35,13 @@ public class Main{
         GameOverViewModel gameOverViewModel = new GameOverViewModel();
         RoundViewModel roundViewModel = new RoundViewModel();
         SubmitAnswerViewModel submitAnswerViewModel = new SubmitAnswerViewModel();
+        StatisticsViewModel statisticsViewModel = new StatisticsViewModel();
 
         // Create data access objects
         InMemoryGameDataAccessObject gameDataAccessObject = new InMemoryGameDataAccessObject();
 
         // Create views
-        MenuView menuView = new MenuView(menuViewModel, viewManagerModel);
+        MenuView menuView = MenuViewUseCaseFactory.create(menuViewModel, viewManagerModel, statisticsViewModel, gameDataAccessObject);
         GameSettingsView gameSettingsView = new GameSettingsView(gameSettingsViewModel, viewManagerModel);
         GameOverView gameOverView = new GameOverView(gameOverViewModel, viewManagerModel);
         RoundView roundView = RoundViewFactory.create(viewManagerModel, roundViewModel, submitAnswerViewModel, gameOverViewModel, gameDataAccessObject);

@@ -1,4 +1,16 @@
 package use_case.statistics;
 
-public class StatisticsInteractor {
+public class StatisticsInteractor implements StatisticsInputBoundary {
+
+    private final StatisticsDataAccessInterface gameDataAccessObject;
+    private final StatisticsOutputBoundary statisticsPresenter;
+    public StatisticsInteractor(StatisticsDataAccessInterface statisticsDataAccessInterface,
+                                StatisticsOutputBoundary statisticsOutputBoundary) {
+        gameDataAccessObject = statisticsDataAccessInterface;
+        statisticsPresenter = statisticsOutputBoundary;
+    }
+    @Override
+    public void exexute() {
+
+    }
 }
