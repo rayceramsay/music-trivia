@@ -1,10 +1,12 @@
 package app;
 
 import data_access.InMemoryGameDataAccessObject;
+import entity.*;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.game_over.GameOverViewModel;
 import interface_adapter.game_settings.GameSettingsViewModel;
 import interface_adapter.menu.MenuViewModel;
+import interface_adapter.round.RoundState;
 import interface_adapter.round.RoundViewModel;
 import interface_adapter.submit_answer.SubmitAnswerViewModel;
 import view.*;
@@ -40,13 +42,14 @@ public class Main{
         MenuView menuView = new MenuView(menuViewModel, viewManagerModel);
         GameSettingsView gameSettingsView = new GameSettingsView(gameSettingsViewModel, viewManagerModel);
         GameOverView gameOverView = new GameOverView(gameOverViewModel, viewManagerModel);
-        RoundView roundView = RoundViewFactory.create(roundViewModel, submitAnswerViewModel, gameDataAccessObject);
+        RoundView roundView = RoundViewFactory.create(viewManagerModel, roundViewModel, submitAnswerViewModel, gameOverViewModel, gameDataAccessObject);
 
         // Add views to app
         views.add(menuView, menuView.viewName);
         views.add(gameSettingsView, gameSettingsView.viewName);
         views.add(gameOverView, gameOverView.viewName);
         views.add(roundView, roundView.viewName);
+
 
         // Set starting view
         viewManagerModel.setActiveView(roundView.viewName);

@@ -1,5 +1,6 @@
 package view;
 
+import interface_adapter.finish_round.FinishRoundController;
 import interface_adapter.round.RoundState;
 import interface_adapter.round.RoundViewModel;
 import interface_adapter.submit_answer.SubmitAnswerController;
@@ -18,19 +19,24 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
     private final RoundViewModel roundViewModel;
     private final SubmitAnswerViewModel submitAnswerViewModel;
     private final SubmitAnswerController submitAnswerController;
+    private final FinishRoundController finishRoundController;
 
     final JButton playSong;
     final JButton submit;
     JLabel roundInfo;
     JLabel livesInfo;
     JLabel genreInfo;
+    JTextField answerInputField;
     final int borderWidth = 2;
 
-    public RoundView(RoundViewModel roundViewModel, SubmitAnswerViewModel submitAnswerViewModel,
-                     SubmitAnswerController submitAnswerController) {
+    public RoundView(RoundViewModel roundViewModel,
+                     SubmitAnswerViewModel submitAnswerViewModel,
+                     SubmitAnswerController submitAnswerController,
+                     FinishRoundController finishRoundController) {
         this.roundViewModel = roundViewModel;
         this.submitAnswerViewModel = submitAnswerViewModel;
         this.submitAnswerController = submitAnswerController;
+        this.finishRoundController = finishRoundController;
 
         this.roundViewModel.addPropertyChangeListener(this);
         this.submitAnswerViewModel.addPropertyChangeListener(this);
@@ -47,7 +53,7 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         answerSection.setMinimumSize(new Dimension(300,10));
         answerSection.setMaximumSize(new Dimension(getMaximumSize().width, 10));
 
-        JTextField answerInputField = new JFormattedTextField();
+        answerInputField = new JFormattedTextField();
         answerInputField.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -78,6 +84,7 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         infoSection.setBackground(Color.darkGray);
         infoSection.setBorder(BorderFactory.createEmptyBorder(2,0,0,0));
         infoSection.setLayout(new GridLayout(1, 3, borderWidth, borderWidth));
+
 
         roundInfo = new JLabel("Round: ");
         JPanel roundCell = new JPanel();
@@ -120,12 +127,22 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
             JDialog dialog = optionPane.createDialog(this, submitAnswerState.getCorrectnessTitle());
             optionPane.addPropertyChangeListener(e -> {
                 if (JOptionPane.VALUE_PROPERTY.equals(e.getPropertyName())) {
-                    System.out.println("Execute post round use case here...");
+                    // Call finish round controller
+                    RoundState roundState = roundViewModel.getState();
+                    finishRoundController.execute(roundState.getGameId());
+                    answerInputField.setText("");
+                    this.updateRoundTextInfo();
                 }
             });
-
             dialog.setVisible(true);
         }
+        this.updateRoundTextInfo();
+    }
+
+    private void updateRoundTextInfo(){
+        roundInfo.setText("Round: " + roundViewModel.getState().getCurrentRoundNumber() + "/" + roundViewModel.getState().getMaxRounds());
+        livesInfo.setText("Lives left:" + roundViewModel.getState().getCurrentLives());
+        genreInfo.setText("Genre: "  + roundViewModel.getState().getGenre());
     }
 
 }
