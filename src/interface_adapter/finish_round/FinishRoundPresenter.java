@@ -5,6 +5,8 @@ import interface_adapter.game_over.GameOverState;
 import interface_adapter.game_over.GameOverViewModel;
 import interface_adapter.round.RoundState;
 import interface_adapter.round.RoundViewModel;
+import interface_adapter.submit_answer.SubmitAnswerState;
+import interface_adapter.submit_answer.SubmitAnswerViewModel;
 import use_case.finish_round.FinishRoundOutputBoundary;
 import use_case.finish_round.FinishRoundOutputData;
 
@@ -37,6 +39,7 @@ public class FinishRoundPresenter implements FinishRoundOutputBoundary {
         roundState.setCurrentRoundNumber(roundState.getCurrentRoundNumber() + 1);
         roundState.setGenre(outputData.getGenre());
         roundState.setCurrentLives(outputData.getLives());
+        roundState.setUserAnswer("");
         this.roundViewModel.setState(roundState);
 
         roundViewModel.firePropertyChanged();
