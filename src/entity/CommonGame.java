@@ -24,7 +24,9 @@ public class CommonGame implements Game {
         this.difficulty = difficulty;
         this.maxRounds = maxRounds;
         this.initialLives = initialLives;
+        this.currentLives = initialLives;
         this.createdAt = LocalDateTime.now();
+        this.allRounds = new ArrayList<>();
     }
 
     @Override
@@ -91,6 +93,11 @@ public class CommonGame implements Game {
     @Override
     public void setFinishedAt(LocalDateTime finishedAt) {
         this.finishedAt = finishedAt;
+    }
+
+    @Override
+    public void appendRound(Round round) {
+        allRounds.add(round);
     }
 
     // TODO, implement

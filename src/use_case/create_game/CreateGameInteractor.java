@@ -1,5 +1,6 @@
 package use_case.create_game;
 
+import entity.*;
 import interface_adapter.create_game.CreateGameController;
 import interface_adapter.create_game.CreateGamePresenter;
 import interface_adapter.round.RoundState;
@@ -23,6 +24,13 @@ public class CreateGameInteractor implements CreateGameInputBoundary{
                 inputData.getGenre(),
                 inputData.getLives(),
                 inputData.getRounds());
+
+        // temporary, will use factory in future
+        PlayableAudio audio = new FileMP3PlayableAudio();
+        Song song = new CommonSong("title", "artist", audio);
+        Round firstRound = new TextInputRound(song, "What is this song?", song.getTitle());
+
+        gameAccessObject.getGameByID(ID).appendRound(firstRound);
 
         CreateGameOutputData createGameOutputData = new CreateGameOutputData();
         createGameOutputData.setGameId(ID);

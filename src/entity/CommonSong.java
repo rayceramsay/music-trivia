@@ -5,7 +5,7 @@ public class CommonSong implements Song {
     private String artist;
     private PlayableAudio audio;
 
-    CommonSong(String title, String artist, PlayableAudio audio) {
+    public CommonSong(String title, String artist, PlayableAudio audio) {
         this.title = title;
         this.artist = artist;
         this.audio = audio;

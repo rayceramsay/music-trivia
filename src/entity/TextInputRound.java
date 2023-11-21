@@ -8,11 +8,10 @@ public class TextInputRound implements Round {
     private final Song song;
     private final String question;
     private final String correctAnswer;
-    public TextInputRound(Song song, String question, String userAnswer, String correctAnswer){
+    public TextInputRound(Song song, String question, String correctAnswer){
         this.song = song;
         this.question = question;
         this.correctAnswer = correctAnswer;
-        this.userAnswer = userAnswer;
     }
     @Override
     public String getQuestion() {
