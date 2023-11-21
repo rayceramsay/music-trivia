@@ -12,8 +12,8 @@ public class GetLoadableGamesViewModel extends ViewModel {
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
     private final GetLoadableGamesState state = new GetLoadableGamesState();
 
-    public GetLoadableGamesViewModel() {
-        super("loadable games");
+    public GetLoadableGamesViewModel(String viewName) {
+        super(viewName);
     }
 
     @Override

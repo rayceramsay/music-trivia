@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 
 public class MenuView extends JPanel implements ActionListener {
 
-    public final String viewName = "menu";
+    public final static String VIEW_NAME = "menu";
 
     private final ViewManagerModel viewManagerModel;
     private final GetLoadableGamesController getLoadableGamesController;
@@ -48,7 +48,7 @@ public class MenuView extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(newGame)) {
-            viewManagerModel.setActiveView("game settings");
+            viewManagerModel.setActiveView(GameSettingsView.VIEW_NAME);
             viewManagerModel.firePropertyChanged();
         }
         if (e.getSource().equals(loadGame)) {

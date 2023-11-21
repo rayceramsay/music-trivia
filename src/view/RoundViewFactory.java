@@ -33,7 +33,7 @@ public class RoundViewFactory {
         SubmitAnswerController submitAnswerController = createSubmitAnswerUseCase(submitAnswerViewModel, submitAnswerGameDataAccessInterface);
         FinishRoundController finishRoundController = createFinishRoundUseCase(viewManagerModel, gameOverViewModel, roundViewModel, finishRoundGameDataAccessInterface);
 
-        return new RoundView(roundViewModel, submitAnswerViewModel, submitAnswerController, finishRoundController);
+        return new RoundView(viewManagerModel, roundViewModel, submitAnswerViewModel, submitAnswerController, finishRoundController);
 
     }
 

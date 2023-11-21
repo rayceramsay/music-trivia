@@ -3,17 +3,17 @@ package use_case.load_game;
 public class LoadGameOutputData {
 
     private final String gameId;
-    private final String promptText;
+    private final String question;
     private final String genre;
     private final int initialLives;
     private final int currentLives;
     private final int maxRounds;
     private final int currentRoundNumber;
 
-    public LoadGameOutputData(String gameId, String promptText, String genre, int initialLives, int currentLives,
+    public LoadGameOutputData(String gameId, String question, String genre, int initialLives, int currentLives,
                               int maxRounds, int currentRoundNumber) {
         this.gameId = gameId;
-        this.promptText = promptText;
+        this.question = question;
         this.genre = genre;
         this.initialLives = initialLives;
         this.currentLives = currentLives;
@@ -25,8 +25,8 @@ public class LoadGameOutputData {
         return gameId;
     }
 
-    public String getPromptText() {
-        return promptText;
+    public String getQuestion() {
+        return question;
     }
 
     public String getGenre() {

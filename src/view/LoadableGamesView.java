@@ -3,6 +3,8 @@ package view;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.get_loadable_games.GetLoadableGamesState;
 import interface_adapter.get_loadable_games.GetLoadableGamesViewModel;
+import interface_adapter.load_game.LoadGameController;
+import interface_adapter.round.RoundViewModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,16 +17,20 @@ import java.util.Map;
 
 public class LoadableGamesView extends JPanel implements ActionListener, PropertyChangeListener {
 
-    public final String viewName = "loadable games";
+    public final static String VIEW_NAME = "loadable games";
 
     private final ViewManagerModel viewManagerModel;
+    private final LoadGameController loadGameController;
 
     private final JButton backButton;
     private final JPanel loadableGames;
 
-    public LoadableGamesView(ViewManagerModel viewManagerModel, GetLoadableGamesViewModel getLoadableGamesViewModel) {
+    public LoadableGamesView(ViewManagerModel viewManagerModel,
+                             GetLoadableGamesViewModel getLoadableGamesViewModel,
+                             LoadGameController loadGameController) {
         this.viewManagerModel = viewManagerModel;
         getLoadableGamesViewModel.addPropertyChangeListener(this);
+        this.loadGameController = loadGameController;
 
         loadableGames = new JPanel();
         JScrollPane loadableGamesContainer = new JScrollPane(loadableGames);
@@ -40,7 +46,7 @@ public class LoadableGamesView extends JPanel implements ActionListener, Propert
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(backButton)) {
-            viewManagerModel.setActiveView("menu");
+            viewManagerModel.setActiveView(MenuView.VIEW_NAME);
             viewManagerModel.firePropertyChanged();
         }
     }
@@ -48,9 +54,8 @@ public class LoadableGamesView extends JPanel implements ActionListener, Propert
     @Override
     public void propertyChange(PropertyChangeEvent e) {
         if (e.getPropertyName().equals(GetLoadableGamesViewModel.STATE_PROPERTY)) {
-            System.out.println("get loadable games use case complete");
-
             GetLoadableGamesState getLoadableGamesState = (GetLoadableGamesState) e.getNewValue();
+
             if (getLoadableGamesState.getErrorMessage().isEmpty()) {
                 displayLoadableGames(getLoadableGamesState.getGamesData());
             } else {
@@ -75,7 +80,7 @@ public class LoadableGamesView extends JPanel implements ActionListener, Propert
             JButton loadableGameButton = new JButton(gameDescription);
             loadableGameButton.addActionListener(e -> {
                 String gameID = gameData.get("ID");
-                System.out.println("Execute LoadGame use case for game with ID = " + gameID);
+                loadGameController.execute(gameID);
             });
 
             JPanel loadableGameButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));

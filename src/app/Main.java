@@ -19,7 +19,7 @@ public class Main {
         JFrame application = new JFrame("Spotify Bandits");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         CardLayout cardLayout = new CardLayout();
-        application.setMinimumSize(new Dimension(500, 300));
+        application.setMinimumSize(new Dimension(500, 200));
         JPanel views = new JPanel(cardLayout);
         application.add(views);
 
@@ -28,11 +28,11 @@ public class Main {
         new ViewManager(views, cardLayout, viewManagerModel);
 
         // Create view models
-        GameSettingsViewModel gameSettingsViewModel = new GameSettingsViewModel();
-        GameOverViewModel gameOverViewModel = new GameOverViewModel();
-        RoundViewModel roundViewModel = new RoundViewModel();
-        SubmitAnswerViewModel submitAnswerViewModel = new SubmitAnswerViewModel();
-        GetLoadableGamesViewModel getLoadableGamesViewModel = new GetLoadableGamesViewModel();
+        GameSettingsViewModel gameSettingsViewModel = new GameSettingsViewModel(GameSettingsView.VIEW_NAME);
+        GameOverViewModel gameOverViewModel = new GameOverViewModel(GameOverView.VIEW_NAME);
+        RoundViewModel roundViewModel = new RoundViewModel(RoundView.VIEW_NAME);
+        SubmitAnswerViewModel submitAnswerViewModel = new SubmitAnswerViewModel(RoundView.VIEW_NAME);
+        GetLoadableGamesViewModel getLoadableGamesViewModel = new GetLoadableGamesViewModel(LoadableGamesView.VIEW_NAME);
 
         // Create data access objects
         InMemoryGameDataAccessObject gameDataAccessObject = new InMemoryGameDataAccessObject();
@@ -42,17 +42,17 @@ public class Main {
         GameSettingsView gameSettingsView = new GameSettingsView(gameSettingsViewModel, viewManagerModel);
         GameOverView gameOverView = new GameOverView(gameOverViewModel, viewManagerModel);
         RoundView roundView = RoundViewFactory.create(viewManagerModel, roundViewModel, submitAnswerViewModel, gameOverViewModel, gameDataAccessObject);
-        LoadableGamesView loadableGamesView = LoadableGamesViewFactory.create(viewManagerModel, getLoadableGamesViewModel);
+        LoadableGamesView loadableGamesView = LoadableGamesViewFactory.create(viewManagerModel, getLoadableGamesViewModel, roundViewModel, gameDataAccessObject);
 
         // Add views to app
-        views.add(menuView, menuView.viewName);
-        views.add(gameSettingsView, gameSettingsView.viewName);
-        views.add(gameOverView, gameOverView.viewName);
-        views.add(roundView, roundView.viewName);
-        views.add(loadableGamesView, loadableGamesView.viewName);
+        views.add(menuView, MenuView.VIEW_NAME);
+        views.add(gameSettingsView, GameSettingsView.VIEW_NAME);
+        views.add(gameOverView, GameOverView.VIEW_NAME);
+        views.add(roundView, RoundView.VIEW_NAME);
+        views.add(loadableGamesView, LoadableGamesView.VIEW_NAME);
 
         // Set starting view
-        viewManagerModel.setActiveView(menuView.viewName);
+        viewManagerModel.setActiveView(MenuView.VIEW_NAME);
         viewManagerModel.firePropertyChanged();
 
         // Start app

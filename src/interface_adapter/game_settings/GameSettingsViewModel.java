@@ -18,8 +18,8 @@ public class GameSettingsViewModel extends ViewModel {
 
     private GameSettingsState state = new GameSettingsState();
 
-    public GameSettingsViewModel() {
-        super("game settings view");
+    public GameSettingsViewModel(String viewName) {
+        super(viewName);
     }
 
     @Override

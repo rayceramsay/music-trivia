@@ -19,15 +19,15 @@ public class LoadGamePresenter implements LoadGameOutputBoundary {
     public void prepareView(LoadGameOutputData outputData) {
         RoundState roundState = new RoundState();
         roundState.setGameId(outputData.getGameId());
-        roundState.setPromptText(outputData.getPromptText());
+        roundState.setPromptText(outputData.getQuestion());
         roundState.setCurrentRoundNumber(outputData.getCurrentRoundNumber());
         roundState.setMaxRounds(outputData.getMaxRounds());
         roundState.setCurrentLives(outputData.getCurrentLives());
         roundState.setInitialLives(outputData.getInitialLives());
         roundState.setGenre(outputData.getGenre());
         roundState.setUserAnswer("");
-        roundViewModel.setState(roundState);
 
+        roundViewModel.setState(roundState);
         viewManagerModel.setActiveView(roundViewModel.getViewName());
         roundViewModel.firePropertyChanged();
         viewManagerModel.firePropertyChanged();
