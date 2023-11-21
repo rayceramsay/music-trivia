@@ -8,5 +8,5 @@ public class StatisticsController {
     public StatisticsController(StatisticsInputBoundary statisticsInteractor) {
         this.statisticsInteractor = statisticsInteractor;
     }
-    public void execute() {statisticsInteractor.exexute();}
+    public void execute() {statisticsInteractor.execute();}
 }

@@ -1,4 +1,4 @@
-package app;
+package view;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.menu.MenuViewModel;
@@ -18,7 +18,7 @@ public class MenuViewUseCaseFactory {
         return new MenuView(menuViewModel, viewManagerModel, statisticsViewModel, statisticsController);
     }
     private static StatisticsController StatisticsUseCase(ViewManagerModel viewManagerModel, StatisticsViewModel statisticsViewModel, StatisticsDataAccessInterface statisticsDataAccessInterface) {
-        StatisticsOutputBoundary statisticsOutputBoundary = new StatisticsPresenter(viewManagerModel, statisticsViewModel);
+        StatisticsOutputBoundary statisticsOutputBoundary = new StatisticsPresenter(statisticsViewModel);
         StatisticsInputBoundary statisticsInteractor = new StatisticsInteractor(statisticsDataAccessInterface, statisticsOutputBoundary);
         return new StatisticsController(statisticsInteractor);
     }

@@ -1,7 +1,25 @@
 package interface_adapter.statistics;
 
-public class StatisticsViewModel {
+import interface_adapter.ViewModel;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+
+public class StatisticsViewModel extends ViewModel {
+    public static final String STATE_PROPERTY = "submitAnswerState";
+    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
+    private final StatisticsState statisticsState = new StatisticsState();
+    public StatisticsViewModel() {
+        super("Statistics");
+    }
     public StatisticsState getState() {
-        return null;
+        return statisticsState;
+    }
+    @Override
+    public void firePropertyChanged() { support.firePropertyChange(STATE_PROPERTY, null, this.statisticsState);
+    }
+    @Override
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        support.addPropertyChangeListener(listener);
     }
 }

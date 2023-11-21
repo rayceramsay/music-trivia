@@ -10,7 +10,10 @@ public class StatisticsInteractor implements StatisticsInputBoundary {
         statisticsPresenter = statisticsOutputBoundary;
     }
     @Override
-    public void exexute() {
+    public void execute() {
+        StatisticsOutputData statisticsOutputData =
+                new StatisticsOutputData(gameDataAccessObject.avgStats());
+        statisticsPresenter.prepareView(statisticsOutputData);
 
     }
 }

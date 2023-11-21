@@ -54,7 +54,7 @@ public class Main{
 
 
         // Set starting view
-        viewManagerModel.setActiveView(roundView.viewName);
+        viewManagerModel.setActiveView(menuView.viewName);
         viewManagerModel.firePropertyChanged();
 
         // Start app
