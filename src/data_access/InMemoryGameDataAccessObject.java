@@ -3,6 +3,7 @@ package data_access;
 import entity.Game;
 import use_case.finish_round.FinishRoundGameDataAccessInterface;
 import use_case.get_loadable_games.GetLoadableGamesGameDataAccessInterface;
+import use_case.load_game.LoadGameGameDataAccessInterface;
 import use_case.submit_answer.SubmitAnswerGameDataAccessInterface;
 
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 public class InMemoryGameDataAccessObject implements SubmitAnswerGameDataAccessInterface, FinishRoundGameDataAccessInterface,
-        GetLoadableGamesGameDataAccessInterface {
+        GetLoadableGamesGameDataAccessInterface, LoadGameGameDataAccessInterface {
     private final Map<String, Game> games = new HashMap<>();  // maps gameID to game object
 
     @Override

@@ -1,6 +1,7 @@
 package interface_adapter.round;
 
 public class RoundState {
+
     private String gameId = "";
     private String promptText = "";
     private String userAnswer = "";
