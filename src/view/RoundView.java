@@ -46,7 +46,7 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         this.submitAnswerViewModel.addPropertyChangeListener(this);
 
         // Menu button
-        JButton menuButton = new JButton("MENU");
+        JButton menuButton = new JButton("Go to main menu");
         menuButton.addActionListener(e -> {
             viewManagerModel.setActiveView(MenuView.VIEW_NAME);
             viewManagerModel.firePropertyChanged();
