@@ -6,21 +6,26 @@ import entity.*;
 import org.junit.Test;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
 
 public class GetLoadableGamesInteractorTest {
+
     private GetLoadableGamesGameDataAccessInterface gameRepository;
+    private List<Game> loadableGames;
 
     /**
-     * Initializes gameRepository with dummy data.
+     * Initializes gameRepository with dummy data and populates loadableGames with loadable games in order of game
+     * creation.
      *
      * @param finishAllGames whether all games should be marked as finished (true) or only some of them (false)
      */
     private void setupGameRepository(boolean finishAllGames) {
         gameRepository = new InMemoryGameDataAccessObject();
+        loadableGames = new ArrayList<>();
         RoundFactory roundFactory = new CommonRoundFactory();
 
         for (int i = 0; i < 6; i++) {
@@ -31,6 +36,8 @@ public class GetLoadableGamesInteractorTest {
             if (finishAllGames || i % 2 == 1) {
                 round.setUserAnswer("answer");
                 game.setFinishedAt(LocalDateTime.now());
+            } else {
+                loadableGames.add(game);
             }
 
             gameRepository.save(game);
@@ -38,10 +45,11 @@ public class GetLoadableGamesInteractorTest {
     }
 
     /**
-     * Test that the interactor outputs the appropriate games when there exist loadable games.
+     * Test that the interactor outputs the data for loadable games in descending order of creation time when loadable
+     * games exist.
      */
     @Test
-    public void loadableGamesExistTest() {
+    public void gamesDataExistAndSortedTest() {
         setupGameRepository(false);
 
         GetLoadableGamesOutputBoundary presenter = new GetLoadableGamesOutputBoundary() {
@@ -49,10 +57,13 @@ public class GetLoadableGamesInteractorTest {
             public void prepareGamesExistView(GetLoadableGamesOutputData outputData) {
                 List<Map<String, String>> gamesData = outputData.getLoadableGamesData();
 
-                assertEquals(3, gamesData.size());
-                assertNotEquals(gamesData.get(0), gamesData.get(1));
-                assertNotEquals(gamesData.get(1), gamesData.get(2));
-                assertNotEquals(gamesData.get(2), gamesData.get(0));
+                assertEquals(loadableGames.size(), gamesData.size());
+
+                for (int i = 0, j = loadableGames.size() - 1;
+                     i < loadableGames.size() && j >= 0;
+                     i++, j--) {
+                    assertEquals(loadableGames.get(j).getID(), gamesData.get(i).get("ID"));
+                }
             }
 
             @Override
@@ -66,30 +77,7 @@ public class GetLoadableGamesInteractorTest {
     }
 
     /**
-     * Test that the interactor outputs an empty list when there are no loadable games.
-     */
-    @Test
-    public void noLoadableGamesExistTest() {
-        setupGameRepository(true);
-
-        GetLoadableGamesOutputBoundary presenter = new GetLoadableGamesOutputBoundary() {
-            @Override
-            public void prepareGamesExistView(GetLoadableGamesOutputData outputData) {
-                fail("prepareGamesExistView is unexpected.");
-            }
-
-            @Override
-            public void prepareNoGamesExistView(String message) {
-                assertNotNull(message);
-            }
-        };
-
-        GetLoadableGamesInputBoundary interactor = new GetLoadableGamesInteractor(presenter, gameRepository);
-        interactor.execute();
-    }
-
-    /**
-     * Test that the interactor outputs all the necessary information about the loadable games.
+     * Test that the interactor outputs necessary and accurate information about the loadable games.
      */
     @Test
     public void correctGamesDataTest() {
@@ -98,16 +86,46 @@ public class GetLoadableGamesInteractorTest {
         GetLoadableGamesOutputBoundary presenter = new GetLoadableGamesOutputBoundary() {
             @Override
             public void prepareGamesExistView(GetLoadableGamesOutputData outputData) {
-                String[] requiredKeys = new String[]{"ID", "difficulty", "genre", "initialLives", "currentLives",
-                        "maxRounds", "currentRound", "createdAt"};
-                List<String> gamesDataKeys = new ArrayList<>(outputData.getLoadableGamesData().get(0).keySet());
+                Game exampleGame = loadableGames.get(0);
+                Map<String, String> exampleGameData = outputData.getLoadableGamesData()
+                        .stream()
+                        .filter(data -> data.get("ID").equals(exampleGame.getID()))
+                        .findFirst()
+                        .orElseThrow();
 
-                assertTrue(gamesDataKeys.containsAll(List.of(requiredKeys)));
+                assertEquals(exampleGame.getDifficulty(), exampleGameData.get("difficulty"));
+                assertEquals(exampleGame.getGenre(), exampleGameData.get("genre"));
+                assertEquals(String.valueOf(exampleGame.getCurrentLives()), exampleGameData.get("currentLives"));
+                assertEquals(String.valueOf(exampleGame.getInitialLives()), exampleGameData.get("initialLives"));
+                assertEquals(String.valueOf(exampleGame.getRoundsPlayed()), exampleGameData.get("currentRound"));
+                assertEquals(String.valueOf(exampleGame.getMaxRounds()), exampleGameData.get("maxRounds"));
+                assertNotNull(exampleGameData.get("createdAt"));
             }
 
             @Override
             public void prepareNoGamesExistView(String message) {
                 fail("prepareNoGamesExistView is unexpected.");
+            }
+        };
+
+        GetLoadableGamesInputBoundary interactor = new GetLoadableGamesInteractor(presenter, gameRepository);
+        interactor.execute();
+    }
+
+    /**
+     * Test that the interactor outputs an error message when no loadable games exist.
+     */
+    @Test
+    public void noLoadableGamesExistTest() {
+        setupGameRepository(true);
+
+        GetLoadableGamesOutputBoundary presenter = new GetLoadableGamesOutputBoundary() {
+            @Override
+            public void prepareGamesExistView(GetLoadableGamesOutputData outputData) { fail("prepareGamesExistView is unexpected."); }
+
+            @Override
+            public void prepareNoGamesExistView(String message) {
+                assertNotNull(message);
             }
         };
 
