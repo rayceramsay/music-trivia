@@ -3,10 +3,7 @@ package use_case.get_loadable_games;
 import entity.Game;
 
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GetLoadableGamesInteractor implements GetLoadableGamesInputBoundary {
 
@@ -23,6 +20,8 @@ public class GetLoadableGamesInteractor implements GetLoadableGamesInputBoundary
     public void execute() {
         List<Map<String, String>> loadableGamesData = new ArrayList<>();
         List<Game> loadableGames = gameDataAccessObject.getLoadableGames();
+
+        loadableGames.sort(Comparator.comparing(Game::getCreatedAt, Comparator.reverseOrder()));  // i.e. most recent games first
 
         for (Game game: loadableGames) {
             Map<String, String> gameData = new HashMap<>();
