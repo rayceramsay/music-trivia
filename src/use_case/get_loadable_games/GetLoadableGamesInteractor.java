@@ -32,7 +32,7 @@ public class GetLoadableGamesInteractor implements GetLoadableGamesInputBoundary
             gameData.put("initialLives", String.valueOf(game.getInitialLives()));
             gameData.put("currentLives", String.valueOf(game.getCurrentLives()));
             gameData.put("maxRounds", String.valueOf(game.getMaxRounds()));
-            gameData.put("currentRound", String.valueOf(game.getRoundsPlayed()));
+            gameData.put("currentRoundNumber", String.valueOf(game.getRoundsPlayed()));
             gameData.put("createdAt", game.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
 
             loadableGamesData.add(gameData);

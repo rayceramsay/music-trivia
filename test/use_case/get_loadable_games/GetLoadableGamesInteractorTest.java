@@ -97,7 +97,7 @@ public class GetLoadableGamesInteractorTest {
                 assertEquals(exampleGame.getGenre(), exampleGameData.get("genre"));
                 assertEquals(String.valueOf(exampleGame.getCurrentLives()), exampleGameData.get("currentLives"));
                 assertEquals(String.valueOf(exampleGame.getInitialLives()), exampleGameData.get("initialLives"));
-                assertEquals(String.valueOf(exampleGame.getRoundsPlayed()), exampleGameData.get("currentRound"));
+                assertEquals(String.valueOf(exampleGame.getRoundsPlayed()), exampleGameData.get("currentRoundNumber"));
                 assertEquals(String.valueOf(exampleGame.getMaxRounds()), exampleGameData.get("maxRounds"));
                 assertNotNull(exampleGameData.get("createdAt"));
             }
