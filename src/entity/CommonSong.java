@@ -1,5 +1,9 @@
 package entity;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
+
 public class CommonSong implements Song {
     private final String title;
     private final String artist;
@@ -25,4 +29,5 @@ public class CommonSong implements Song {
     public PlayableAudio getAudio() {
         return audio;
     }
+
 }
