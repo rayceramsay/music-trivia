@@ -1,5 +1,11 @@
 package view;
 
+import data_access.api.SongAPI;
+import data_access.api.SpotifyAPI;
+import entity.CommonRoundFactory;
+import entity.CommonSongFactory;
+import entity.RoundFactory;
+import entity.SongFactory;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.finish_round.FinishRoundController;
 import interface_adapter.finish_round.FinishRoundPresenter;
@@ -49,7 +55,10 @@ public class RoundViewFactory {
                                                                   RoundViewModel roundViewModel,
                                                                   FinishRoundGameDataAccessInterface gameDataAccessObject) {
         FinishRoundOutputBoundary finishRoundPresenter = new FinishRoundPresenter(viewManagerModel, gameOverViewModel, roundViewModel);
-        FinishRoundInputBoundary finishRoundInteractor = new FinishRoundInteractor(finishRoundPresenter, gameDataAccessObject);
+        SongFactory songFactory = new CommonSongFactory();
+        SongAPI songAPI = new SpotifyAPI(songFactory);
+        RoundFactory roundFactory = new CommonRoundFactory(songAPI);
+        FinishRoundInputBoundary finishRoundInteractor = new FinishRoundInteractor(finishRoundPresenter, gameDataAccessObject, roundFactory);
 
         return new FinishRoundController(finishRoundInteractor);
     }

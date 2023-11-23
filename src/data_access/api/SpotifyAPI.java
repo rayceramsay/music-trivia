@@ -36,9 +36,9 @@ public class SpotifyAPI implements SongAPI{
         int i = 0;
         do{
             item = (JSONObject) songsArray.get(i);
-            JSONObject albumArtistInfo = (JSONObject) item.getJSONObject("album").getJSONArray("artists").get(0);
-            String songName = item.getString("name");
             if (item.get("preview_url") instanceof String){
+                JSONObject albumArtistInfo = (JSONObject) item.getJSONObject("album").getJSONArray("artists").get(0);
+                String songName = item.getString("name");
                 String audio = item.getString("preview_url");
                 String artistName = albumArtistInfo.getString("name");
                 song = songFactory.create(songName, artistName, audio);
