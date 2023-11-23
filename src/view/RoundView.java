@@ -154,8 +154,6 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
     }
 
     private void updateViewComponents(){
-        System.out.println(roundViewModel.getState().getCurrentLives());
-        System.out.println(roundViewModel.getState().getInitialLives());
         roundInfo.setText("Round: " + roundViewModel.getState().getCurrentRoundNumber() + "/" + roundViewModel.getState().getMaxRounds());
         livesInfo.setText("Lives left:" + roundViewModel.getState().getCurrentLives());
         genreInfo.setText("Genre: "  + roundViewModel.getState().getGenre());
