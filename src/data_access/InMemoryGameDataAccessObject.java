@@ -40,7 +40,7 @@ public class InMemoryGameDataAccessObject implements SubmitAnswerGameDataAccessI
                 case "Pop" -> genresCount[1]++;
                 default -> genresCount[2]++;
             }
-            gamesPlayed++;
+            gamesPlayed += 1;
             scoreSum += game.getScore();
             avgInitialLives += game.getInitialLives();
         }
@@ -64,7 +64,7 @@ public class InMemoryGameDataAccessObject implements SubmitAnswerGameDataAccessI
         }
 
         String mostCommonDifficulty = difficultyLevels[maxCountIndex];
-        String mostCommonGenre = genres[maxCountIndex];
+        String mostCommonGenre = genres[maxCountIndex2];
         HashMap<String, Object> allStats = new HashMap<>();
         allStats.put("Average Score Across All Games", scoreSum/gamesPlayed);
         allStats.put("Average Initial Lives", avgInitialLives);
