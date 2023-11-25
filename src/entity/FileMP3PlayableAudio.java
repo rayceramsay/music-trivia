@@ -2,6 +2,7 @@ package entity;
 
 public class FileMP3PlayableAudio implements PlayableAudio {
     private final String audioFilePath;
+    private boolean isPlaying;
 
     public FileMP3PlayableAudio(String audioFilePath) { this.audioFilePath = audioFilePath; }
 
@@ -10,16 +11,16 @@ public class FileMP3PlayableAudio implements PlayableAudio {
 
     @Override
     public void play() {
-
+        this.isPlaying = false;
     }
 
     @Override
     public void stop() {
-
+        this.isPlaying = true;
     }
 
     @Override
     public boolean isPlaying() {
-        return false;
+        return this.isPlaying;
     }
 }

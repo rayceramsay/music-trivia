@@ -7,10 +7,10 @@ import entity.Round;
 import entity.Song;
 
 public class ToggleAudioInteractor implements ToggleAudioInputBoundary {
-    private final ToggleAudioDataAccessInterface toggleAudioDataAccessObject;
+    private final ToggleAudioGameDataAccessInterface toggleAudioDataAccessObject;
     private final ToggleAudioOutputBoundary toggleAudioPresenter;
 
-    public ToggleAudioInteractor(ToggleAudioDataAccessInterface toggleAudioDataAccessObject, ToggleAudioOutputBoundary toggleAudioPresenter) {
+    public ToggleAudioInteractor(ToggleAudioGameDataAccessInterface toggleAudioDataAccessObject, ToggleAudioOutputBoundary toggleAudioPresenter) {
         this.toggleAudioDataAccessObject = toggleAudioDataAccessObject;
         this.toggleAudioPresenter = toggleAudioPresenter;
     }
@@ -28,15 +28,38 @@ public class ToggleAudioInteractor implements ToggleAudioInputBoundary {
         Song song = currentRound.getSong();
         PlayableAudio songAudio = song.getAudio();
 
-        boolean isAudioPlaying = songAudio.isPlaying();
-        ToggleAudioOutputData toggleAudioOutputData = new ToggleAudioOutputData(isAudioPlaying);
+        boolean audioPlaying = !songAudio.isPlaying();
+        System.out.println(audioPlaying);
+        ToggleAudioOutputData toggleAudioOutputData = new ToggleAudioOutputData(audioPlaying);
 
-        if (isAudioPlaying) {
-            toggleAudioPresenter.preparePlayButton(toggleAudioOutputData);
+        if (audioPlaying) {
+            toggleAudioPresenter.preparePauseButton(toggleAudioOutputData);
+            System.out.println("prepare pause button");
+            songAudio.stop();
+            System.out.println("song is now paused");
         }
         else {
-            toggleAudioPresenter.preparePauseButton(toggleAudioOutputData);
+            toggleAudioPresenter.preparePlayButton(toggleAudioOutputData);
+            System.out.println("prepare play button");
+            songAudio.play();
+            System.out.println("song is now paused");
         }
+//        boolean audioNotPlaying = songAudio.isPaused();
+//        System.out.println(audioNotPlaying);
+//        ToggleAudioOutputData toggleAudioOutputData = new ToggleAudioOutputData(audioNotPlaying);
+//
+//        if (audioNotPlaying) {
+//            toggleAudioPresenter.preparePauseButton(toggleAudioOutputData);
+//            System.out.println("prepare pause button");
+//            songAudio.play();
+//            System.out.println("song is not playing");
+//        }
+//        else {
+//            toggleAudioPresenter.preparePlayButton(toggleAudioOutputData);
+//            System.out.println("prepare play button");
+//            songAudio.stop();
+//            System.out.println("song is now paused");
+//        }
 
     }
 }

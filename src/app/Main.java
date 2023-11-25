@@ -1,12 +1,15 @@
 package app;
 
 import data_access.InMemoryGameDataAccessObject;
+import entity.*;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.game_over.GameOverViewModel;
 import interface_adapter.game_settings.GameSettingsViewModel;
 import interface_adapter.menu.MenuViewModel;
+import interface_adapter.round.RoundState;
 import interface_adapter.round.RoundViewModel;
 import interface_adapter.submit_answer.SubmitAnswerViewModel;
+import interface_adapter.toggle_audio.ToggleAudioViewModel;
 import view.*;
 
 import javax.swing.*;
@@ -32,6 +35,7 @@ public class Main{
         GameOverViewModel gameOverViewModel = new GameOverViewModel();
         RoundViewModel roundViewModel = new RoundViewModel();
         SubmitAnswerViewModel submitAnswerViewModel = new SubmitAnswerViewModel();
+        ToggleAudioViewModel toggleAudioViewModel = new ToggleAudioViewModel();
 
         // Create data access objects
         InMemoryGameDataAccessObject gameDataAccessObject = new InMemoryGameDataAccessObject();
@@ -40,7 +44,7 @@ public class Main{
         MenuView menuView = new MenuView(menuViewModel, viewManagerModel);
         GameSettingsView gameSettingsView = new GameSettingsView(gameSettingsViewModel, viewManagerModel);
         GameOverView gameOverView = new GameOverView(gameOverViewModel, viewManagerModel);
-        RoundView roundView = RoundViewFactory.create(roundViewModel, submitAnswerViewModel, gameDataAccessObject);
+        RoundView roundView = RoundViewFactory.create(roundViewModel, submitAnswerViewModel, toggleAudioViewModel, gameDataAccessObject);
 
         // Add views to app
         views.add(menuView, menuView.viewName);
@@ -56,5 +60,17 @@ public class Main{
         application.setLocationRelativeTo(null); // app opens on center of screen
         application.pack();
         application.setVisible(true);
+
+        Game game = new CommonGame("pop", "hard", 10, 3);
+        Song song = new CommonSong("Closer", "The Chainsmokers", new FileMP3PlayableAudio("path/song.mp3"));
+        Round round = new TextInputRound(song, "What song is this?", "Closer");
+        game.setCurrentRound(round);
+        gameDataAccessObject.save(game);
+
+        RoundState roundState = roundViewModel.getState();
+        roundState.setGenre("pop");
+        roundState.setMaxRounds(10);
+        roundState.setInitialLives(3);
+        roundState.setGameId(game.getID());
     }
 }
