@@ -29,7 +29,7 @@ public class InMemoryGameDataAccessObject implements SubmitAnswerGameDataAccessI
     public List<Game> getLoadableGames() {
         List<Game> loadableGames = new ArrayList<>();
         for (Game game: games.values()) {
-            if (game.isLoadable()) {
+            if (!game.isGameOver()) {
                 loadableGames.add(game);
             }
         }

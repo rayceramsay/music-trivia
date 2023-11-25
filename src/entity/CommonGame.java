@@ -93,10 +93,14 @@ public class CommonGame implements Game {
     public void setFinishedAt(LocalDateTime finishedAt) { this.finishedAt = finishedAt; }
 
     @Override
-    public boolean isGameOver() { return allRounds.size() >= maxRounds || currentLives <= 0; }
+    public boolean isGameOver() {
+        boolean currentRoundIsFinished = getCurrentRound().isFinished();
 
-    @Override
-    public boolean isLoadable() { return finishedAt == null; }
+        return (currentLives <= 0)
+                || (allRounds.size() == maxRounds && currentRoundIsFinished)
+                || (allRounds.size() > maxRounds)
+                || (finishedAt != null);
+    }
 
     @Override
     public void incrementScore() { this.score += 1; }

@@ -4,7 +4,7 @@ public class TwoMultipleChoiceRound implements Round{
     private final Song song;
     private final String question;
     private final String correctAnswer;
-    private String userAnswer = "";
+    private String userAnswer;
     public TwoMultipleChoiceRound(Song song, String question, String correctAnswer){
         this.song = song;
         this.question = question;
@@ -38,8 +38,17 @@ public class TwoMultipleChoiceRound implements Round{
 
     @Override
     public boolean isUserAnswerCorrect() {
+        if (userAnswer == null) {
+            return false;
+        }
+
         String cleanedUserAnswer = cleanString(userAnswer);
         return cleanedUserAnswer.equalsIgnoreCase(correctAnswer);
+    }
+
+    @Override
+    public boolean isFinished() {
+        return userAnswer != null;
     }
 
     private String cleanString(String string) {

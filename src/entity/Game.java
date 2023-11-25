@@ -21,7 +21,6 @@ public interface Game {
     void setCurrentRound(Round round);
     void setFinishedAt(LocalDateTime finishedAt);
     boolean isGameOver();
-    boolean isLoadable();
     void incrementScore();
     void decrementLives();
 }
