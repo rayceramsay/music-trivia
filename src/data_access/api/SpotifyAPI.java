@@ -66,16 +66,9 @@ public class SpotifyAPI implements SongAPI{
 
             if(responseRequest.code() == 401){ // Code 401 - bad (expired or null) auth token
                 generateAuthToken();
-                Request request2 = new Request.Builder()
-                        .url(url)
-                        .addHeader("Authorization", "Bearer " + authToken)
-                        .addHeader("Content-Type", "application/json")
-                        .build();
-                responseRequest = client.newCall(request2).execute();
+                return retrieveSongData(genre); // recall api with auth token
             }
-
             if(responseRequest.body() == null) {throw new RuntimeException("Error - no response body");}
-
             response = new JSONObject(responseRequest.body().string());
 
         } catch (IOException e) {
