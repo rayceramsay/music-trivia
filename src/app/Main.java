@@ -62,7 +62,7 @@ public class Main{
         application.setVisible(true);
 
         Game game = new CommonGame("pop", "hard", 10, 3);
-        Song song = new CommonSong("Closer", "The Chainsmokers", new FileMP3PlayableAudio("path/song.mp3"));
+        Song song = new CommonSong("Closer", "The Chainsmokers", new OnlineMP3PlayableAudio("path/song.mp3"));
         Round round = new TextInputRound(song, "What song is this?", "Closer");
         game.setCurrentRound(round);
         gameDataAccessObject.save(game);

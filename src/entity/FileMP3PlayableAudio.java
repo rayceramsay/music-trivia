@@ -11,12 +11,12 @@ public class FileMP3PlayableAudio implements PlayableAudio {
 
     @Override
     public void play() {
-        this.isPlaying = false;
+        this.isPlaying = true;
     }
 
     @Override
     public void stop() {
-        this.isPlaying = true;
+        this.isPlaying = false;
     }
 
     @Override
