@@ -73,7 +73,7 @@ public class LoadableGamesView extends JPanel implements ActionListener, Propert
                     gameData.get("createdAt"),
                     gameData.get("difficulty"),
                     gameData.get("genre"),
-                    gameData.get("currentRound"),
+                    gameData.get("currentRoundNumber"),
                     gameData.get("maxRounds"),
                     gameData.get("currentLives"),
                     gameData.get("initialLives"));
