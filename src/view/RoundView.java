@@ -46,14 +46,13 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         // Prompt
         JLabel prompt = new JLabel(roundViewModel.TITLE_LABEL);
         prompt.setAlignmentX(Component.CENTER_ALIGNMENT);
-        playSong = new JButton("", new ImageIcon("play-img.png"));
-//        playSong = new JButton();
-//        ImageIcon playIcon = new ImageIcon("play-img.png");
-//        Image scaledPlayImage = playIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-//        playSong.setIcon(new ImageIcon((scaledPlayImage)));
-//        playSong.setPreferredSize(new Dimension(250, 350));
-//        playSong.setAlignmentX(Component.CENTER_ALIGNMENT);
-//        playSong.setAlignmentY(Component.CENTER_ALIGNMENT);
+        //playSong = new JButton("", new ImageIcon("play-img.png"));
+        playSong = new JButton();
+        ImageIcon playIcon = new ImageIcon("play-img.png");
+        playSong.setIcon(setProperties(playIcon));
+        playSong.setMaximumSize(new Dimension(150, 350));
+        playSong.setAlignmentX(Component.CENTER_ALIGNMENT);
+        playSong.setAlignmentY(Component.CENTER_ALIGNMENT);
         playSong.addActionListener(event -> {
             ToggleAudioState toggleAudioState = toggleAudioViewModel.getState();
             toggleAudioController.execute(roundViewModel.getState().getGameId());
@@ -134,7 +133,7 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals(ToggleAudioViewModel.STATE_PROPERTY)) {
             ToggleAudioState toggleAudioState = (ToggleAudioState) evt.getNewValue();
-            playSong.setIcon(new ImageIcon(toggleAudioState.getImgPath()));
+            playSong.setIcon(setProperties(new ImageIcon(toggleAudioState.getImgPath())));
         }
         if (evt.getPropertyName().equals(SubmitAnswerViewModel.STATE_PROPERTY)) {
             SubmitAnswerState submitAnswerState = (SubmitAnswerState) evt.getNewValue();
@@ -151,6 +150,9 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
 
             dialog.setVisible(true);
         }
+    }
+    public ImageIcon setProperties(ImageIcon buttonImage) {
+        return new ImageIcon(buttonImage.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH));
     }
 
 }
