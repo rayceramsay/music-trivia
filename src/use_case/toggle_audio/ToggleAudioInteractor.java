@@ -6,6 +6,8 @@ import entity.PlayableAudio;
 import entity.Round;
 import entity.Song;
 
+import java.sql.SQLOutput;
+
 public class ToggleAudioInteractor implements ToggleAudioInputBoundary {
     private final ToggleAudioGameDataAccessInterface toggleAudioDataAccessObject;
     private final ToggleAudioOutputBoundary toggleAudioPresenter;
@@ -17,10 +19,6 @@ public class ToggleAudioInteractor implements ToggleAudioInputBoundary {
 
     @Override
     public void execute(ToggleAudioInputData inputData) {
-        //TODO implement toggle audio use case logic (start playing song from spotify when audio button is clicked,
-        // pause if it is clicked again
-        // - should not block main thread (should be able to click answer while song is playing)
-        // - change button icon from pause to play depending on state
         String gameID = inputData.getGameId();
         Game game = toggleAudioDataAccessObject.getGameByID(gameID);
         Round currentRound = game.getCurrentRound();
@@ -28,38 +26,18 @@ public class ToggleAudioInteractor implements ToggleAudioInputBoundary {
         Song song = currentRound.getSong();
         PlayableAudio songAudio = song.getAudio();
 
-        boolean audioPlaying = !songAudio.isPlaying();
-        System.out.println(audioPlaying);
-        ToggleAudioOutputData toggleAudioOutputData = new ToggleAudioOutputData(audioPlaying);
+        boolean audioPlaying = songAudio.isPlaying();
 
         if (audioPlaying) {
-            toggleAudioPresenter.preparePauseButton(toggleAudioOutputData);
-            System.out.println("prepare pause button");
+            //stopping audio and showing play button
+            toggleAudioPresenter.showPlayButton();
             songAudio.stop();
-            System.out.println("song is now paused");
         }
         else {
-            toggleAudioPresenter.preparePlayButton(toggleAudioOutputData);
-            System.out.println("prepare play button");
+            //playing audio and showing pause button
+            toggleAudioPresenter.showPauseButton();
             songAudio.play();
-            System.out.println("song is now paused");
-        }
-//        boolean audioNotPlaying = songAudio.isPaused();
-//        System.out.println(audioNotPlaying);
-//        ToggleAudioOutputData toggleAudioOutputData = new ToggleAudioOutputData(audioNotPlaying);
-//
-//        if (audioNotPlaying) {
-//            toggleAudioPresenter.preparePauseButton(toggleAudioOutputData);
-//            System.out.println("prepare pause button");
-//            songAudio.play();
-//            System.out.println("song is not playing");
-//        }
-//        else {
-//            toggleAudioPresenter.preparePlayButton(toggleAudioOutputData);
-//            System.out.println("prepare play button");
-//            songAudio.stop();
-//            System.out.println("song is now paused");
-//        }
 
+        }
     }
 }
