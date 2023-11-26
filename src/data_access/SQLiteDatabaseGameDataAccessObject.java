@@ -12,12 +12,10 @@ public class SQLiteDatabaseGameDataAccessObject {
 
     private final static DateTimeFormatter sqliteDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
     private final String databasePath;
-    private final String databaseName;
 
     public SQLiteDatabaseGameDataAccessObject() {
         Dotenv dotenv = Dotenv.load();
-        databasePath = dotenv.get("DB_PATH");
-        databaseName = dotenv.get("DB_NAME");
+        databasePath = dotenv.get("SQLITE_DB_PATH");
 
         try {
             setupDatabase();
@@ -339,7 +337,7 @@ public class SQLiteDatabaseGameDataAccessObject {
     }
 
     private Connection getConnection() {
-        String databaseUrl = "jdbc:sqlite:" + databasePath + databaseName + ".db";
+        String databaseUrl = "jdbc:sqlite:" + databasePath;
 
         try {
             return DriverManager.getConnection(databaseUrl);
