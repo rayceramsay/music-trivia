@@ -30,7 +30,7 @@ public class CreateGameInteractor implements CreateGameInputBoundary{
         Song song = new CommonSong("title", "artist", audio);
         Round firstRound = new TextInputRound(song, "What is this song?", song.getTitle());
 
-        gameAccessObject.getGameByID(ID).appendRound(firstRound);
+        gameAccessObject.getGameByID(ID).setCurrentRound(firstRound);
 
         CreateGameOutputData createGameOutputData = new CreateGameOutputData();
         createGameOutputData.setGameId(ID);

@@ -25,8 +25,6 @@ public interface Game {
     void setCurrentRound(Round round);
     void setFinishedAt(LocalDateTime finishedAt);
 
-    void appendRound(Round round);
-
     //OTHER
     boolean isGameOver();
 

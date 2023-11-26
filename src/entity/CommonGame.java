@@ -95,11 +95,6 @@ public class CommonGame implements Game {
         this.finishedAt = finishedAt;
     }
 
-    @Override
-    public void appendRound(Round round) {
-        allRounds.add(round);
-    }
-
     // TODO, implement
     @Override
     public boolean isGameOver() {
