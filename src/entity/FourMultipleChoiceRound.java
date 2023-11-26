@@ -1,36 +1,35 @@
 package entity;
 
-import java.util.Objects;
-
-public class TextInputRound implements Round {
-
+public class FourMultipleChoiceRound implements Round{
     private final Song song;
     private final String question;
     private final String correctAnswer;
     private String userAnswer = "";
-
-    public TextInputRound(Song song, String question, String correctAnswer) {
+    public FourMultipleChoiceRound(Song song, String question, String correctAnswer){
         this.song = song;
         this.question = question;
         this.correctAnswer = correctAnswer;
+
     }
     @Override
     public String getQuestion() {
-        return question;
+        return this.question;
     }
 
     @Override
     public Song getSong() {
-        return song;
+        return this.song;
     }
 
     @Override
     public String getCorrectAnswer() {
-        return correctAnswer;
+        return this.correctAnswer;
     }
 
     @Override
-    public String getUserAnswer() { return userAnswer; }
+    public String getUserAnswer() {
+        return this.userAnswer;
+    }
 
     @Override
     public void setUserAnswer(String userAnswer) {

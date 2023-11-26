@@ -1,13 +1,17 @@
 package view;
 
 import interface_adapter.ViewManagerModel;
+import interface_adapter.finish_round.FinishRoundController;
+import interface_adapter.round.RoundState;
 import interface_adapter.round.RoundViewModel;
+import interface_adapter.submit_answer.SubmitAnswerController;
+import interface_adapter.submit_answer.SubmitAnswerState;
+import interface_adapter.submit_answer.SubmitAnswerViewModel;
 
 import javax.swing.*;
 import java.awt.*;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -15,18 +19,31 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
     public final String viewName = "round";
     private final RoundViewModel roundViewModel;
     private final ViewManagerModel viewManagerModel;
+    private final SubmitAnswerViewModel submitAnswerViewModel;
+    private final SubmitAnswerController submitAnswerController;
+    private final FinishRoundController finishRoundController;
 
     final JButton playSong;
     final JButton submit;
     JLabel roundInfo;
     JLabel livesInfo;
     JLabel genreInfo;
+    JTextField answerInputField;
     final int borderWidth = 2;
+
     public RoundView(RoundViewModel roundViewModel,
+                     SubmitAnswerViewModel submitAnswerViewModel,
+                     SubmitAnswerController submitAnswerController,
+                     FinishRoundController finishRoundController,
                      ViewManagerModel viewManagerModel) {
         this.viewManagerModel = viewManagerModel;
         this.roundViewModel = roundViewModel;
+        this.submitAnswerViewModel = submitAnswerViewModel;
+        this.submitAnswerController = submitAnswerController;
+        this.finishRoundController = finishRoundController;
+
         this.roundViewModel.addPropertyChangeListener(this);
+        this.submitAnswerViewModel.addPropertyChangeListener(this);
 
         // Prompt
         JLabel prompt = new JLabel(roundViewModel.TITLE_LABEL);
@@ -40,11 +57,28 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         answerSection.setMinimumSize(new Dimension(300,10));
         answerSection.setMaximumSize(new Dimension(getMaximumSize().width, 10));
 
-        JTextField answer = new JFormattedTextField();
-        answerSection.add(answer);
+        answerInputField = new JFormattedTextField();
+        answerInputField.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                RoundState roundState = roundViewModel.getState();
+                String userAnswer = answerInputField.getText() + e.getKeyChar();
+                roundState.setUserAnswer(userAnswer);
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {}
+
+            @Override
+            public void keyReleased(KeyEvent e) {}
+        });
+        answerSection.add(answerInputField);
 
         submit = new JButton("Submit");
-        submit.addActionListener(this);
+        submit.addActionListener(event -> {
+            RoundState roundState = roundViewModel.getState();
+            submitAnswerController.execute(roundState.getUserAnswer(), roundState.getGameId());
+        });
         answerSection.add(submit);
 
         // Round Info Section
@@ -81,14 +115,40 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         this.add(new JPanel());
         this.add(infoSection);
     }
+
     @Override
-    public void actionPerformed(ActionEvent e) {
-    }
+    public void actionPerformed(ActionEvent e) {}
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         roundInfo.setText("Round: " + roundViewModel.getState().getCurrentRoundNumber() + "/" + roundViewModel.getState().getMaxRounds());
         livesInfo.setText("Lives left:" + roundViewModel.getState().getCurrentLives());
         genreInfo.setText("Genre: " + roundViewModel.getState().getGenre());
+        if (evt.getPropertyName().equals(SubmitAnswerViewModel.STATE_PROPERTY)) {
+            SubmitAnswerState submitAnswerState = (SubmitAnswerState) evt.getNewValue();
+
+            // Create dialog displaying the correctness of the user's answer
+            JOptionPane optionPane = new JOptionPane(submitAnswerState.getCorrectnessMessage(),
+                    JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{"Next"});
+            JDialog dialog = optionPane.createDialog(this, submitAnswerState.getCorrectnessTitle());
+            optionPane.addPropertyChangeListener(e -> {
+                if (JOptionPane.VALUE_PROPERTY.equals(e.getPropertyName())) {
+                    // Call finish round controller
+                    RoundState roundState = roundViewModel.getState();
+                    finishRoundController.execute(roundState.getGameId());
+                    answerInputField.setText("");
+                    this.updateRoundTextInfo();
+                }
+            });
+            dialog.setVisible(true);
+        }
+        this.updateRoundTextInfo();
     }
+
+    private void updateRoundTextInfo(){
+        roundInfo.setText("Round: " + roundViewModel.getState().getCurrentRoundNumber() + "/" + roundViewModel.getState().getMaxRounds());
+        livesInfo.setText("Lives left:" + roundViewModel.getState().getCurrentLives());
+        genreInfo.setText("Genre: "  + roundViewModel.getState().getGenre());
+    }
+
 }

@@ -50,7 +50,7 @@ public class CommonGame implements Game {
     }
 
     @Override
-    public int getMaxRounds() {return maxRounds;}
+    public int getMaxRounds() { return maxRounds; }
 
     @Override
     public int getCurrentLives() {
@@ -65,39 +65,40 @@ public class CommonGame implements Game {
     @Override
     public int getScore() {return score;}
     @Override
-    public Round getCurrentRound() {return allRounds.get(allRounds.size() - 1);}
-    @Override
-    public List<Round> getRounds() {
-        return allRounds;
+    public Round getCurrentRound() {
+        int roundsSize = allRounds.size();
+        if (roundsSize == 0) {
+            return null;
+        }
+
+        return allRounds.get(roundsSize - 1);
     }
 
     @Override
-    public LocalDateTime getCreatedAt() {return createdAt;}
+    public List<Round> getRounds() { return allRounds; }
 
     @Override
-    public LocalDateTime getFinishedAt() {
-        return finishedAt;
-    }
+    public LocalDateTime getCreatedAt() { return createdAt; }
 
     @Override
-    public void setCurrentLives(int lives) {
-        currentLives = lives;
-    }
+    public LocalDateTime getFinishedAt() { return finishedAt; }
 
     @Override
-    public void setScore(int score) {
-        this.score = score;
-    }
-    @Override
-    public void setCurrentRound(Round round) {allRounds.add(round);}
-    @Override
-    public void setFinishedAt(LocalDateTime finishedAt) {
-        this.finishedAt = finishedAt;
-    }
+    public void setCurrentLives(int lives) { currentLives = lives; }
 
-    // TODO, implement
     @Override
-    public boolean isGameOver() {
-        return false;
-    }
+    public void setScore(int score) { this.score = score; }
+
+    @Override
+    public void setCurrentRound(Round round) { allRounds.add(round); }
+    @Override
+    public void setFinishedAt(LocalDateTime finishedAt) { this.finishedAt = finishedAt; }
+    @Override
+    public boolean isGameOver() { return allRounds.size() >= maxRounds || currentLives <= 0; }
+
+    @Override
+    public void incrementScore() { this.score += 1; }
+
+    @Override
+    public void decrementLives() { this.currentLives -= 1; }
 }

@@ -1,12 +1,12 @@
 package entity;
 
 public class FileMP3PlayableAudio implements PlayableAudio {
+    private final String audioFilePath;
 
-    private String fileLocation;
+    public FileMP3PlayableAudio(String audioFilePath) { this.audioFilePath = audioFilePath; }
+
     @Override
-    public String getPath() {
-        return fileLocation;
-    }
+    public String getPath() { return audioFilePath; }
 
     @Override
     public void play() {
