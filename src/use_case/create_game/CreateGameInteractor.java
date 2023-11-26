@@ -26,7 +26,7 @@ public class CreateGameInteractor implements CreateGameInputBoundary{
                 inputData.getRounds());
 
         // temporary, will use factory in future
-        PlayableAudio audio = new FileMP3PlayableAudio();
+        PlayableAudio audio = new FileMP3PlayableAudio("path");
         Song song = new CommonSong("title", "artist", audio);
         Round firstRound = new TextInputRound(song, "What is this song?", song.getTitle());
 

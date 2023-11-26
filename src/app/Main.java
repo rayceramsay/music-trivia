@@ -4,13 +4,22 @@ import data_access.InMemoryGameDataAccessObject;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.create_game.CreateGameController;
 import interface_adapter.create_game.CreateGamePresenter;
+import interface_adapter.finish_round.FinishRoundController;
+import interface_adapter.finish_round.FinishRoundPresenter;
 import interface_adapter.game_over.GameOverViewModel;
 import interface_adapter.game_settings.GameSettingsState;
 import interface_adapter.game_settings.GameSettingsViewModel;
 import interface_adapter.menu.MenuViewModel;
 import interface_adapter.round.RoundViewModel;
+import interface_adapter.submit_answer.SubmitAnswerController;
+import interface_adapter.submit_answer.SubmitAnswerPresenter;
+import interface_adapter.submit_answer.SubmitAnswerViewModel;
 import use_case.create_game.CreateGameDataAccessInterface;
 import use_case.create_game.CreateGameInteractor;
+import use_case.finish_round.FinishRoundInputBoundary;
+import use_case.finish_round.FinishRoundInteractor;
+import use_case.submit_answer.SubmitAnswerInputBoundary;
+import use_case.submit_answer.SubmitAnswerInteractor;
 import view.*;
 
 import javax.swing.*;
@@ -50,7 +59,16 @@ public class Main{
         GameOverView gameOverView = new GameOverView(gameOverViewModel, viewManagerModel);
         views.add(gameOverView, gameOverView.viewName);
 
-        RoundView roundView = new RoundView(roundViewModel, viewManagerModel);
+        SubmitAnswerViewModel submitAnswerViewModel = new SubmitAnswerViewModel();
+        SubmitAnswerPresenter submitAnswerPresenter = new SubmitAnswerPresenter(submitAnswerViewModel);
+        SubmitAnswerInputBoundary submitAnswerInteractor = new SubmitAnswerInteractor(gameDataAccessObject, submitAnswerPresenter);
+        SubmitAnswerController submitAnswerController = new SubmitAnswerController(submitAnswerInteractor);
+
+        FinishRoundPresenter finishRoundPresenter = new FinishRoundPresenter(viewManagerModel, gameOverViewModel, roundViewModel);
+        FinishRoundInputBoundary finishRoundIteractor = new FinishRoundInteractor(finishRoundPresenter, gameDataAccessObject);
+        FinishRoundController finishRoundController = new FinishRoundController(finishRoundIteractor);
+
+        RoundView roundView = new RoundView(roundViewModel, submitAnswerViewModel, submitAnswerController, finishRoundController, viewManagerModel);
         views.add(roundView, roundView.viewName);
 
         viewManagerModel.setActiveView(menuView.viewName);
