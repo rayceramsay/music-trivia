@@ -340,6 +340,30 @@ public class SQLiteDatabaseGameDataAccessObject {
         }
     }
 
+    private void destroyDatabase() throws SQLException {
+        String dropGameTableSql = "DROP TABLE game;";
+        String dropRoundTableSql = "DROP TABLE round;";
+        String dropSongTableSql = "DROP TABLE song;";
+        String dropGameRoundTableSql = "DROP TABLE game_round;";
+
+        Connection connection = getConnection();
+        try (Statement statement = connection.createStatement()) {
+            connection.setAutoCommit(false);
+
+            statement.execute(dropGameRoundTableSql);
+            statement.execute(dropSongTableSql);
+            statement.execute(dropRoundTableSql);
+            statement.execute(dropGameTableSql);
+
+            connection.commit();
+        } catch (SQLException e) {
+            connection.rollback();
+            throw e;
+        } finally {
+            connection.close();
+        }
+    }
+
     private Connection getConnection() {
         String databaseUrl = "jdbc:sqlite:" + databasePath + databaseName + ".db";
 
