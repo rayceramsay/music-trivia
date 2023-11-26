@@ -4,13 +4,19 @@ public class FourMultipleChoiceRound implements Round{
     private final Song song;
     private final String question;
     private final String correctAnswer;
-    private String userAnswer = "";
-    public FourMultipleChoiceRound(Song song, String question, String correctAnswer){
+    private String userAnswer;
+
+    public FourMultipleChoiceRound(Song song, String question, String correctAnswer, String userAnswer) {
         this.song = song;
         this.question = question;
         this.correctAnswer = correctAnswer;
-
+        this.userAnswer = userAnswer;
     }
+
+    public FourMultipleChoiceRound(Song song, String question, String correctAnswer) {
+        this(song, question, correctAnswer, null);
+    }
+
     @Override
     public String getQuestion() {
         return this.question;
