@@ -5,6 +5,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SQLiteDatabaseGameDataAccessObject {
@@ -29,36 +30,24 @@ public class SQLiteDatabaseGameDataAccessObject {
         Game game;
 
         String selectGameSql = """
-                SELECT id, difficulty, genre, initial_lives, max_rounds, current_lives, score, created_at, finished_at
+                SELECT id, external_id, difficulty, genre, initial_lives, max_rounds, current_lives, score, created_at, finished_at
                 FROM game
                 WHERE external_id = ?
                 LIMIT 1""";
 
         try (Connection connection = getConnection();
-             PreparedStatement selectGameStatement = connection.prepareStatement(selectGameSql)) {
-            selectGameStatement.setString(1, gameID);
-            ResultSet gameResults = selectGameStatement.executeQuery();
-
-            int internalGameId;
+             PreparedStatement statement = connection.prepareStatement(selectGameSql)) {
+            statement.setString(1, gameID);
+            ResultSet gameResults = statement.executeQuery();
 
             if (gameResults.next()) {
-                internalGameId = gameResults.getInt(1);
-                String difficulty = gameResults.getString(2);
-                String genre = gameResults.getString(3);
-                int initialLives = gameResults.getInt(4);
-                int maxRounds = gameResults.getInt(5);
-                int currentLives = gameResults.getInt(6);
-                int score = gameResults.getInt(7);
-                LocalDateTime createdAt = LocalDateTime.parse(gameResults.getString(8), sqliteDateFormatter);
-                String rawFinishedAt = gameResults.getString(9);
-                LocalDateTime finishedAt = rawFinishedAt == null ? null : LocalDateTime.parse(rawFinishedAt, sqliteDateFormatter);
-
-                game = new CommonGame(gameID, genre, difficulty, maxRounds, initialLives, currentLives, score, createdAt, finishedAt);
+                int internalGameId = gameResults.getInt("id");
+                game = createBaseGameFromResultSet(gameResults);
+                populateGameWithExistingRounds(game, internalGameId, connection);
             } else {
                 return null;
             }
 
-            populateGameWithExistingRounds(game, internalGameId, connection);
         } catch (SQLException e) {
             throw new RuntimeException("Could not get game by ID.");
         }
@@ -66,42 +55,32 @@ public class SQLiteDatabaseGameDataAccessObject {
         return game;
     }
 
-    private void populateGameWithExistingRounds(Game game, int internalGameId, Connection connection) throws SQLException {
-        String selectRoundDataSql = """
-                SELECT r.question, r.correct_answer, r.user_answer, s.title, s.artist, s.audio_path
-                FROM game_round AS gr
-                INNER JOIN round AS r ON r.id = gr.id
-                INNER JOIN song AS s ON s.round_id = r.id
-                WHERE gr.game_id = ?
-                ORDER BY r.created_at
-                """;
+    public List<Game> getLoadableGames() {
+        List<Game> games = new ArrayList<>();
 
-        try (PreparedStatement selectRoundDataStatement = connection.prepareStatement(selectRoundDataSql);) {
-            selectRoundDataStatement.setInt(1, internalGameId);
-            ResultSet roundDataResults = selectRoundDataStatement.executeQuery();
+        String selectLoadableGamesSql = """
+                SELECT id, external_id, difficulty, genre, initial_lives, max_rounds, current_lives, score, created_at, finished_at
+                FROM game
+                WHERE finished_at IS NULL""";
 
-            while (roundDataResults.next()) {
-                String question = roundDataResults.getString(1);
-                String correctAnswer = roundDataResults.getString(2);
-                String userAnswer = roundDataResults.getString(3);
-                String songTitle = roundDataResults.getString(4);
-                String songArtist = roundDataResults.getString(5);
-                String songAudioPath = roundDataResults.getString(6);
+        try (Connection connection = getConnection();
+             Statement statement = connection.createStatement()) {
+            ResultSet gameResults = statement.executeQuery(selectLoadableGamesSql);
 
-                Song song = new CommonSong(songTitle, songArtist, new OnlineMP3PlayableAudio(songAudioPath));
-                Round round = switch (game.getDifficulty().toLowerCase()) {
-                    case "easy" -> new FourMultipleChoiceRound(song, question, correctAnswer, userAnswer);
-                    case "medium" -> new TwoMultipleChoiceRound(song, question, correctAnswer, userAnswer);
-                    default -> new TextInputRound(song, question, correctAnswer, userAnswer);
-                };
+            while (gameResults.next()) {
+                Game game = createBaseGameFromResultSet(gameResults);
+                int internalGameId = gameResults.getInt("id");
+                populateGameWithExistingRounds(game, internalGameId, connection);
 
-                game.setCurrentRound(round);
+                games.add(game);
             }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Could not get loadable games.");
         }
 
+        return games;
     }
-
-    public List<Game> getLoadableGames() { return null; }
 
     public void save(Game game) {
         Connection connection = getConnection();
@@ -127,20 +106,54 @@ public class SQLiteDatabaseGameDataAccessObject {
         }
     }
 
-    private boolean gameExists(Game game, Connection connection) throws SQLException {
-        boolean gameExists = false;
+    private Game createBaseGameFromResultSet(ResultSet resultSet) throws SQLException {
+        String externalId = resultSet.getString("external_id");
+        String difficulty = resultSet.getString("difficulty");
+        String genre = resultSet.getString("genre");
+        int initialLives = resultSet.getInt("initial_lives");
+        int maxRounds = resultSet.getInt("max_rounds");
+        int currentLives = resultSet.getInt("current_lives");
+        int score = resultSet.getInt("score");
+        LocalDateTime createdAt = LocalDateTime.parse(resultSet.getString("created_at"), sqliteDateFormatter);
+        String rawFinishedAt = resultSet.getString("finished_at");
+        LocalDateTime finishedAt = rawFinishedAt == null ? null : LocalDateTime.parse(rawFinishedAt, sqliteDateFormatter);
 
-        String sql = "SELECT id FROM game WHERE external_id = ? LIMIT 1";
+        return new CommonGame(externalId, genre, difficulty, maxRounds, initialLives, currentLives, score, createdAt, finishedAt);
+    }
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, game.getID());
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                gameExists = true;
+    private void populateGameWithExistingRounds(Game game, int internalGameId, Connection connection) throws SQLException {
+        String selectRoundDataSql = """
+                SELECT r.question, r.correct_answer, r.user_answer, s.title, s.artist, s.audio_path
+                FROM game_round AS gr
+                INNER JOIN round AS r ON r.id = gr.id
+                INNER JOIN song AS s ON s.round_id = r.id
+                WHERE gr.game_id = ?
+                ORDER BY r.created_at
+                """;
+
+        try (PreparedStatement statement = connection.prepareStatement(selectRoundDataSql);) {
+            statement.setInt(1, internalGameId);
+            ResultSet roundDataResults = statement.executeQuery();
+
+            while (roundDataResults.next()) {
+                String question = roundDataResults.getString("question");
+                String correctAnswer = roundDataResults.getString("correct_answer");
+                String userAnswer = roundDataResults.getString("user_answer");
+                String songTitle = roundDataResults.getString("title");
+                String songArtist = roundDataResults.getString("artist");
+                String songAudioPath = roundDataResults.getString("audio_path");
+
+                Song song = new CommonSong(songTitle, songArtist, new OnlineMP3PlayableAudio(songAudioPath));
+                Round round = switch (game.getDifficulty().toLowerCase()) {
+                    case "easy" -> new FourMultipleChoiceRound(song, question, correctAnswer, userAnswer);
+                    case "medium" -> new TwoMultipleChoiceRound(song, question, correctAnswer, userAnswer);
+                    default -> new TextInputRound(song, question, correctAnswer, userAnswer);
+                };
+
+                game.setCurrentRound(round);
             }
         }
 
-        return gameExists;
     }
 
     private void deleteGame(Game game, Connection connection) throws SQLException {
@@ -253,6 +266,22 @@ public class SQLiteDatabaseGameDataAccessObject {
         }
 
         return lastInsertedRowid;
+    }
+
+    private boolean gameExists(Game game, Connection connection) throws SQLException {
+        boolean gameExists = false;
+
+        String sql = "SELECT id FROM game WHERE external_id = ? LIMIT 1";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, game.getID());
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                gameExists = true;
+            }
+        }
+
+        return gameExists;
     }
 
     private void setupDatabase() throws SQLException {
