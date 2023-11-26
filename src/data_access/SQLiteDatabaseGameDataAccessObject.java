@@ -131,7 +131,7 @@ public class SQLiteDatabaseGameDataAccessObject {
                 ORDER BY r.created_at
                 """;
 
-        try (PreparedStatement statement = connection.prepareStatement(selectRoundDataSql);) {
+        try (PreparedStatement statement = connection.prepareStatement(selectRoundDataSql)) {
             statement.setInt(1, internalGameId);
             ResultSet roundDataResults = statement.executeQuery();
 
@@ -174,84 +174,62 @@ public class SQLiteDatabaseGameDataAccessObject {
         String insertSongSql = "INSERT INTO song (round_id, title, artist, audio_path) VALUES (?, ?, ?, ?)";
         String insertGameRoundSql = "INSERT INTO game_round (game_id, round_id) VALUES (?, ?)";
 
-        PreparedStatement insertGameStatement = null;
-        PreparedStatement insertSongStatement = null;
-        PreparedStatement insertRoundStatement = null;
-        PreparedStatement insertGameRoundStatement = null;
-
         try {
             if (useTransaction) {
                 connection.setAutoCommit(false);
             }
 
-            insertGameStatement = connection.prepareStatement(insertGameSql);
-            insertGameStatement.setString(1, game.getID());
-            insertGameStatement.setString(2, game.getDifficulty());
-            insertGameStatement.setString(3, game.getGenre());
-            insertGameStatement.setInt(4, game.getInitialLives());
-            insertGameStatement.setInt(5, game.getMaxRounds());
-            insertGameStatement.setInt(6, game.getCurrentLives());
-            insertGameStatement.setInt(7, game.getScore());
-            insertGameStatement.setString(8, game.getCreatedAt().format(sqliteDateFormatter));
-            String finishedAt =  game.getFinishedAt() != null ? game.getFinishedAt().format(sqliteDateFormatter) : null;
-            insertGameStatement.setString(9, finishedAt);
-            insertGameStatement.executeUpdate();
+            try (PreparedStatement insertGameStatement = connection.prepareStatement(insertGameSql)) {
+                insertGameStatement.setString(1, game.getID());
+                insertGameStatement.setString(2, game.getDifficulty());
+                insertGameStatement.setString(3, game.getGenre());
+                insertGameStatement.setInt(4, game.getInitialLives());
+                insertGameStatement.setInt(5, game.getMaxRounds());
+                insertGameStatement.setInt(6, game.getCurrentLives());
+                insertGameStatement.setInt(7, game.getScore());
+                insertGameStatement.setString(8, game.getCreatedAt().format(sqliteDateFormatter));
+                String finishedAt = game.getFinishedAt() != null ? game.getFinishedAt().format(sqliteDateFormatter) : null;
+                insertGameStatement.setString(9, finishedAt);
+                insertGameStatement.executeUpdate();
+            }
 
             int internalGameId = getLastInsertedRowid(connection);
 
             for (Round round : game.getRounds()) {
-                insertRoundStatement = connection.prepareStatement(insertRoundSql);
-                insertRoundStatement.setInt(1, internalGameId);
-                insertRoundStatement.setString(2, round.getQuestion());
-                insertRoundStatement.setString(3, round.getCorrectAnswer());
-                insertRoundStatement.setString(4, round.getUserAnswer());
-                insertRoundStatement.executeUpdate();
-                insertRoundStatement.close();
+                try (PreparedStatement insertRoundStatement = connection.prepareStatement(insertRoundSql)) {
+                    insertRoundStatement.setInt(1, internalGameId);
+                    insertRoundStatement.setString(2, round.getQuestion());
+                    insertRoundStatement.setString(3, round.getCorrectAnswer());
+                    insertRoundStatement.setString(4, round.getUserAnswer());
+                    insertRoundStatement.executeUpdate();
+                }
 
                 int internalRoundId = getLastInsertedRowid(connection);
 
-                Song song = round.getSong();
-                insertSongStatement = connection.prepareStatement(insertSongSql);
-                insertSongStatement.setInt(1, internalRoundId);
-                insertSongStatement.setString(2, song.getTitle());
-                insertSongStatement.setString(3, song.getArtist());
-                insertSongStatement.setString(4, song.getAudio().getPath());
-                insertSongStatement.executeUpdate();
-                insertSongStatement.close();
-
-                insertGameRoundStatement = connection.prepareStatement(insertGameRoundSql);
-                insertGameRoundStatement.setInt(1, internalGameId);
-                insertGameRoundStatement.setInt(2, internalRoundId);
-                insertGameRoundStatement.execute();
-                insertGameRoundStatement.close();
-
-                if (useTransaction) {
-                    connection.commit();
+                try (PreparedStatement insertSongStatement = connection.prepareStatement(insertSongSql)) {
+                    Song song = round.getSong();
+                    insertSongStatement.setInt(1, internalRoundId);
+                    insertSongStatement.setString(2, song.getTitle());
+                    insertSongStatement.setString(3, song.getArtist());
+                    insertSongStatement.setString(4, song.getAudio().getPath());
+                    insertSongStatement.executeUpdate();
                 }
+
+                try (PreparedStatement insertGameRoundStatement = connection.prepareStatement(insertGameRoundSql)) {
+                    insertGameRoundStatement.setInt(1, internalGameId);
+                    insertGameRoundStatement.setInt(2, internalRoundId);
+                    insertGameRoundStatement.executeUpdate();
+                }
+            }
+
+            if (useTransaction) {
+                connection.commit();
             }
         } catch (SQLException e) {
             if (useTransaction) {
                 connection.rollback();
             }
             throw e;
-        }
-        finally {
-            try {
-                if (insertGameStatement != null) {
-                    insertGameStatement.close();
-                }
-                if (insertSongStatement != null) {
-                    insertSongStatement.close();
-                }
-                if (insertRoundStatement != null) {
-                    insertRoundStatement.close();
-                }
-                if (insertGameRoundStatement != null) {
-                    insertGameRoundStatement.close();
-                }
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-            }
         }
     }
 
@@ -341,19 +319,15 @@ public class SQLiteDatabaseGameDataAccessObject {
     }
 
     private void destroyDatabase() throws SQLException {
-        String dropGameTableSql = "DROP TABLE game;";
-        String dropRoundTableSql = "DROP TABLE round;";
-        String dropSongTableSql = "DROP TABLE song;";
-        String dropGameRoundTableSql = "DROP TABLE game_round;";
-
         Connection connection = getConnection();
+
         try (Statement statement = connection.createStatement()) {
             connection.setAutoCommit(false);
 
-            statement.execute(dropGameRoundTableSql);
-            statement.execute(dropSongTableSql);
-            statement.execute(dropRoundTableSql);
-            statement.execute(dropGameTableSql);
+            String[] tableNames = new String[]{"game_round", "song", "round", "game"};
+            for (String tableName : tableNames) {
+                statement.execute("DROP TABLE " + tableName);
+            }
 
             connection.commit();
         } catch (SQLException e) {
