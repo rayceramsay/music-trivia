@@ -1,8 +1,8 @@
 package app;
 
 import data_access.InMemoryGameDataAccessObject;
-import entity.CommonGame;
 import entity.*;
+import entity.CommonGame;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.game_over.GameOverViewModel;
 import interface_adapter.game_settings.GameSettingsViewModel;
@@ -44,13 +44,14 @@ public class Main{
         MenuView menuView = new MenuView(menuViewModel, viewManagerModel);
         GameSettingsView gameSettingsView = new GameSettingsView(gameSettingsViewModel, viewManagerModel);
         GameOverView gameOverView = new GameOverView(gameOverViewModel, viewManagerModel);
-        RoundView roundView = RoundViewFactory.create(roundViewModel, submitAnswerViewModel, toggleAudioViewModel, gameDataAccessObject);
+        RoundView roundView = RoundViewFactory.create(viewManagerModel, roundViewModel, submitAnswerViewModel, toggleAudioViewModel, gameOverViewModel, gameDataAccessObject);
 
         // Add views to app
         views.add(menuView, menuView.viewName);
         views.add(gameSettingsView, gameSettingsView.viewName);
         views.add(gameOverView, gameOverView.viewName);
         views.add(roundView, roundView.viewName);
+
 
         // Set starting view
         viewManagerModel.setActiveView(roundView.viewName);
