@@ -85,6 +85,7 @@ public class MenuView extends JPanel implements ActionListener, PropertyChangeLi
         String stringToShow = String.format("Here are your lifetime statistics...\n"  +
                 "Average Score: " + statisticsState.getAverageScore()  + "\n" +
                 "Average Initial Lives: " + statisticsState.getAverageLives() + "\n" +
+                "Average # of Rounds Played: " + statisticsState.getAverageRoundsPlayed() + "\n" +
                 "Most Common Game Difficulty: " + statisticsState.getCommonGameDifficulty() + "\n" +
                 "Most Common Genre Played: " + statisticsState.getCommonGameGenre());
         JOptionPane.showMessageDialog(this, stringToShow);

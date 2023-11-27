@@ -27,6 +27,7 @@ public class InMemoryGameDataAccessObject implements SubmitAnswerGameDataAccessI
         int gamesPlayed = 0;
         int scoreSum = 0;
         int sumInitialLives = 0;
+        int roundsPlayed = 0;
         int[] difficultiesCount = new int[3]; // To track Easy, Medium, Hard count: index 0 -> Easy, 1 -> Medium, 2 -> Hard
         int[] genresCount = new int[3];
         for (Game game : games.values()) {
@@ -43,6 +44,7 @@ public class InMemoryGameDataAccessObject implements SubmitAnswerGameDataAccessI
             gamesPlayed += 1;
             scoreSum += game.getScore();
             sumInitialLives += game.getInitialLives();
+            roundsPlayed += game.getRoundsPlayed();
         }
 
         String[] difficultyLevels = {"Easy", "Medium", "Hard"};
@@ -70,6 +72,7 @@ public class InMemoryGameDataAccessObject implements SubmitAnswerGameDataAccessI
         allStats.put("Average Initial Lives", sumInitialLives/gamesPlayed);
         allStats.put("Most Common Genre", mostCommonGenre);
         allStats.put("Most Common Game Difficulty", mostCommonDifficulty);
+        allStats.put("Average Number of Rounds Played", roundsPlayed);
         return allStats;
     }
 }

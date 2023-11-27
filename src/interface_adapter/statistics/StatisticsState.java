@@ -5,12 +5,22 @@ public class StatisticsState {
     public String commonGameGenre;
     public int averageLives;
     public int averageScore;
+    public int averageRoundsPlayed;
+
+    public int getAverageRoundsPlayed() {
+        return averageRoundsPlayed;
+    }
+
+    public void setAverageRoundsPlayed(int averageRoundsPlayed) {
+        this.averageRoundsPlayed = averageRoundsPlayed;
+    }
 
     public StatisticsState(StatisticsState copy) {
         this.commonGameDifficulty = copy.commonGameDifficulty;
         this.commonGameGenre = copy.commonGameGenre;
         this.averageLives = copy.averageLives;
         this.averageScore = copy.averageScore;
+        this.averageRoundsPlayed = copy.averageRoundsPlayed;
     }
     public StatisticsState(){}
 

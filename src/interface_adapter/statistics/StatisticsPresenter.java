@@ -15,6 +15,7 @@ public class StatisticsPresenter implements StatisticsOutputBoundary {
         statisticsState.setAverageScore((Integer) statisticsOutputData.getStats().get("Average Score"));
         statisticsState.setCommonGameDifficulty((String) statisticsOutputData.getStats().get("Most Common Game Difficulty"));
         statisticsState.setCommonGameGenre((String) statisticsOutputData.getStats().get("Most Common Genre"));
+        statisticsState.setAverageRoundsPlayed((Integer) statisticsOutputData.getStats().get("Average Number of Rounds Played"));
         statisticsViewModel.firePropertyChanged();
     }
 }

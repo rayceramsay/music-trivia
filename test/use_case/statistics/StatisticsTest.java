@@ -34,7 +34,14 @@ public class StatisticsTest {
         game.setScore(10);
         assertEquals(10, gameDataAccessObject.avgStats().get("Average Initial Lives"));
     }
-
+    @Test
+    public void averageRoundPlayedTest(){
+        assertEquals(0, gameDataAccessObject.avgStats().get("Average Number of Rounds Played"));
+        Round round = null;
+        game.setCurrentRound(round);
+        game.setCurrentRound(round);
+        assertEquals(2, gameDataAccessObject.avgStats().get("Average Number of Rounds Played"));
+    }
     @Test
     public void commonDifficultyTest() {
         assertEquals("Hard", gameDataAccessObject.avgStats().get("Most Common Game Difficulty"));
@@ -49,7 +56,9 @@ public class StatisticsTest {
         gameDataAccessObject.save(game);
         assertEquals("Pop", gameDataAccessObject.avgStats().get("Most Common Genre"));
     }
-
+    /**
+     * Output data/presenter/interactor test to assure coverage of use_case.statistics
+     */
     @Test
     public void coverageTest() {
         game = new CommonGame("Rock", "hard", 1, INITIAL_LIVES);
