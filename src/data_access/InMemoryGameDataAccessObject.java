@@ -6,10 +6,7 @@ import use_case.get_loadable_games.GetLoadableGamesGameDataAccessInterface;
 import use_case.load_game.LoadGameGameDataAccessInterface;
 import use_case.submit_answer.SubmitAnswerGameDataAccessInterface;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class InMemoryGameDataAccessObject implements SubmitAnswerGameDataAccessInterface, FinishRoundGameDataAccessInterface,
         GetLoadableGamesGameDataAccessInterface, LoadGameGameDataAccessInterface {
@@ -33,6 +30,8 @@ public class InMemoryGameDataAccessObject implements SubmitAnswerGameDataAccessI
                 loadableGames.add(game);
             }
         }
+
+        loadableGames.sort(Comparator.comparing(Game::getCreatedAt, Comparator.reverseOrder()));
 
         return loadableGames;
     }

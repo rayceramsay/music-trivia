@@ -6,7 +6,6 @@ import entity.*;
 import org.junit.Test;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -55,14 +54,14 @@ public class GetLoadableGamesInteractorTest {
         GetLoadableGamesOutputBoundary presenter = new GetLoadableGamesOutputBoundary() {
             @Override
             public void prepareGamesExistView(GetLoadableGamesOutputData outputData) {
-                List<Map<String, String>> gamesData = outputData.getLoadableGamesData();
+                List<GetLoadableGamesOutputDataItem> gamesData = outputData.getGetLoadableGamesOutputDataItems();
 
                 assertEquals(loadableGames.size(), gamesData.size());
 
                 for (int i = 0, j = loadableGames.size() - 1;
                      i < loadableGames.size() && j >= 0;
                      i++, j--) {
-                    assertEquals(loadableGames.get(j).getID(), gamesData.get(i).get("ID"));
+                    assertEquals(loadableGames.get(j).getID(), gamesData.get(i).getGameID());
                 }
             }
 
@@ -87,19 +86,19 @@ public class GetLoadableGamesInteractorTest {
             @Override
             public void prepareGamesExistView(GetLoadableGamesOutputData outputData) {
                 Game exampleGame = loadableGames.get(0);
-                Map<String, String> exampleGameData = outputData.getLoadableGamesData()
+                GetLoadableGamesOutputDataItem exampleGameData = outputData.getGetLoadableGamesOutputDataItems()
                         .stream()
-                        .filter(data -> data.get("ID").equals(exampleGame.getID()))
+                        .filter(data -> data.getGameID().equals(exampleGame.getID()))
                         .findFirst()
                         .orElseThrow();
 
-                assertEquals(exampleGame.getDifficulty(), exampleGameData.get("difficulty"));
-                assertEquals(exampleGame.getGenre(), exampleGameData.get("genre"));
-                assertEquals(String.valueOf(exampleGame.getCurrentLives()), exampleGameData.get("currentLives"));
-                assertEquals(String.valueOf(exampleGame.getInitialLives()), exampleGameData.get("initialLives"));
-                assertEquals(String.valueOf(exampleGame.getRoundsPlayed()), exampleGameData.get("currentRoundNumber"));
-                assertEquals(String.valueOf(exampleGame.getMaxRounds()), exampleGameData.get("maxRounds"));
-                assertNotNull(exampleGameData.get("createdAt"));
+                assertEquals(exampleGame.getDifficulty(), exampleGameData.getDifficulty());
+                assertEquals(exampleGame.getGenre(), exampleGameData.getGenre());
+                assertEquals(exampleGame.getCurrentLives(), exampleGameData.getCurrentLives());
+                assertEquals(exampleGame.getInitialLives(), exampleGameData.getInitialLives());
+                assertEquals(exampleGame.getRoundsPlayed(), exampleGameData.getCurrentRoundNumber());
+                assertEquals(exampleGame.getMaxRounds(), exampleGameData.getMaxRounds());
+                assertNotNull(exampleGameData.getCreatedAt());
             }
 
             @Override

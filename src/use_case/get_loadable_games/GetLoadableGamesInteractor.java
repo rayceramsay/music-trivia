@@ -18,22 +18,14 @@ public class GetLoadableGamesInteractor implements GetLoadableGamesInputBoundary
 
     @Override
     public void execute() {
-        List<Map<String, String>> loadableGamesData = new ArrayList<>();
+        List<GetLoadableGamesOutputDataItem> loadableGamesData = new ArrayList<>();
         List<Game> loadableGames = gameDataAccessObject.getLoadableGames();
 
-        loadableGames.sort(Comparator.comparing(Game::getCreatedAt, Comparator.reverseOrder()));  // i.e. most recent games first
-
         for (Game game: loadableGames) {
-            Map<String, String> gameData = new HashMap<>();
-
-            gameData.put("ID", game.getID());
-            gameData.put("difficulty", game.getDifficulty());
-            gameData.put("genre", game.getGenre());
-            gameData.put("initialLives", String.valueOf(game.getInitialLives()));
-            gameData.put("currentLives", String.valueOf(game.getCurrentLives()));
-            gameData.put("maxRounds", String.valueOf(game.getMaxRounds()));
-            gameData.put("currentRoundNumber", String.valueOf(game.getRoundsPlayed()));
-            gameData.put("createdAt", game.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+            String createdAt = game.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+            GetLoadableGamesOutputDataItem gameData = new GetLoadableGamesOutputDataItem(game.getID(), game.getGenre(),
+                    game.getDifficulty(), game.getInitialLives(), game.getCurrentLives(), game.getMaxRounds(),
+                    game.getRoundsPlayed(), createdAt);
 
             loadableGamesData.add(gameData);
         }
