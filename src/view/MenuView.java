@@ -20,16 +20,21 @@ public class MenuView extends JPanel implements ActionListener, PropertyChangeLi
     private final MenuViewModel menuViewModel;
 
     private final ViewManagerModel viewManagerModel;
+    private final StatisticsViewModel statisticsViewModel;
+
+    private final StatisticsController statisticsController;
 
     public final JButton newGame;
     public final JButton loadGame;
     public final JButton careerStats;
 
     public MenuView(MenuViewModel menuViewModel, ViewManagerModel viewManagerModel,
-                    final StatisticsViewModel statisticsViewModel, final StatisticsController statisticsController) {
+                    StatisticsViewModel statisticsViewModel, StatisticsController statisticsController) {
 
         this.menuViewModel = menuViewModel;
         this.viewManagerModel = viewManagerModel;
+        this.statisticsViewModel = statisticsViewModel;
+        this.statisticsController = statisticsController;
 
         menuViewModel.addPropertyChangeListener(this);
 
@@ -54,13 +59,11 @@ public class MenuView extends JPanel implements ActionListener, PropertyChangeLi
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource().equals(MenuView.this.careerStats)) {
-                    StatisticsState statisticsState = statisticsViewModel.getState();
                     statisticsController.execute();
-                    JOptionPane.showMessageDialog((Component)null, statisticsState.stats);
                 }
             }
         });
-
+        this.statisticsViewModel.addPropertyChangeListener(this);
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -78,6 +81,12 @@ public class MenuView extends JPanel implements ActionListener, PropertyChangeLi
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-
+        StatisticsState statisticsState = statisticsViewModel.getState();
+        String stringToShow = String.format("Here are your lifetime statistics...\n"  +
+                "Average Score: " + statisticsState.getAverageScore()  + "\n" +
+                "Average Initial Lives: " + statisticsState.getAverageLives() + "\n" +
+                "Most Common Game Difficulty: " + statisticsState.getCommonGameDifficulty() + "\n" +
+                "Most Common Genre Played: " + statisticsState.getCommonGameGenre());
+        JOptionPane.showMessageDialog(this, stringToShow);
     }
 }

@@ -11,11 +11,10 @@ public class StatisticsPresenter implements StatisticsOutputBoundary {
     @Override
     public void prepareView(StatisticsOutputData statisticsOutputData) {
         StatisticsState statisticsState = statisticsViewModel.getState();
-        StringBuilder mapAsString = new StringBuilder();
-        for (String key : statisticsOutputData.getStats().keySet()) {
-            mapAsString.append(key).append(":").append(" ").append(statisticsOutputData.getStats().get(key)).append("\n");}
-        String stringToShow = String.format("Here are your statistics, Player! \n"  + mapAsString);
-        statisticsState.setStats(stringToShow);
+        statisticsState.setAverageLives((Integer) statisticsOutputData.getStats().get("Average Initial Lives"));
+        statisticsState.setAverageScore((Integer) statisticsOutputData.getStats().get("Average Score"));
+        statisticsState.setCommonGameDifficulty((String) statisticsOutputData.getStats().get("Most Common Game Difficulty"));
+        statisticsState.setCommonGameGenre((String) statisticsOutputData.getStats().get("Most Common Genre"));
         statisticsViewModel.firePropertyChanged();
     }
 }

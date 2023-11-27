@@ -10,4 +10,4 @@ public class StatisticsOutputData {
     }
 
     public HashMap<String, Object> getStats(){return stringObjectHashMap;}
-    }
+}

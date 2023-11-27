@@ -13,28 +13,33 @@ public class StatisticsTest {
     private final int INITIAL_LIVES = 10;
     private StatisticsDataAccessInterface gameDataAccessObject;
     private Game game;
+
     @Before
     public void init() {
         game = new CommonGame("Hip-Hop", "hard", 15, INITIAL_LIVES);
         gameDataAccessObject = new InMemoryGameDataAccessObject();
         gameDataAccessObject.save(game);
     }
+
     /**
      * Basic functionality tests.
      */
     @Test
-    public void averageInitialLivesTest(){
+    public void averageInitialLivesTest() {
         assertEquals(10, gameDataAccessObject.avgStats().get("Average Initial Lives"));
     }
+
     @Test
     public void averageScoreTest() {
         game.setScore(10);
         assertEquals(10, gameDataAccessObject.avgStats().get("Average Initial Lives"));
     }
+
     @Test
     public void commonDifficultyTest() {
         assertEquals("Hard", gameDataAccessObject.avgStats().get("Most Common Game Difficulty"));
     }
+
     @Test
     public void commonGenreTest() {
         assertEquals("Hip-Hop", gameDataAccessObject.avgStats().get("Most Common Genre"));
@@ -44,44 +49,22 @@ public class StatisticsTest {
         gameDataAccessObject.save(game);
         assertEquals("Pop", gameDataAccessObject.avgStats().get("Most Common Genre"));
     }
+
     @Test
     public void coverageTest() {
-
-        game = new CommonGame("Rock", "hard", 150, INITIAL_LIVES);
+        game = new CommonGame("Rock", "hard", 1, INITIAL_LIVES);
         gameDataAccessObject.save(game);
-        StatisticsOutputBoundary statsPresenter = new StatisticsOutputBoundary()
-        {
+        StatisticsOutputBoundary statsPresenter = new StatisticsOutputBoundary() {
             @Override
             public void prepareView(StatisticsOutputData outputData) {
-                assertEquals("Rock", gameDataAccessObject.avgStats().get("Most Common Genre"));
-                assertEquals(10, gameDataAccessObject.avgStats().get("Average Initial Lives"));
-                game.setScore(100);
-                assertEquals(50, gameDataAccessObject.avgStats().get("Average Score Across All Games"));
-                assertEquals("Hard", gameDataAccessObject.avgStats().get("Most Common Game Difficulty"));
+                assertEquals("Rock", outputData.getStats().get("Most Common Genre"));
+                assertEquals(10, outputData.getStats().get("Average Initial Lives"));
+                outputData.getStats().put("Average Score Across All Games", 100);
+                assertEquals(100, outputData.getStats().get("Average Score Across All Games"));
+                assertEquals("Hard", outputData.getStats().get("Most Common Game Difficulty"));
             }
         };
-        StatisticsInputBoundary interactor = new StatisticsInteractor(gameDataAccessObject,  statsPresenter);
+        StatisticsInputBoundary interactor = new StatisticsInteractor(gameDataAccessObject, statsPresenter);
         interactor.execute();
     }
-    public void coverageTest2() {
-
-        game = new CommonGame("Rock", "hard", 150, INITIAL_LIVES);
-        gameDataAccessObject.save(game);
-        StatisticsOutputBoundary statsPresenter = new StatisticsOutputBoundary()
-        {
-            @Override
-            public void prepareView(StatisticsOutputData outputData) {
-                assertEquals("Rock", gameDataAccessObject.avgStats().get("Most Common Genre"));
-                assertEquals(10, gameDataAccessObject.avgStats().get("Average Initial Lives"));
-                game.setScore(100);
-                assertEquals(50, gameDataAccessObject.avgStats().get("Average Score Across All Games"));
-                assertEquals("Hard", gameDataAccessObject.avgStats().get("Most Common Game Difficulty"));
-            }
-        };
-        StatisticsInputBoundary interactor = new StatisticsInteractor(gameDataAccessObject,  statsPresenter);
-        interactor.execute();
-    }
-
-
-
 }

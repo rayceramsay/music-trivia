@@ -66,7 +66,7 @@ public class InMemoryGameDataAccessObject implements SubmitAnswerGameDataAccessI
         String mostCommonDifficulty = difficultyLevels[maxCountIndex];
         String mostCommonGenre = genres[maxCountIndex2];
         HashMap<String, Object> allStats = new HashMap<>();
-        allStats.put("Average Score Across All Games", scoreSum/gamesPlayed);
+        allStats.put("Average Score", scoreSum/gamesPlayed);
         allStats.put("Average Initial Lives", sumInitialLives/gamesPlayed);
         allStats.put("Most Common Genre", mostCommonGenre);
         allStats.put("Most Common Game Difficulty", mostCommonDifficulty);
