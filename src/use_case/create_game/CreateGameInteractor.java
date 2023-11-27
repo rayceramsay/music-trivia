@@ -9,10 +9,10 @@ import view.RoundView;
 
 public class CreateGameInteractor implements CreateGameInputBoundary{
     final CreateGameDataAccessInterface gameAccessObject;
-    final CreateGamePresenter createGamePresenter;
+    final CreateGameOutputBoundary createGamePresenter;
     final RoundViewModel roundViewModel;
 
-    public CreateGameInteractor (CreateGameDataAccessInterface gameAccessObject, CreateGamePresenter createGamePresenter, RoundViewModel roundViewModel) {
+    public CreateGameInteractor (CreateGameDataAccessInterface gameAccessObject, CreateGameOutputBoundary createGamePresenter, RoundViewModel roundViewModel) {
         this.gameAccessObject = gameAccessObject;
         this.createGamePresenter = createGamePresenter;
         this.roundViewModel = roundViewModel;
