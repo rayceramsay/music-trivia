@@ -6,8 +6,6 @@ import entity.PlayableAudio;
 import entity.Round;
 import entity.Song;
 
-import java.sql.SQLOutput;
-
 public class ToggleAudioInteractor implements ToggleAudioInputBoundary {
     private final ToggleAudioGameDataAccessInterface toggleAudioDataAccessObject;
     private final ToggleAudioOutputBoundary toggleAudioPresenter;
@@ -30,13 +28,15 @@ public class ToggleAudioInteractor implements ToggleAudioInputBoundary {
 
         if (audioPlaying) {
             //stopping audio and showing play button
-            toggleAudioPresenter.showPlayButton();
             songAudio.stop();
+            toggleAudioPresenter.showPlayButton();
+
         }
         else {
             //playing audio and showing pause button
-            toggleAudioPresenter.showPauseButton();
             songAudio.play();
+            toggleAudioPresenter.showPauseButton();
+
 
         }
     }
