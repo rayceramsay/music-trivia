@@ -45,15 +45,6 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         this.roundViewModel.addPropertyChangeListener(this);
         this.submitAnswerViewModel.addPropertyChangeListener(this);
 
-        // Menu button
-        JButton menuButton = new JButton("Go to main menu");
-        menuButton.addActionListener(e -> {
-            viewManagerModel.setActiveView(MenuView.VIEW_NAME);
-            viewManagerModel.firePropertyChanged();
-        });
-        JPanel menuButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        menuButtonPanel.add(menuButton);
-
         // Prompt
         JLabel prompt = new JLabel(roundViewModel.TITLE_LABEL);
         prompt.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -115,6 +106,19 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         genreCell.setBackground(this.getBackground());
         genreCell.add(genreInfo);
         infoSection.add(genreCell);
+
+        // Menu button
+        JButton menuButton = new JButton("Go to main menu");
+        menuButton.addActionListener(e -> {
+            RoundState roundState = roundViewModel.getState();
+            roundState.setUserAnswer("");
+            answerInputField.setText("");
+
+            viewManagerModel.setActiveView(MenuView.VIEW_NAME);
+            viewManagerModel.firePropertyChanged();
+        });
+        JPanel menuButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        menuButtonPanel.add(menuButton);
 
         // Set view layout
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
