@@ -9,8 +9,9 @@ public class StatisticsViewModel extends ViewModel {
     public static final String STATE_PROPERTY = "submitAnswerState";
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
     private final StatisticsState statisticsState = new StatisticsState();
+    private final static String VIEW_NAME = "Statistics";
     public StatisticsViewModel() {
-        super("Statistics");
+            super(VIEW_NAME);
     }
     public StatisticsState getState() {
         return statisticsState;
