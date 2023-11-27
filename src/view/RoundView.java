@@ -50,7 +50,7 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         playSong = new JButton();
         ImageIcon playIcon = new ImageIcon("play-img.png");
         playSong.setIcon(setProperties(playIcon));
-        playSong.setMaximumSize(new Dimension(150, 350));
+        playSong.setMaximumSize(new Dimension(50, 350));
         playSong.setAlignmentX(Component.CENTER_ALIGNMENT);
         playSong.setAlignmentY(Component.CENTER_ALIGNMENT);
         playSong.addActionListener(event -> {
@@ -152,7 +152,7 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         }
     }
     public ImageIcon setProperties(ImageIcon buttonImage) {
-        return new ImageIcon(buttonImage.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH));
+        return new ImageIcon(buttonImage.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
     }
 
 }
