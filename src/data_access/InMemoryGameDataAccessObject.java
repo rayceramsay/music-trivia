@@ -26,7 +26,7 @@ public class InMemoryGameDataAccessObject implements SubmitAnswerGameDataAccessI
     public HashMap<String, Object> avgStats() {
         int gamesPlayed = 0;
         int scoreSum = 0;
-        double avgInitialLives = 0;
+        int sumInitialLives = 0;
         int[] difficultiesCount = new int[3]; // To track Easy, Medium, Hard count: index 0 -> Easy, 1 -> Medium, 2 -> Hard
         int[] genresCount = new int[3];
         for (Game game : games.values()) {
@@ -42,7 +42,7 @@ public class InMemoryGameDataAccessObject implements SubmitAnswerGameDataAccessI
             }
             gamesPlayed += 1;
             scoreSum += game.getScore();
-            avgInitialLives += game.getInitialLives();
+            sumInitialLives += game.getInitialLives();
         }
 
         String[] difficultyLevels = {"Easy", "Medium", "Hard"};
@@ -67,7 +67,7 @@ public class InMemoryGameDataAccessObject implements SubmitAnswerGameDataAccessI
         String mostCommonGenre = genres[maxCountIndex2];
         HashMap<String, Object> allStats = new HashMap<>();
         allStats.put("Average Score Across All Games", scoreSum/gamesPlayed);
-        allStats.put("Average Initial Lives", avgInitialLives);
+        allStats.put("Average Initial Lives", sumInitialLives/gamesPlayed);
         allStats.put("Most Common Genre", mostCommonGenre);
         allStats.put("Most Common Game Difficulty", mostCommonDifficulty);
         return allStats;
