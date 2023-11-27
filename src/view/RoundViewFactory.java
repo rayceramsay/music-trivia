@@ -2,10 +2,7 @@ package view;
 
 import data_access.api.SongAPI;
 import data_access.api.SpotifyAPI;
-import entity.CommonRoundFactory;
-import entity.CommonSongFactory;
-import entity.RoundFactory;
-import entity.SongFactory;
+import entity.*;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.finish_round.FinishRoundController;
 import interface_adapter.finish_round.FinishRoundPresenter;
@@ -23,6 +20,8 @@ import use_case.submit_answer.SubmitAnswerInputBoundary;
 import use_case.submit_answer.SubmitAnswerInteractor;
 import use_case.submit_answer.SubmitAnswerOutputBoundary;
 
+import javax.swing.text.View;
+
 public class RoundViewFactory {
     private RoundViewFactory() {}
 
@@ -30,22 +29,24 @@ public class RoundViewFactory {
                                    RoundViewModel roundViewModel,
                                    SubmitAnswerViewModel submitAnswerViewModel,
                                    GameOverViewModel gameOverViewModel,
-                                   SubmitAnswerGameDataAccessInterface submitAnswerGameDataAccessInterface
+                                   SubmitAnswerGameDataAccessInterface submitAnswerGameDataAccessInterface,
+                                   RoundFactory roundFactory
     ) {
 
         // submitAnswerGameDataAccessInterface and FinishRoundGameDataAccessInterface are the same so cast to reduce repeated parameters passed to function
         FinishRoundGameDataAccessInterface finishRoundGameDataAccessInterface = (FinishRoundGameDataAccessInterface) submitAnswerGameDataAccessInterface;
 
         SubmitAnswerController submitAnswerController = createSubmitAnswerUseCase(submitAnswerViewModel, submitAnswerGameDataAccessInterface);
-        FinishRoundController finishRoundController = createFinishRoundUseCase(viewManagerModel, gameOverViewModel, roundViewModel, finishRoundGameDataAccessInterface);
+        FinishRoundController finishRoundController = createFinishRoundUseCase(viewManagerModel, gameOverViewModel, roundViewModel, finishRoundGameDataAccessInterface, roundFactory);
 
-        return new RoundView(roundViewModel, submitAnswerViewModel, submitAnswerController, finishRoundController);
+        return new RoundView(roundViewModel, submitAnswerViewModel, submitAnswerController, finishRoundController, viewManagerModel);
 
     }
 
     private static SubmitAnswerController createSubmitAnswerUseCase(SubmitAnswerViewModel submitAnswerViewModel,
                                                                     SubmitAnswerGameDataAccessInterface gameDataAccessObject) {
         SubmitAnswerOutputBoundary submitAnswerPresenter = new SubmitAnswerPresenter(submitAnswerViewModel);
+
         SubmitAnswerInputBoundary submitAnswerInteractor = new SubmitAnswerInteractor(gameDataAccessObject, submitAnswerPresenter);
 
         return new SubmitAnswerController(submitAnswerInteractor);
@@ -53,11 +54,9 @@ public class RoundViewFactory {
     private static FinishRoundController createFinishRoundUseCase(ViewManagerModel viewManagerModel,
                                                                   GameOverViewModel gameOverViewModel,
                                                                   RoundViewModel roundViewModel,
-                                                                  FinishRoundGameDataAccessInterface gameDataAccessObject) {
+                                                                  FinishRoundGameDataAccessInterface gameDataAccessObject,
+                                                                  RoundFactory roundFactory) {
         FinishRoundOutputBoundary finishRoundPresenter = new FinishRoundPresenter(viewManagerModel, gameOverViewModel, roundViewModel);
-        SongFactory songFactory = new CommonSongFactory();
-        SongAPI songAPI = new SpotifyAPI(songFactory);
-        RoundFactory roundFactory = new CommonRoundFactory(songAPI);
         FinishRoundInputBoundary finishRoundInteractor = new FinishRoundInteractor(finishRoundPresenter, gameDataAccessObject, roundFactory);
 
         return new FinishRoundController(finishRoundInteractor);

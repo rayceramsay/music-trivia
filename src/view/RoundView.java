@@ -1,5 +1,6 @@
 package view;
 
+import interface_adapter.ViewManagerModel;
 import interface_adapter.finish_round.FinishRoundController;
 import interface_adapter.round.RoundState;
 import interface_adapter.round.RoundViewModel;
@@ -17,6 +18,7 @@ import java.beans.PropertyChangeListener;
 public class RoundView extends JPanel implements ActionListener, PropertyChangeListener {
     public final String viewName = "round";
     private final RoundViewModel roundViewModel;
+    private final ViewManagerModel viewManagerModel;
     private final SubmitAnswerViewModel submitAnswerViewModel;
     private final SubmitAnswerController submitAnswerController;
     private final FinishRoundController finishRoundController;
@@ -33,7 +35,9 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
     public RoundView(RoundViewModel roundViewModel,
                      SubmitAnswerViewModel submitAnswerViewModel,
                      SubmitAnswerController submitAnswerController,
-                     FinishRoundController finishRoundController) {
+                     FinishRoundController finishRoundController,
+                     ViewManagerModel viewManagerModel) {
+        this.viewManagerModel = viewManagerModel;
         this.roundViewModel = roundViewModel;
         this.submitAnswerViewModel = submitAnswerViewModel;
         this.submitAnswerController = submitAnswerController;

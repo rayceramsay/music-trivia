@@ -1,5 +1,4 @@
 package entity;
-
 public class TextInputRound implements Round {
     private final Song song;
     private final String question;

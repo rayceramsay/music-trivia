@@ -1,6 +1,7 @@
 package view;
 
 import interface_adapter.ViewManagerModel;
+import interface_adapter.game_settings.GameSettingsViewModel;
 import interface_adapter.menu.MenuViewModel;
 
 import javax.swing.*;
@@ -17,15 +18,17 @@ public class MenuView extends JPanel implements ActionListener, PropertyChangeLi
     private final MenuViewModel menuViewModel;
 
     private final ViewManagerModel viewManagerModel;
+    private final GameSettingsViewModel gameSettingsViewModel;
 
     public final JButton newGame;
     public final JButton loadGame;
     public final JButton careerStats;
 
-    public MenuView(MenuViewModel menuViewModel, ViewManagerModel viewManagerModel) {
+    public MenuView(MenuViewModel menuViewModel, ViewManagerModel viewManagerModel, GameSettingsViewModel gameSettingsViewModel) {
 
         this.menuViewModel = menuViewModel;
         this.viewManagerModel = viewManagerModel;
+        this.gameSettingsViewModel = gameSettingsViewModel;
 
         menuViewModel.addPropertyChangeListener(this);
 
@@ -56,9 +59,9 @@ public class MenuView extends JPanel implements ActionListener, PropertyChangeLi
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(newGame)) {
             viewManagerModel.setActiveView("game settings");
+            gameSettingsViewModel.firePropertyChanged();
             viewManagerModel.firePropertyChanged();
         }
-
     }
 
     @Override
