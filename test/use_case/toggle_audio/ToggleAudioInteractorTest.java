@@ -8,7 +8,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class ToggleAudioInteractorTest {
-    //TODO write tests ensuring that the toggle audio interactor behaves as expected
     private Song song;
     private Game game;
     private ToggleAudioGameDataAccessInterface gameDataAccessObject;

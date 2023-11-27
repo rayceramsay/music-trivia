@@ -16,7 +16,7 @@ public class ToggleAudioPresenter implements ToggleAudioOutputBoundary {
     public void showPauseButton() {
         ToggleAudioState toggleAudioState = toggleAudioViewModel.getState();
 
-        toggleAudioState.setImgPath("pause-img.png");
+        toggleAudioState.setImgPath("src/assets/pause-img2.png");
         toggleAudioViewModel.firePropertyChanged();
         roundViewModel.firePropertyChanged();
 
@@ -25,7 +25,7 @@ public class ToggleAudioPresenter implements ToggleAudioOutputBoundary {
     @Override
     public void showPlayButton() {
         ToggleAudioState toggleAudioState = toggleAudioViewModel.getState();
-        toggleAudioState.setImgPath("play-img.png");
+        toggleAudioState.setImgPath("src/assets/play-img2.png");
         toggleAudioViewModel.firePropertyChanged();
         roundViewModel.firePropertyChanged();
     }

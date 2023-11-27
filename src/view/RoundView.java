@@ -46,15 +46,13 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         // Prompt
         JLabel prompt = new JLabel(roundViewModel.TITLE_LABEL);
         prompt.setAlignmentX(Component.CENTER_ALIGNMENT);
-        //playSong = new JButton("", new ImageIcon("play-img.png"));
         playSong = new JButton();
-        ImageIcon playIcon = new ImageIcon("play-img.png");
+        ImageIcon playIcon = new ImageIcon("src/assets/play-img2.png");
         playSong.setIcon(setProperties(playIcon));
         playSong.setMaximumSize(new Dimension(50, 350));
         playSong.setAlignmentX(Component.CENTER_ALIGNMENT);
         playSong.setAlignmentY(Component.CENTER_ALIGNMENT);
         playSong.addActionListener(event -> {
-            ToggleAudioState toggleAudioState = toggleAudioViewModel.getState();
             toggleAudioController.execute(roundViewModel.getState().getGameId());
         });
         playSong.setAlignmentX(Component.CENTER_ALIGNMENT);
