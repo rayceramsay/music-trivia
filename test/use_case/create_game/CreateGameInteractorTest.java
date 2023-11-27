@@ -1,6 +1,8 @@
 package use_case.create_game;
 
 import data_access.InMemoryGameDataAccessObject;
+import data_access.api.SongAPI;
+import data_access.api.SpotifyAPI;
 import entity.*;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.create_game.CreateGamePresenter;
@@ -16,9 +18,13 @@ import static org.junit.Assert.*;
 public class CreateGameInteractorTest {
 
     private InMemoryGameDataAccessObject gameDataAccessObject;
+    private RoundFactory roundFactory;
 
     @Before
     public void init() {
+        SongFactory songFactory = new CommonSongFactory();
+        SongAPI songAPI = new SpotifyAPI(songFactory);
+        roundFactory = new CommonRoundFactory(songAPI);
         gameDataAccessObject = new InMemoryGameDataAccessObject();
     }
 
@@ -43,7 +49,7 @@ public class CreateGameInteractorTest {
             }
         };
 
-        CreateGameInputBoundary interactor = new CreateGameInteractor(gameDataAccessObject, createGamePresenter, roundViewModel);
+        CreateGameInputBoundary interactor = new CreateGameInteractor(gameDataAccessObject, createGamePresenter, roundViewModel, roundFactory);
 
         interactor.execute(createGameInputData);
 
@@ -63,7 +69,7 @@ public class CreateGameInteractorTest {
         RoundViewModel roundViewModel = new RoundViewModel();
         CreateGamePresenter createGamePresenter = new CreateGamePresenter(viewManagerModel, roundViewModel);
 
-        CreateGameInputBoundary interactor = new CreateGameInteractor(gameDataAccessObject, createGamePresenter, roundViewModel);
+        CreateGameInputBoundary interactor = new CreateGameInteractor(gameDataAccessObject, createGamePresenter, roundViewModel, roundFactory);
 
         interactor.execute(createGameInputData);
 
@@ -89,7 +95,7 @@ public class CreateGameInteractorTest {
         RoundViewModel roundViewModel = new RoundViewModel();
         CreateGamePresenter createGamePresenter = new CreateGamePresenter(viewManagerModel, roundViewModel);
 
-        CreateGameInputBoundary interactor = new CreateGameInteractor(gameDataAccessObject, createGamePresenter, roundViewModel);
+        CreateGameInputBoundary interactor = new CreateGameInteractor(gameDataAccessObject, createGamePresenter, roundViewModel, roundFactory);
 
         interactor.execute(createGameInputData);
 
