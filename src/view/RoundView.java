@@ -1,5 +1,6 @@
 package view;
 
+import interface_adapter.ViewManagerModel;
 import interface_adapter.finish_round.FinishRoundController;
 import interface_adapter.round.RoundState;
 import interface_adapter.round.RoundViewModel;
@@ -17,6 +18,7 @@ import java.beans.PropertyChangeListener;
 public class RoundView extends JPanel implements ActionListener, PropertyChangeListener {
     public final String viewName = "round";
     private final RoundViewModel roundViewModel;
+    private final ViewManagerModel viewManagerModel;
     private final SubmitAnswerViewModel submitAnswerViewModel;
     private final SubmitAnswerController submitAnswerController;
     private final FinishRoundController finishRoundController;
@@ -32,7 +34,9 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
     public RoundView(RoundViewModel roundViewModel,
                      SubmitAnswerViewModel submitAnswerViewModel,
                      SubmitAnswerController submitAnswerController,
-                     FinishRoundController finishRoundController) {
+                     FinishRoundController finishRoundController,
+                     ViewManagerModel viewManagerModel) {
+        this.viewManagerModel = viewManagerModel;
         this.roundViewModel = roundViewModel;
         this.submitAnswerViewModel = submitAnswerViewModel;
         this.submitAnswerController = submitAnswerController;
@@ -85,7 +89,6 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         infoSection.setBorder(BorderFactory.createEmptyBorder(2,0,0,0));
         infoSection.setLayout(new GridLayout(1, 3, borderWidth, borderWidth));
 
-
         roundInfo = new JLabel("Round: ");
         JPanel roundCell = new JPanel();
         roundCell.setBackground(this.getBackground());
@@ -118,6 +121,9 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        roundInfo.setText("Round: " + roundViewModel.getState().getCurrentRoundNumber() + "/" + roundViewModel.getState().getMaxRounds());
+        livesInfo.setText("Lives left:" + roundViewModel.getState().getCurrentLives());
+        genreInfo.setText("Genre: " + roundViewModel.getState().getGenre());
         if (evt.getPropertyName().equals(SubmitAnswerViewModel.STATE_PROPERTY)) {
             SubmitAnswerState submitAnswerState = (SubmitAnswerState) evt.getNewValue();
 
