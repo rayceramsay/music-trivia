@@ -6,10 +6,10 @@ import java.util.Map;
 
 public class GetLoadableGamesState {
 
-    private List<Map<String, String>> gamesData = new ArrayList<>();
+    private List<GetLoadableGamesStateItem> gamesData = new ArrayList<>();
     private String errorMessage = "";
 
-    public List<Map<String, String>> getGamesData() {
+    public List<GetLoadableGamesStateItem> getGamesData() {
         return gamesData;
     }
 
@@ -17,7 +17,7 @@ public class GetLoadableGamesState {
         return errorMessage;
     }
 
-    public void setGamesData(List<Map<String, String>> gamesData) {
+    public void setGamesData(List<GetLoadableGamesStateItem> gamesData) {
         this.gamesData = gamesData;
     }
 

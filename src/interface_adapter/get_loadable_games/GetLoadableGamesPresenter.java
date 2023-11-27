@@ -22,20 +22,19 @@ public class GetLoadableGamesPresenter implements GetLoadableGamesOutputBoundary
 
     @Override
     public void prepareGamesExistView(GetLoadableGamesOutputData outputData) {
-        List<Map<String, String>> gamesData = new ArrayList<>();
+        List<GetLoadableGamesStateItem> gamesData = new ArrayList<>();
         GetLoadableGamesState loadableGamesState = getLoadableGamesViewModel.getState();
 
         for (GetLoadableGamesOutputDataItem outputDataItem : outputData.getGetLoadableGamesOutputDataItems()) {
-            Map<String, String> gameData = new HashMap<>();
-
-            gameData.put("ID", outputDataItem.getGameID());
-            gameData.put("difficulty", outputDataItem.getDifficulty());
-            gameData.put("genre", outputDataItem.getGenre());
-            gameData.put("initialLives", String.valueOf(outputDataItem.getInitialLives()));
-            gameData.put("currentLives", String.valueOf(outputDataItem.getCurrentLives()));
-            gameData.put("maxRounds", String.valueOf(outputDataItem.getMaxRounds()));
-            gameData.put("currentRoundNumber", String.valueOf(outputDataItem.getCurrentRoundNumber()));
-            gameData.put("createdAt", outputDataItem.getCreatedAt());
+            GetLoadableGamesStateItem gameData = new GetLoadableGamesStateItem(
+                    outputDataItem.getGameID(),
+                    outputDataItem.getGenre(),
+                    outputDataItem.getDifficulty(),
+                    String.valueOf(outputDataItem.getInitialLives()),
+                    String.valueOf(outputDataItem.getCurrentLives()),
+                    String.valueOf(outputDataItem.getMaxRounds()),
+                    String.valueOf(outputDataItem.getCurrentRoundNumber()),
+                    outputDataItem.getCreatedAt());
 
             gamesData.add(gameData);
         }

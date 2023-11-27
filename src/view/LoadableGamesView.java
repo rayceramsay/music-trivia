@@ -2,6 +2,7 @@ package view;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.get_loadable_games.GetLoadableGamesState;
+import interface_adapter.get_loadable_games.GetLoadableGamesStateItem;
 import interface_adapter.get_loadable_games.GetLoadableGamesViewModel;
 import interface_adapter.load_game.LoadGameController;
 import interface_adapter.round.RoundViewModel;
@@ -64,22 +65,22 @@ public class LoadableGamesView extends JPanel implements ActionListener, Propert
         }
     }
 
-    private void displayLoadableGames(List<Map<String, String>> gamesData) {
+    private void displayLoadableGames(List<GetLoadableGamesStateItem> gamesData) {
         loadableGames.removeAll();
         loadableGames.setLayout(new GridLayout(0, 1));
 
-        for (Map<String, String> gameData: gamesData) {
+        for (GetLoadableGamesStateItem gameData: gamesData) {
             String gameDescription = String.format("<html>%s<br>Difficulty: %s | Genre: %s | Round: %s/%s | Lives: %s/%s</html>",
-                    gameData.get("createdAt"),
-                    gameData.get("difficulty"),
-                    gameData.get("genre"),
-                    gameData.get("currentRoundNumber"),
-                    gameData.get("maxRounds"),
-                    gameData.get("currentLives"),
-                    gameData.get("initialLives"));
+                    gameData.getCreatedAt(),
+                    gameData.getDifficulty(),
+                    gameData.getGenre(),
+                    gameData.getCurrentRoundNumber(),
+                    gameData.getMaxRounds(),
+                    gameData.getCurrentLives(),
+                    gameData.getInitialLives());
             JButton loadableGameButton = new JButton(gameDescription);
             loadableGameButton.addActionListener(e -> {
-                String gameID = gameData.get("ID");
+                String gameID = gameData.getGameID();
                 loadGameController.execute(gameID);
             });
 
