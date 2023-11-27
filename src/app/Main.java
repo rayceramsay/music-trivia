@@ -20,6 +20,7 @@ import use_case.finish_round.FinishRoundInputBoundary;
 import use_case.finish_round.FinishRoundInteractor;
 import use_case.submit_answer.SubmitAnswerInputBoundary;
 import use_case.submit_answer.SubmitAnswerInteractor;
+import use_case.create_game.*;
 import view.*;
 
 import javax.swing.*;
@@ -49,8 +50,8 @@ public class Main{
 
         InMemoryGameDataAccessObject gameDataAccessObject = new InMemoryGameDataAccessObject();
         RoundViewModel roundViewModel = new RoundViewModel();
-        CreateGamePresenter createGamePresenter = new CreateGamePresenter(viewManagerModel, roundViewModel);
-        CreateGameInteractor createGameInteractor = new CreateGameInteractor(gameDataAccessObject, createGamePresenter, roundViewModel);
+        CreateGameOutputBoundary createGamePresenter = new CreateGamePresenter(viewManagerModel, roundViewModel);
+        CreateGameInputBoundary createGameInteractor = new CreateGameInteractor(gameDataAccessObject, createGamePresenter, roundViewModel);
         CreateGameController createGameController = new CreateGameController(createGameInteractor);
         GameSettingsView gameSettingsView = new GameSettingsView(gameSettingsViewModel, viewManagerModel, createGameController);
         views.add(gameSettingsView, gameSettingsView.viewName);
