@@ -80,13 +80,7 @@ public class MenuView extends JPanel implements ActionListener, PropertyChangeLi
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        StatisticsState statisticsState = statisticsViewModel.getState();
-        String stringToShow = String.format("Here are your lifetime statistics...\n"  +
-                "Average Score: " + statisticsState.getAverageScore()  + "\n" +
-                "Average Initial Lives: " + statisticsState.getAverageLives() + "\n" +
-                "Average # of Rounds Played: " + statisticsState.getAverageRoundsPlayed() + "\n" +
-                "Most Common Game Difficulty: " + statisticsState.getCommonGameDifficulty() + "\n" +
-                "Most Common Genre Played: " + statisticsState.getCommonGameGenre());
-        JOptionPane.showMessageDialog(this, stringToShow);
+         StatisticsState statisticsState = statisticsViewModel.getState();
+        JOptionPane.showMessageDialog(this, statisticsState.getStatsMessage());
     }
 }
