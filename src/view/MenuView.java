@@ -28,13 +28,14 @@ public class MenuView extends JPanel implements ActionListener, PropertyChangeLi
     public final JButton loadGame;
     public final JButton careerStats;
     public MenuView(MenuViewModel menuViewModel, ViewManagerModel viewManagerModel,
-                    StatisticsViewModel statisticsViewModel, StatisticsController statisticsController) {
+                    StatisticsViewModel statisticsViewModel, StatisticsController statisticsController, GameSettingsViewModel gameSettingsViewModel) {
 
         this.menuViewModel = menuViewModel;
         this.viewManagerModel = viewManagerModel;
         this.statisticsViewModel = statisticsViewModel;
         this.statisticsController = statisticsController;
-  
+        this.gameSettingsViewModel = gameSettingsViewModel;
+
 
         menuViewModel.addPropertyChangeListener(this);
 
@@ -63,7 +64,6 @@ public class MenuView extends JPanel implements ActionListener, PropertyChangeLi
             }
         });
         this.statisticsViewModel.addPropertyChangeListener(this);
-
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
     }
@@ -80,7 +80,7 @@ public class MenuView extends JPanel implements ActionListener, PropertyChangeLi
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-         StatisticsState statisticsState = statisticsViewModel.getState();
+        StatisticsState statisticsState = statisticsViewModel.getState();
         JOptionPane.showMessageDialog(this, statisticsState.getStatsMessage());
     }
 }

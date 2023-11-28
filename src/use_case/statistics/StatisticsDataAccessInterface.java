@@ -7,6 +7,5 @@ import java.util.HashMap;
 
 public interface StatisticsDataAccessInterface {
     HashMap<String, Object> avgStats();
-
     void save(Game game);
 }

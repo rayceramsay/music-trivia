@@ -20,6 +20,13 @@ public class InMemoryGameDataAccessObject implements CreateGameDataAccessInterfa
     }
 
     @Override
+    public String addGame(String difficulty, String genre, int lives, int rounds) {
+        Game game = new CommonGame(genre, difficulty, rounds, lives);
+        save(game);
+        return game.getID();
+    }
+
+    @Override
     public void save(Game game) {
         games.put(game.getID(), game);
     }
@@ -71,19 +78,17 @@ public class InMemoryGameDataAccessObject implements CreateGameDataAccessInterfa
         String mostCommonDifficulty = difficultyLevels[maxCountIndex];
         String mostCommonGenre = genres[maxCountIndex2];
         HashMap<String, Object> allStats = new HashMap<>();
-        if(gamesPlayed == 0){
+        if (gamesPlayed == 0) {
             return allStats;
         }
-        allStats.put("Average Score", scoreSum/gamesPlayed);
-        allStats.put("Average Initial Lives", sumInitialLives/gamesPlayed);
-        allStats.put("Most Common Genre", mostCommonGenre);
-        allStats.put("Most Common Game Difficulty", mostCommonDifficulty);
-        allStats.put("Average Number of Rounds Played", roundsPlayed);
+        if (gamesPlayed > 0) {
+            allStats.put("Average Score", scoreSum / gamesPlayed);
+            allStats.put("Average Initial Lives", sumInitialLives / gamesPlayed);
+            allStats.put("Most Common Genre", mostCommonGenre);
+            allStats.put("Most Common Game Difficulty", mostCommonDifficulty);
+            allStats.put("Average Number of Rounds Played", roundsPlayed);
+        }
         return allStats;
 
-    public String addGame(String difficulty, String genre, int initialLives, int maxRounds) {
-        Game game = new CommonGame(genre, difficulty, maxRounds, initialLives);
-        save(game);
-        return game.getID();
     }
 }

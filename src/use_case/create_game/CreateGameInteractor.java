@@ -21,9 +21,7 @@ public class CreateGameInteractor implements CreateGameInputBoundary{
     @Override
     public void execute(CreateGameInputData inputData) {
         String ID = gameAccessObject.addGame(inputData.getDifficulty(),
-                inputData.getGenre(),
-                inputData.getLives(),
-                inputData.getRounds());
+                inputData.getGenre(), inputData.getRounds(), inputData.getLives());
 
         // temporary, will use factory in future
         PlayableAudio audio = new FileMP3PlayableAudio("path");

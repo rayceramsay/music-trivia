@@ -5,6 +5,8 @@ import entity.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.HashMap;
+
 import static org.junit.Assert.*;
 public class StatisticsTest {
     /**
@@ -16,26 +18,29 @@ public class StatisticsTest {
 
     @Before
     public void init() {
-        game = new CommonGame("Hip-Hop", "hard", 15, INITIAL_LIVES);
         gameDataAccessObject = new InMemoryGameDataAccessObject();
-        gameDataAccessObject.save(game);
     }
-
     /**
      * Basic functionality tests.
      */
     @Test
     public void averageInitialLivesTest() {
+        game = new CommonGame("Hip-Hop", "hard", 15, INITIAL_LIVES);
+        gameDataAccessObject.save(game);
         assertEquals(10, gameDataAccessObject.avgStats().get("Average Initial Lives"));
     }
 
     @Test
     public void averageScoreTest() {
+        game = new CommonGame("Hip-Hop", "hard", 15, INITIAL_LIVES);
         game.setScore(10);
+        gameDataAccessObject.save(game);
         assertEquals(10, gameDataAccessObject.avgStats().get("Average Initial Lives"));
     }
     @Test
     public void averageRoundPlayedTest(){
+        game = new CommonGame("Hip-Hop", "hard", 15, INITIAL_LIVES);
+        gameDataAccessObject.save(game);
         assertEquals(0, gameDataAccessObject.avgStats().get("Average Number of Rounds Played"));
         Round round = null;
         game.setCurrentRound(round);
@@ -44,11 +49,15 @@ public class StatisticsTest {
     }
     @Test
     public void commonDifficultyTest() {
+        game = new CommonGame("Hip-Hop", "hard", 15, INITIAL_LIVES);
+        gameDataAccessObject.save(game);
         assertEquals("Hard", gameDataAccessObject.avgStats().get("Most Common Game Difficulty"));
     }
 
     @Test
     public void commonGenreTest() {
+        game = new CommonGame("Hip-Hop", "hard", 15, INITIAL_LIVES);
+        gameDataAccessObject.save(game);
         assertEquals("Hip-Hop", gameDataAccessObject.avgStats().get("Most Common Genre"));
         game = new CommonGame("Pop", "hard", 15, INITIAL_LIVES);
         gameDataAccessObject.save(game);

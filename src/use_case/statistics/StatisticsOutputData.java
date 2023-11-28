@@ -1,7 +1,5 @@
 package use_case.statistics;
 
-import java.util.HashMap;
-
 public class StatisticsOutputData {
 
     private String commonGameDifficulty;
