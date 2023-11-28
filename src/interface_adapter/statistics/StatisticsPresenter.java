@@ -11,11 +11,16 @@ public class StatisticsPresenter implements StatisticsOutputBoundary {
     @Override
     public void prepareView(StatisticsOutputData statisticsOutputData) {
         StatisticsState statisticsState = statisticsViewModel.getState();
-        statisticsState.setAverageLives((Integer) statisticsOutputData.getStats().get("Average Initial Lives"));
-        statisticsState.setAverageScore((Integer) statisticsOutputData.getStats().get("Average Score"));
-        statisticsState.setCommonGameDifficulty((String) statisticsOutputData.getStats().get("Most Common Game Difficulty"));
-        statisticsState.setCommonGameGenre((String) statisticsOutputData.getStats().get("Most Common Genre"));
-        statisticsState.setAverageRoundsPlayed((Integer) statisticsOutputData.getStats().get("Average Number of Rounds Played"));
+        if(statisticsOutputData.hasStats()){
+            statisticsState.setStatsMessage(String.format("Here are your lifetime statistics...\n"  +
+                    "Average Score: " + statisticsOutputData.getAverageScore()  + "\n" +
+                    "Average Initial Lives: " + statisticsOutputData.getAverageLives() + "\n" +
+                    "Average # of Rounds Played: " + statisticsOutputData.getAverageRoundsPlayed() + "\n" +
+                    "Most Common Game Difficulty: " + statisticsOutputData.getCommonGameDifficulty() + "\n" +
+                    "Most Common Genre Played: " + statisticsOutputData.getCommonGameGenre()));
+        }else{
+            statisticsState.setStatsMessage("No stats have been recorded ... play games to record stats");
+        }
         statisticsViewModel.firePropertyChanged();
     }
 }
