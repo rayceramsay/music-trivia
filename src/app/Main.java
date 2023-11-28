@@ -11,6 +11,7 @@ import interface_adapter.game_settings.GameSettingsState;
 import interface_adapter.game_settings.GameSettingsViewModel;
 import interface_adapter.menu.MenuViewModel;
 import interface_adapter.round.RoundViewModel;
+import interface_adapter.statistics.StatisticsViewModel;
 import interface_adapter.submit_answer.SubmitAnswerController;
 import interface_adapter.submit_answer.SubmitAnswerPresenter;
 import interface_adapter.submit_answer.SubmitAnswerViewModel;
@@ -42,13 +43,15 @@ public class Main{
         ViewManagerModel viewManagerModel = new ViewManagerModel();
         new ViewManager(views, cardLayout, viewManagerModel);
 
+        InMemoryGameDataAccessObject gameDataAccessObject = new InMemoryGameDataAccessObject();
         // Create Views
         MenuViewModel menuViewModel = new MenuViewModel();
         GameSettingsViewModel gameSettingsViewModel = new GameSettingsViewModel();
-        MenuView menuView = new MenuView(menuViewModel, viewManagerModel, gameSettingsViewModel);
+        StatisticsViewModel statisticsViewModel = new StatisticsViewModel();
+        MenuView menuView = MenuViewUseCaseFactory.create(menuViewModel, viewManagerModel,statisticsViewModel, gameDataAccessObject, gameSettingsViewModel);
         views.add(menuView, menuView.viewName);
 
-        InMemoryGameDataAccessObject gameDataAccessObject = new InMemoryGameDataAccessObject();
+
         RoundViewModel roundViewModel = new RoundViewModel();
         CreateGameOutputBoundary createGamePresenter = new CreateGamePresenter(viewManagerModel, roundViewModel);
         CreateGameInputBoundary createGameInteractor = new CreateGameInteractor(gameDataAccessObject, createGamePresenter, roundViewModel);

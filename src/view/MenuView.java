@@ -3,6 +3,9 @@ package view;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.game_settings.GameSettingsViewModel;
 import interface_adapter.menu.MenuViewModel;
+import interface_adapter.statistics.StatisticsController;
+import interface_adapter.statistics.StatisticsState;
+import interface_adapter.statistics.StatisticsViewModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,17 +21,21 @@ public class MenuView extends JPanel implements ActionListener, PropertyChangeLi
     private final MenuViewModel menuViewModel;
 
     private final ViewManagerModel viewManagerModel;
+    private final StatisticsViewModel statisticsViewModel;
+    private final StatisticsController statisticsController;
     private final GameSettingsViewModel gameSettingsViewModel;
-
     public final JButton newGame;
     public final JButton loadGame;
     public final JButton careerStats;
-
-    public MenuView(MenuViewModel menuViewModel, ViewManagerModel viewManagerModel, GameSettingsViewModel gameSettingsViewModel) {
+    public MenuView(MenuViewModel menuViewModel, ViewManagerModel viewManagerModel,
+                    StatisticsViewModel statisticsViewModel, StatisticsController statisticsController, GameSettingsViewModel gameSettingsViewModel) {
 
         this.menuViewModel = menuViewModel;
         this.viewManagerModel = viewManagerModel;
+        this.statisticsViewModel = statisticsViewModel;
+        this.statisticsController = statisticsController;
         this.gameSettingsViewModel = gameSettingsViewModel;
+
 
         menuViewModel.addPropertyChangeListener(this);
 
@@ -47,9 +54,16 @@ public class MenuView extends JPanel implements ActionListener, PropertyChangeLi
 
         newGame.addActionListener(this);
         loadGame.addActionListener(this);
-        careerStats.addActionListener(this);
 
-
+        this.careerStats.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource().equals(MenuView.this.careerStats)) {
+                    statisticsController.execute();
+                }
+            }
+        });
+        this.statisticsViewModel.addPropertyChangeListener(this);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
     }
@@ -66,6 +80,7 @@ public class MenuView extends JPanel implements ActionListener, PropertyChangeLi
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-
+        StatisticsState statisticsState = statisticsViewModel.getState();
+        JOptionPane.showMessageDialog(this, statisticsState.getStatsMessage());
     }
 }
