@@ -2,6 +2,7 @@ package view;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.get_loadable_games.GetLoadableGamesController;
+import interface_adapter.game_settings.GameSettingsViewModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,14 +15,16 @@ public class MenuView extends JPanel implements ActionListener {
 
     private final ViewManagerModel viewManagerModel;
     private final GetLoadableGamesController getLoadableGamesController;
+    private final GameSettingsViewModel gameSettingsViewModel;
 
     private final JButton newGame;
     private final JButton loadGame;
     private final JButton careerStats;
 
-    public MenuView(ViewManagerModel viewManagerModel, GetLoadableGamesController getLoadableGamesController) {
+    public MenuView(ViewManagerModel viewManagerModel, GameSettingsViewModel gameSettingsViewModel, GetLoadableGamesController getLoadableGamesController) {
         this.viewManagerModel = viewManagerModel;
         this.getLoadableGamesController = getLoadableGamesController;
+        this.gameSettingsViewModel = gameSettingsViewModel;
 
         this.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.setAlignmentY(Component.CENTER_ALIGNMENT);
@@ -49,6 +52,7 @@ public class MenuView extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(newGame)) {
             viewManagerModel.setActiveView(GameSettingsView.VIEW_NAME);
+            gameSettingsViewModel.firePropertyChanged();
             viewManagerModel.firePropertyChanged();
         }
         if (e.getSource().equals(loadGame)) {

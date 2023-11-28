@@ -15,8 +15,8 @@ public class GameSettingsViewModel extends ViewModel {
     public final String PLAY_GAME_LABEL = "PLAY GAME";
     public final String BACK_LABEL = "BACK";
 
-
     private GameSettingsState state = new GameSettingsState();
+    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     public GameSettingsViewModel(String viewName) {
         super(viewName);
@@ -24,17 +24,19 @@ public class GameSettingsViewModel extends ViewModel {
 
     @Override
     public void firePropertyChanged() {
-
+        support.firePropertyChange("gameSettingsState", null, this.state);
     }
-
-    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
-        support.firePropertyChange("state", null, this.state);
+        support.addPropertyChangeListener(listener);
     }
 
     public GameSettingsState getState() {
         return state;
+    }
+
+    public void setState(GameSettingsState state) {
+        this.state = state;
     }
 }

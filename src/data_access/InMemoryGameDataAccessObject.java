@@ -5,11 +5,14 @@ import use_case.finish_round.FinishRoundGameDataAccessInterface;
 import use_case.get_loadable_games.GetLoadableGamesGameDataAccessInterface;
 import use_case.load_game.LoadGameGameDataAccessInterface;
 import use_case.submit_answer.SubmitAnswerGameDataAccessInterface;
+import entity.CommonGame;
+import use_case.create_game.CreateGameDataAccessInterface;
 
 import java.util.*;
 
 public class InMemoryGameDataAccessObject implements SubmitAnswerGameDataAccessInterface, FinishRoundGameDataAccessInterface,
-        GetLoadableGamesGameDataAccessInterface, LoadGameGameDataAccessInterface {
+        CreateGameDataAccessInterface, GetLoadableGamesGameDataAccessInterface, LoadGameGameDataAccessInterface {
+
     private final Map<String, Game> games = new HashMap<>();  // maps gameID to game object
 
     @Override
@@ -25,7 +28,7 @@ public class InMemoryGameDataAccessObject implements SubmitAnswerGameDataAccessI
     @Override
     public List<Game> getLoadableGames() {
         List<Game> loadableGames = new ArrayList<>();
-        for (Game game: games.values()) {
+        for (Game game : games.values()) {
             if (!game.isGameOver()) {
                 loadableGames.add(game);
             }
@@ -34,5 +37,13 @@ public class InMemoryGameDataAccessObject implements SubmitAnswerGameDataAccessI
         loadableGames.sort(Comparator.comparing(Game::getCreatedAt, Comparator.reverseOrder()));
 
         return loadableGames;
+    }
+
+    @Override
+    public String addGame(String difficulty, String genre, int initialLives, int maxRounds) {
+        Game game = new CommonGame(genre, difficulty, maxRounds, initialLives);
+        save(game);
+
+        return game.getID();
     }
 }

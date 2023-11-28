@@ -20,6 +20,7 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
     public final static String VIEW_NAME = "round";
 
     private final RoundViewModel roundViewModel;
+    private final ViewManagerModel viewManagerModel;
     private final SubmitAnswerViewModel submitAnswerViewModel;
     private final SubmitAnswerController submitAnswerController;
     private final FinishRoundController finishRoundController;
@@ -37,6 +38,7 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
                      SubmitAnswerViewModel submitAnswerViewModel,
                      SubmitAnswerController submitAnswerController,
                      FinishRoundController finishRoundController) {
+        this.viewManagerModel = viewManagerModel;
         this.roundViewModel = roundViewModel;
         this.submitAnswerViewModel = submitAnswerViewModel;
         this.submitAnswerController = submitAnswerController;
@@ -135,6 +137,9 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        roundInfo.setText("Round: " + roundViewModel.getState().getCurrentRoundNumber() + "/" + roundViewModel.getState().getMaxRounds());
+        livesInfo.setText("Lives left:" + roundViewModel.getState().getCurrentLives());
+        genreInfo.setText("Genre: " + roundViewModel.getState().getGenre());
         if (evt.getPropertyName().equals(SubmitAnswerViewModel.STATE_PROPERTY)) {
             SubmitAnswerState submitAnswerState = (SubmitAnswerState) evt.getNewValue();
 

@@ -1,6 +1,7 @@
 package view;
 
 import interface_adapter.ViewManagerModel;
+import interface_adapter.game_settings.GameSettingsViewModel;
 import interface_adapter.get_loadable_games.GetLoadableGamesController;
 import interface_adapter.get_loadable_games.GetLoadableGamesPresenter;
 import interface_adapter.get_loadable_games.GetLoadableGamesViewModel;
@@ -14,11 +15,12 @@ public class MenuViewFactory {
     private MenuViewFactory() {}
 
     public static MenuView create(ViewManagerModel viewManagerModel,
+                                   GameSettingsViewModel gameSettingsViewModel,
                                    GetLoadableGamesViewModel getLoadableGamesViewModel,
                                    GetLoadableGamesGameDataAccessInterface gameDataAccessObject) {
         GetLoadableGamesController getLoadableGamesController = createGetLoadableGamesUseCase(viewManagerModel, getLoadableGamesViewModel, gameDataAccessObject);
 
-        return new MenuView(viewManagerModel, getLoadableGamesController);
+        return new MenuView(viewManagerModel, gameSettingsViewModel, getLoadableGamesController);
     }
 
     private static GetLoadableGamesController createGetLoadableGamesUseCase(ViewManagerModel viewManagerModel,

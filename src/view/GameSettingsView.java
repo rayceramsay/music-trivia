@@ -1,9 +1,12 @@
 package view;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.game_settings.GameSettingsViewModel;
+import interface_adapter.create_game.CreateGameController;
+import interface_adapter.game_settings.*;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -37,12 +40,14 @@ public class GameSettingsView extends JPanel implements ActionListener, Property
 
 
     public GameSettingsView (GameSettingsViewModel gameSettingsViewModel,
-                             ViewManagerModel viewManagerModel) {
+                             ViewManagerModel viewManagerModel,
+                             CreateGameController gameController) {
 
         this.setLayout(new GridBagLayout());
 
         this.gameSettingsViewModel = gameSettingsViewModel;
         this.viewManagerModel = viewManagerModel;
+        gameSettingsViewModel.addPropertyChangeListener(this);
 
         String[] genreOptions = {"Hip-Hop", "Rock", "Pop"};
         String[] difficultyOptions = {"Easy", "Medium", "Hard"};
@@ -68,6 +73,15 @@ public class GameSettingsView extends JPanel implements ActionListener, Property
         gridBagContraints.anchor = GridBagConstraints.LINE_END;
         this.add(difficultySelector, gridBagContraints);
 
+        difficultySelector.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GameSettingsState currentState = gameSettingsViewModel.getState();
+                currentState.setDifficulty(difficultySelector.getSelectedItem().toString());
+                gameSettingsViewModel.setState(currentState);
+            }
+        });
+
         // GENRE
 
         genreLabel = new JLabel(gameSettingsViewModel.GENRE_SELECTOR_LABEL);
@@ -80,6 +94,16 @@ public class GameSettingsView extends JPanel implements ActionListener, Property
         gridBagContraints.gridx = 1;
         gridBagContraints.anchor = GridBagConstraints.LINE_END;
         this.add(genreSelector, gridBagContraints);
+
+        genreSelector.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GameSettingsState currentState = gameSettingsViewModel.getState();
+                currentState.setGenre(genreSelector.getSelectedItem().toString());
+                gameSettingsViewModel.setState(currentState);
+            }
+        });
+
 
         // LIVES SPINNER
 
@@ -96,6 +120,16 @@ public class GameSettingsView extends JPanel implements ActionListener, Property
         gridBagContraints.anchor = GridBagConstraints.LINE_END;
         this.add(livesSpinner, gridBagContraints);
 
+        livesSpinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                GameSettingsState currentState = gameSettingsViewModel.getState();
+                currentState.setLives((Integer) livesSpinner.getValue());
+                gameSettingsViewModel.setState(currentState);
+            }
+        });
+
+
         // ROUNDS SPINNER
 
         roundsSpinnerNumberModel = new SpinnerNumberModel(10, 5, 15, 1);
@@ -111,6 +145,16 @@ public class GameSettingsView extends JPanel implements ActionListener, Property
         gridBagContraints.anchor = GridBagConstraints.LINE_END;
         this.add(roundsSpinner, gridBagContraints);
 
+        roundsSpinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                GameSettingsState currentState = gameSettingsViewModel.getState();
+                currentState.setRounds((Integer) roundsSpinner.getValue());
+                gameSettingsViewModel.setState(currentState);
+
+            }
+        });
+
         // BUTTONS
 
         back = new JButton(gameSettingsViewModel.BACK_LABEL);
@@ -125,6 +169,21 @@ public class GameSettingsView extends JPanel implements ActionListener, Property
         this.add(playGame, gridBagContraints);
 
         playGame.addActionListener(this);
+
+        playGame.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource().equals(playGame)) {
+                    GameSettingsState state = gameSettingsViewModel.getState();
+
+                    gameController.execute(state.getDifficulty(),
+                                                state.getGenre(),
+                                                state.getLives(),
+                                                state.getRounds());
+
+                }
+            }
+        });
         back.addActionListener(this);
 
     }
@@ -143,6 +202,9 @@ public class GameSettingsView extends JPanel implements ActionListener, Property
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-
+        difficultySelector.getActionListeners()[0].actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null));
+        genreSelector.getActionListeners()[0].actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null));
+        livesSpinner.getChangeListeners()[0].stateChanged(new ChangeEvent(this));
+        roundsSpinner.getChangeListeners()[0].stateChanged(new ChangeEvent(this));
     }
 }

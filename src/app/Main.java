@@ -2,11 +2,15 @@ package app;
 
 import data_access.InMemoryGameDataAccessObject;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.create_game.CreateGameController;
+import interface_adapter.create_game.CreateGamePresenter;
 import interface_adapter.game_over.GameOverViewModel;
 import interface_adapter.game_settings.GameSettingsViewModel;
 import interface_adapter.get_loadable_games.GetLoadableGamesViewModel;
 import interface_adapter.round.RoundViewModel;
 import interface_adapter.submit_answer.SubmitAnswerViewModel;
+import use_case.create_game.CreateGameInteractor;
+import use_case.create_game.*;
 import view.*;
 
 import javax.swing.*;
@@ -22,8 +26,6 @@ public class Main {
         application.setMinimumSize(new Dimension(500, 200));
         JPanel views = new JPanel(cardLayout);
         application.add(views);
-
-        // Setup view manager
         ViewManagerModel viewManagerModel = new ViewManagerModel();
         new ViewManager(views, cardLayout, viewManagerModel);
 
@@ -37,9 +39,14 @@ public class Main {
         // Create data access objects
         InMemoryGameDataAccessObject gameDataAccessObject = new InMemoryGameDataAccessObject();
 
+        // Create objects for GameSettings View (TEMPORARY UNTIL FACTORY IS CREATED)
+        CreateGameOutputBoundary createGamePresenter = new CreateGamePresenter(viewManagerModel, roundViewModel);
+        CreateGameInputBoundary createGameInteractor = new CreateGameInteractor(gameDataAccessObject, createGamePresenter);
+        CreateGameController createGameController = new CreateGameController(createGameInteractor);
+
         // Create views
-        MenuView menuView = MenuViewFactory.create(viewManagerModel, getLoadableGamesViewModel, gameDataAccessObject);
-        GameSettingsView gameSettingsView = new GameSettingsView(gameSettingsViewModel, viewManagerModel);
+        MenuView menuView = MenuViewFactory.create(viewManagerModel, gameSettingsViewModel, getLoadableGamesViewModel, gameDataAccessObject);
+        GameSettingsView gameSettingsView = new GameSettingsView(gameSettingsViewModel, viewManagerModel, createGameController);
         GameOverView gameOverView = new GameOverView(gameOverViewModel, viewManagerModel);
         RoundView roundView = RoundViewFactory.create(viewManagerModel, roundViewModel, submitAnswerViewModel, gameOverViewModel, gameDataAccessObject);
         LoadableGamesView loadableGamesView = LoadableGamesViewFactory.create(viewManagerModel, getLoadableGamesViewModel, roundViewModel, gameDataAccessObject);
@@ -55,7 +62,7 @@ public class Main {
         viewManagerModel.setActiveView(MenuView.VIEW_NAME);
         viewManagerModel.firePropertyChanged();
 
-        // Start app
+        // Display app
         application.setLocationRelativeTo(null); // app opens on center of screen
         application.pack();
         application.setVisible(true);

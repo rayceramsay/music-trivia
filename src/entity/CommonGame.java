@@ -6,23 +6,27 @@ import java.util.List;
 import java.util.UUID;
 
 public class CommonGame implements Game {
-    private final String ID = UUID.randomUUID().toString();
-    private final String genre;
-    private final String difficulty;
-    private final int maxRounds;
-    private final int initialLives;
-    private int currentLives;
+    private final String ID;
     private int score;
-    private final ArrayList<Round> allRounds = new ArrayList<>();
-    private final LocalDateTime createdAt = LocalDateTime.now();
+    private final String difficulty;
+    private final String genre;
+    private final int initialLives;
+    private final int maxRounds;
+    private int currentLives;
+    private ArrayList<Round> allRounds;
+    private final LocalDateTime createdAt;
     private LocalDateTime finishedAt;
 
-    public CommonGame(String genre, String difficulty, int maxRounds, int initialLives) {
+   public CommonGame(String genre, String difficulty, int maxRounds,
+               int initialLives) {
+        this.ID = UUID.randomUUID().toString();
         this.genre = genre;
         this.difficulty = difficulty;
         this.maxRounds = maxRounds;
         this.initialLives = initialLives;
         this.currentLives = initialLives;
+        this.createdAt = LocalDateTime.now();
+        this.allRounds = new ArrayList<>();
     }
 
     @Override
@@ -59,8 +63,7 @@ public class CommonGame implements Game {
     }
 
     @Override
-    public int getScore() { return score; }
-
+    public int getScore() {return score;}
     @Override
     public Round getCurrentRound() {
         int roundsSize = allRounds.size();
@@ -88,10 +91,8 @@ public class CommonGame implements Game {
 
     @Override
     public void setCurrentRound(Round round) { allRounds.add(round); }
-
     @Override
     public void setFinishedAt(LocalDateTime finishedAt) { this.finishedAt = finishedAt; }
-
     @Override
     public boolean isGameOver() {
         boolean currentRoundIsFinished = getCurrentRound().isFinished();

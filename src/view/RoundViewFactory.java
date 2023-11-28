@@ -18,6 +18,7 @@ import use_case.submit_answer.SubmitAnswerInteractor;
 import use_case.submit_answer.SubmitAnswerOutputBoundary;
 
 public class RoundViewFactory {
+
     private RoundViewFactory() {}
 
     public static RoundView create(ViewManagerModel viewManagerModel,
@@ -34,7 +35,6 @@ public class RoundViewFactory {
         FinishRoundController finishRoundController = createFinishRoundUseCase(viewManagerModel, gameOverViewModel, roundViewModel, finishRoundGameDataAccessInterface);
 
         return new RoundView(viewManagerModel, roundViewModel, submitAnswerViewModel, submitAnswerController, finishRoundController);
-
     }
 
     private static SubmitAnswerController createSubmitAnswerUseCase(SubmitAnswerViewModel submitAnswerViewModel,
