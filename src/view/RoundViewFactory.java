@@ -17,6 +17,8 @@ import use_case.submit_answer.SubmitAnswerInputBoundary;
 import use_case.submit_answer.SubmitAnswerInteractor;
 import use_case.submit_answer.SubmitAnswerOutputBoundary;
 
+import javax.swing.text.View;
+
 public class RoundViewFactory {
     private RoundViewFactory() {}
 
@@ -33,7 +35,7 @@ public class RoundViewFactory {
         SubmitAnswerController submitAnswerController = createSubmitAnswerUseCase(submitAnswerViewModel, submitAnswerGameDataAccessInterface);
         FinishRoundController finishRoundController = createFinishRoundUseCase(viewManagerModel, gameOverViewModel, roundViewModel, finishRoundGameDataAccessInterface);
 
-        return new RoundView(roundViewModel, submitAnswerViewModel, submitAnswerController, finishRoundController);
+        return new RoundView(roundViewModel, submitAnswerViewModel, submitAnswerController, finishRoundController, viewManagerModel);
 
     }
 

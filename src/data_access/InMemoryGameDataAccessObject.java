@@ -4,12 +4,14 @@ import entity.Game;
 import use_case.finish_round.FinishRoundGameDataAccessInterface;
 import use_case.statistics.StatisticsDataAccessInterface;
 import use_case.submit_answer.SubmitAnswerGameDataAccessInterface;
+import entity.CommonGame;
+import use_case.create_game.CreateGameDataAccessInterface;
 
 import java.util.*;
 
-import static java.util.Collections.max;
 
-public class InMemoryGameDataAccessObject implements SubmitAnswerGameDataAccessInterface, FinishRoundGameDataAccessInterface, StatisticsDataAccessInterface {
+public class InMemoryGameDataAccessObject implements CreateGameDataAccessInterface, SubmitAnswerGameDataAccessInterface, FinishRoundGameDataAccessInterface, StatisticsDataAccessInterface {
+
     private final Map<String, Game> games = new HashMap<>();  // maps gameID to game object
 
     @Override
@@ -23,6 +25,7 @@ public class InMemoryGameDataAccessObject implements SubmitAnswerGameDataAccessI
     }
 
     @Override
+
     public HashMap<String, Object> avgStats() {
         int gamesPlayed = 0;
         int scoreSum = 0;
@@ -77,5 +80,10 @@ public class InMemoryGameDataAccessObject implements SubmitAnswerGameDataAccessI
         allStats.put("Most Common Game Difficulty", mostCommonDifficulty);
         allStats.put("Average Number of Rounds Played", roundsPlayed);
         return allStats;
+
+    public String addGame(String difficulty, String genre, int initialLives, int maxRounds) {
+        Game game = new CommonGame(genre, difficulty, maxRounds, initialLives);
+        save(game);
+        return game.getID();
     }
 }

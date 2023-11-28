@@ -1,6 +1,7 @@
 package view;
 
 import interface_adapter.ViewManagerModel;
+import interface_adapter.game_settings.GameSettingsViewModel;
 import interface_adapter.menu.MenuViewModel;
 import interface_adapter.statistics.StatisticsController;
 import interface_adapter.statistics.StatisticsState;
@@ -21,13 +22,11 @@ public class MenuView extends JPanel implements ActionListener, PropertyChangeLi
 
     private final ViewManagerModel viewManagerModel;
     private final StatisticsViewModel statisticsViewModel;
-
     private final StatisticsController statisticsController;
-
+    private final GameSettingsViewModel gameSettingsViewModel;
     public final JButton newGame;
     public final JButton loadGame;
     public final JButton careerStats;
-
     public MenuView(MenuViewModel menuViewModel, ViewManagerModel viewManagerModel,
                     StatisticsViewModel statisticsViewModel, StatisticsController statisticsController) {
 
@@ -35,6 +34,7 @@ public class MenuView extends JPanel implements ActionListener, PropertyChangeLi
         this.viewManagerModel = viewManagerModel;
         this.statisticsViewModel = statisticsViewModel;
         this.statisticsController = statisticsController;
+  
 
         menuViewModel.addPropertyChangeListener(this);
 
@@ -73,9 +73,9 @@ public class MenuView extends JPanel implements ActionListener, PropertyChangeLi
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(newGame)) {
             viewManagerModel.setActiveView("game settings");
+            gameSettingsViewModel.firePropertyChanged();
             viewManagerModel.firePropertyChanged();
         }
-
     }
 
     @Override
