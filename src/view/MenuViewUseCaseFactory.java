@@ -13,9 +13,8 @@ import use_case.statistics.StatisticsOutputBoundary;
 
 public class MenuViewUseCaseFactory {
     public static MenuView create(MenuViewModel menuViewModel, ViewManagerModel viewManagerModel, StatisticsViewModel
-            statisticsViewModel, StatisticsDataAccessInterface statisticsDataAccessInterface) {
+            statisticsViewModel, StatisticsDataAccessInterface statisticsDataAccessInterface, GameSettingsViewModel gameSettingsViewModel) {
         StatisticsController statisticsController = statisticsUseCase(viewManagerModel, statisticsViewModel, statisticsDataAccessInterface);
-        GameSettingsViewModel gameSettingsViewModel = new GameSettingsViewModel();
         return new MenuView(menuViewModel, viewManagerModel, statisticsViewModel, statisticsController, gameSettingsViewModel);
     }
     private static StatisticsController statisticsUseCase(ViewManagerModel viewManagerModel, StatisticsViewModel statisticsViewModel, StatisticsDataAccessInterface statisticsDataAccessInterface) {

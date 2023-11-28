@@ -22,16 +22,17 @@ public class InMemoryGameDataAccessObject implements CreateGameDataAccessInterfa
     }
 
     @Override
-    public String addGame(String difficulty, String genre, int lives, int rounds) {
-        Game game = new CommonGame(genre, difficulty, rounds, lives);
+    public void save(Game game) {
+        games.put(game.getID(), game);
+    }
+
+    @Override
+    public String addGame(String difficulty, String genre, int initialLives, int maxRounds) {
+        Game game = new CommonGame(genre, difficulty, maxRounds, initialLives);
         save(game);
         return game.getID();
     }
 
-    @Override
-    public void save(Game game) {
-        games.put(game.getID(), game);
-    }
 
     @Override
 
@@ -79,17 +80,15 @@ public class InMemoryGameDataAccessObject implements CreateGameDataAccessInterfa
 
         String mostCommonDifficulty = difficultyLevels[maxCountIndex];
         String mostCommonGenre = genres[maxCountIndex2];
-        HashMap<String, Object> allStats = new HashMap<>();
         if (gamesPlayed == 0) {
             return null;
         } else {
-            LifetimeStatistics lifetimeStatistics = new CommonLifetimeStatistics(
+            return new CommonLifetimeStatistics(
                     scoreSum/gamesPlayed,
                     sumInitialLives/gamesPlayed,
                     roundsPlayed/gamesPlayed,
                     mostCommonDifficulty,
                     mostCommonGenre);
-            return lifetimeStatistics;
         }
 
     }
