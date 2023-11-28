@@ -25,4 +25,5 @@ public class CommonSong implements Song {
     public PlayableAudio getAudio() {
         return audio;
     }
+
 }

@@ -3,28 +3,40 @@ package view;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.get_loadable_games.GetLoadableGamesController;
 import interface_adapter.game_settings.GameSettingsViewModel;
+import interface_adapter.statistics.StatisticsController;
+import interface_adapter.statistics.StatisticsState;
+import interface_adapter.statistics.StatisticsViewModel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-public class MenuView extends JPanel implements ActionListener {
+public class MenuView extends JPanel implements ActionListener, PropertyChangeListener {
 
     public final static String VIEW_NAME = "menu";
 
     private final ViewManagerModel viewManagerModel;
     private final GetLoadableGamesController getLoadableGamesController;
     private final GameSettingsViewModel gameSettingsViewModel;
+    private final StatisticsViewModel statisticsViewModel;
+    private final StatisticsController statisticsController;
 
     private final JButton newGame;
     private final JButton loadGame;
     private final JButton careerStats;
 
-    public MenuView(ViewManagerModel viewManagerModel, GameSettingsViewModel gameSettingsViewModel, GetLoadableGamesController getLoadableGamesController) {
+    public MenuView(ViewManagerModel viewManagerModel, GameSettingsViewModel gameSettingsViewModel,
+                    StatisticsViewModel statisticsViewModel, GetLoadableGamesController getLoadableGamesController,
+                    StatisticsController statisticsController) {
         this.viewManagerModel = viewManagerModel;
         this.getLoadableGamesController = getLoadableGamesController;
         this.gameSettingsViewModel = gameSettingsViewModel;
+        this.statisticsViewModel = statisticsViewModel;
+        this.statisticsController = statisticsController;
+        statisticsViewModel.addPropertyChangeListener(this);
 
         this.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.setAlignmentY(Component.CENTER_ALIGNMENT);
@@ -58,5 +70,14 @@ public class MenuView extends JPanel implements ActionListener {
         if (e.getSource().equals(loadGame)) {
             getLoadableGamesController.execute();
         }
+        if (e.getSource().equals(careerStats)) {
+            statisticsController.execute();
+        }
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        StatisticsState statisticsState = statisticsViewModel.getState();
+        JOptionPane.showMessageDialog(this, statisticsState.getStatsMessage());
     }
 }

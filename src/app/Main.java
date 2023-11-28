@@ -8,6 +8,7 @@ import interface_adapter.game_over.GameOverViewModel;
 import interface_adapter.game_settings.GameSettingsViewModel;
 import interface_adapter.get_loadable_games.GetLoadableGamesViewModel;
 import interface_adapter.round.RoundViewModel;
+import interface_adapter.statistics.StatisticsViewModel;
 import interface_adapter.submit_answer.SubmitAnswerViewModel;
 import use_case.create_game.CreateGameInteractor;
 import use_case.create_game.*;
@@ -35,6 +36,7 @@ public class Main {
         RoundViewModel roundViewModel = new RoundViewModel(RoundView.VIEW_NAME);
         SubmitAnswerViewModel submitAnswerViewModel = new SubmitAnswerViewModel(RoundView.VIEW_NAME);
         GetLoadableGamesViewModel getLoadableGamesViewModel = new GetLoadableGamesViewModel(LoadableGamesView.VIEW_NAME);
+        StatisticsViewModel statisticsViewModel = new StatisticsViewModel();
 
         // Create data access objects
         InMemoryGameDataAccessObject gameDataAccessObject = new InMemoryGameDataAccessObject();
@@ -45,7 +47,7 @@ public class Main {
         CreateGameController createGameController = new CreateGameController(createGameInteractor);
 
         // Create views
-        MenuView menuView = MenuViewFactory.create(viewManagerModel, gameSettingsViewModel, getLoadableGamesViewModel, gameDataAccessObject);
+        MenuView menuView = MenuViewFactory.create(viewManagerModel, gameSettingsViewModel, getLoadableGamesViewModel, statisticsViewModel, gameDataAccessObject, gameDataAccessObject);
         GameSettingsView gameSettingsView = new GameSettingsView(gameSettingsViewModel, viewManagerModel, createGameController);
         GameOverView gameOverView = new GameOverView(gameOverViewModel, viewManagerModel);
         RoundView roundView = RoundViewFactory.create(viewManagerModel, roundViewModel, submitAnswerViewModel, gameOverViewModel, gameDataAccessObject);
