@@ -1,5 +1,5 @@
 package use_case.statistics;
-
+import java.util.HashMap;
 public class StatisticsInteractor implements StatisticsInputBoundary {
 
     private final StatisticsDataAccessInterface gameDataAccessObject;
