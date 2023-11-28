@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class CommonGame implements Game {
+
     private final String ID;
     private final String genre;
     private final String difficulty;
@@ -69,8 +70,7 @@ public class CommonGame implements Game {
     }
 
     @Override
-    public int getScore() { return score; }
-
+    public int getScore() {return score;}
     @Override
     public Round getCurrentRound() {
         int roundsSize = allRounds.size();
@@ -98,10 +98,8 @@ public class CommonGame implements Game {
 
     @Override
     public void setCurrentRound(Round round) { allRounds.add(round); }
-
     @Override
     public void setFinishedAt(LocalDateTime finishedAt) { this.finishedAt = finishedAt; }
-
     @Override
     public boolean isGameOver() { return allRounds.size() >= maxRounds || currentLives <= 0; }
 
