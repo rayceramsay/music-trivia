@@ -22,10 +22,14 @@ public class GetLoadableGamesInteractor implements GetLoadableGamesInputBoundary
         List<Game> loadableGames = gameDataAccessObject.getLoadableGames();
 
         for (Game game: loadableGames) {
-            String createdAt = game.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-            GetLoadableGamesOutputDataItem gameData = new GetLoadableGamesOutputDataItem(game.getID(), game.getGenre(),
-                    game.getDifficulty(), game.getInitialLives(), game.getCurrentLives(), game.getMaxRounds(),
-                    game.getRoundsPlayed(), createdAt);
+            GetLoadableGamesOutputDataItem gameData = new GetLoadableGamesOutputDataItem(game.getID(),
+                    game.getGenre(),
+                    game.getDifficulty(),
+                    game.getInitialLives(),
+                    game.getCurrentLives(),
+                    game.getMaxRounds(),
+                    game.getRoundsPlayed(),
+                    game.getCreatedAt());
 
             loadableGamesData.add(gameData);
         }

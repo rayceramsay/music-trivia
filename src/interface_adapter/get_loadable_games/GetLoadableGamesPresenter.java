@@ -5,6 +5,7 @@ import use_case.get_loadable_games.GetLoadableGamesOutputBoundary;
 import use_case.get_loadable_games.GetLoadableGamesOutputData;
 import use_case.get_loadable_games.GetLoadableGamesOutputDataItem;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +35,7 @@ public class GetLoadableGamesPresenter implements GetLoadableGamesOutputBoundary
                     String.valueOf(outputDataItem.getCurrentLives()),
                     String.valueOf(outputDataItem.getMaxRounds()),
                     String.valueOf(outputDataItem.getCurrentRoundNumber()),
-                    outputDataItem.getCreatedAt());
+                    outputDataItem.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
 
             gamesData.add(gameData);
         }
