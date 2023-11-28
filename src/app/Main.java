@@ -1,13 +1,10 @@
 package app;
 
 import data_access.InMemoryGameDataAccessObject;
-import entity.*;
-import entity.CommonGame;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.game_over.GameOverViewModel;
 import interface_adapter.game_settings.GameSettingsViewModel;
 import interface_adapter.menu.MenuViewModel;
-import interface_adapter.round.RoundState;
 import interface_adapter.round.RoundViewModel;
 import interface_adapter.submit_answer.SubmitAnswerViewModel;
 import interface_adapter.toggle_audio.ToggleAudioViewModel;
@@ -61,17 +58,5 @@ public class Main{
         application.setLocationRelativeTo(null); // app opens on center of screen
         application.pack();
         application.setVisible(true);
-
-        Game game = new CommonGame("pop", "hard", 10, 3);
-        Song song = new CommonSong("Closer", "The Chainsmokers", new OnlineMP3PlayableAudio("path/song.mp3"));
-        Round round = new TextInputRound(song, "What song is this?", "Closer");
-        game.setCurrentRound(round);
-        gameDataAccessObject.save(game);
-
-        RoundState roundState = roundViewModel.getState();
-        roundState.setGenre("pop");
-        roundState.setMaxRounds(10);
-        roundState.setInitialLives(3);
-        roundState.setGameId(game.getID());
     }
 }
