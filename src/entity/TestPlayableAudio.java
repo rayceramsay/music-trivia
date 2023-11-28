@@ -1,10 +1,10 @@
 package entity;
 
-public class OnlineMP3PlayableAudio implements PlayableAudio {
+public class TestPlayableAudio implements PlayableAudio {
     private final String audioUrl;
     private boolean isPlaying;
 
-    public OnlineMP3PlayableAudio(String audioUrl) { this.audioUrl = audioUrl; }
+    public TestPlayableAudio(String audioUrl) { this.audioUrl = audioUrl; }
 
     @Override
     public String getPath() { return audioUrl; }
@@ -23,5 +23,4 @@ public class OnlineMP3PlayableAudio implements PlayableAudio {
     public boolean isPlaying() {
         return this.isPlaying;
     }
-
 }

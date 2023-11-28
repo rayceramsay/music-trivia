@@ -10,10 +10,10 @@ import interface_adapter.get_loadable_games.GetLoadableGamesViewModel;
 import interface_adapter.round.RoundViewModel;
 import interface_adapter.statistics.StatisticsViewModel;
 import interface_adapter.submit_answer.SubmitAnswerViewModel;
+import interface_adapter.toggle_audio.ToggleAudioViewModel;
 import use_case.create_game.CreateGameInteractor;
 import use_case.create_game.*;
 import view.*;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -27,6 +27,8 @@ public class Main {
         application.setMinimumSize(new Dimension(500, 200));
         JPanel views = new JPanel(cardLayout);
         application.add(views);
+
+        // Setup view manager
         ViewManagerModel viewManagerModel = new ViewManagerModel();
         new ViewManager(views, cardLayout, viewManagerModel);
 
@@ -36,7 +38,8 @@ public class Main {
         RoundViewModel roundViewModel = new RoundViewModel(RoundView.VIEW_NAME);
         SubmitAnswerViewModel submitAnswerViewModel = new SubmitAnswerViewModel(RoundView.VIEW_NAME);
         GetLoadableGamesViewModel getLoadableGamesViewModel = new GetLoadableGamesViewModel(LoadableGamesView.VIEW_NAME);
-        StatisticsViewModel statisticsViewModel = new StatisticsViewModel();
+        StatisticsViewModel statisticsViewModel = new StatisticsViewModel(MenuView.VIEW_NAME);
+        ToggleAudioViewModel toggleAudioViewModel = new ToggleAudioViewModel(RoundView.VIEW_NAME);
 
         // Create data access objects
         InMemoryGameDataAccessObject gameDataAccessObject = new InMemoryGameDataAccessObject();
@@ -50,7 +53,7 @@ public class Main {
         MenuView menuView = MenuViewFactory.create(viewManagerModel, gameSettingsViewModel, getLoadableGamesViewModel, statisticsViewModel, gameDataAccessObject, gameDataAccessObject);
         GameSettingsView gameSettingsView = new GameSettingsView(gameSettingsViewModel, viewManagerModel, createGameController);
         GameOverView gameOverView = new GameOverView(gameOverViewModel, viewManagerModel);
-        RoundView roundView = RoundViewFactory.create(viewManagerModel, roundViewModel, submitAnswerViewModel, gameOverViewModel, gameDataAccessObject);
+        RoundView roundView = RoundViewFactory.create(viewManagerModel, roundViewModel, submitAnswerViewModel, toggleAudioViewModel, gameOverViewModel, gameDataAccessObject);
         LoadableGamesView loadableGamesView = LoadableGamesViewFactory.create(viewManagerModel, getLoadableGamesViewModel, roundViewModel, gameDataAccessObject);
 
         // Add views to app

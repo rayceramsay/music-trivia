@@ -8,13 +8,15 @@ import use_case.get_loadable_games.GetLoadableGamesGameDataAccessInterface;
 import use_case.load_game.LoadGameGameDataAccessInterface;
 import use_case.statistics.StatisticsDataAccessInterface;
 import use_case.submit_answer.SubmitAnswerGameDataAccessInterface;
+import use_case.toggle_audio.ToggleAudioGameDataAccessInterface;
 import entity.CommonGame;
 import use_case.create_game.CreateGameDataAccessInterface;
 
 import java.util.*;
 
 public class InMemoryGameDataAccessObject implements SubmitAnswerGameDataAccessInterface, FinishRoundGameDataAccessInterface,
-        CreateGameDataAccessInterface, GetLoadableGamesGameDataAccessInterface, LoadGameGameDataAccessInterface, StatisticsDataAccessInterface {
+        CreateGameDataAccessInterface, GetLoadableGamesGameDataAccessInterface, LoadGameGameDataAccessInterface,
+        StatisticsDataAccessInterface, ToggleAudioGameDataAccessInterface {
 
     private final Map<String, Game> games = new HashMap<>();  // maps gameID to game object
 
