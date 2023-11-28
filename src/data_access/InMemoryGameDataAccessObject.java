@@ -6,14 +6,14 @@ import entity.LifetimeStatistics;
 import use_case.finish_round.FinishRoundGameDataAccessInterface;
 import use_case.statistics.StatisticsDataAccessInterface;
 import use_case.submit_answer.SubmitAnswerGameDataAccessInterface;
+import use_case.toggle_audio.ToggleAudioGameDataAccessInterface;
 import entity.CommonGame;
 import use_case.create_game.CreateGameDataAccessInterface;
 
 import java.util.*;
 
 
-public class InMemoryGameDataAccessObject implements CreateGameDataAccessInterface, SubmitAnswerGameDataAccessInterface, FinishRoundGameDataAccessInterface, StatisticsDataAccessInterface {
-
+public class InMemoryGameDataAccessObject implements CreateGameDataAccessInterface, SubmitAnswerGameDataAccessInterface, FinishRoundGameDataAccessInterface, StatisticsDataAccessInterface, ToggleAudioGameDataAccessInterface {
     private final Map<String, Game> games = new HashMap<>();  // maps gameID to game object
 
     @Override
@@ -35,7 +35,6 @@ public class InMemoryGameDataAccessObject implements CreateGameDataAccessInterfa
 
 
     @Override
-
     public LifetimeStatistics avgStats() {
         int gamesPlayed = 0;
         int scoreSum = 0;

@@ -15,6 +15,7 @@ import interface_adapter.statistics.StatisticsViewModel;
 import interface_adapter.submit_answer.SubmitAnswerController;
 import interface_adapter.submit_answer.SubmitAnswerPresenter;
 import interface_adapter.submit_answer.SubmitAnswerViewModel;
+import interface_adapter.toggle_audio.ToggleAudioViewModel;
 import use_case.create_game.CreateGameDataAccessInterface;
 import use_case.create_game.CreateGameInteractor;
 import use_case.finish_round.FinishRoundInputBoundary;
@@ -23,7 +24,6 @@ import use_case.submit_answer.SubmitAnswerInputBoundary;
 import use_case.submit_answer.SubmitAnswerInteractor;
 import use_case.create_game.*;
 import view.*;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -44,36 +44,31 @@ public class Main{
         new ViewManager(views, cardLayout, viewManagerModel);
 
         InMemoryGameDataAccessObject gameDataAccessObject = new InMemoryGameDataAccessObject();
-        // Create Views
+        
+        // Create View Models
         MenuViewModel menuViewModel = new MenuViewModel();
         GameSettingsViewModel gameSettingsViewModel = new GameSettingsViewModel();
-        StatisticsViewModel statisticsViewModel = new StatisticsViewModel();
-        MenuView menuView = MenuViewUseCaseFactory.create(menuViewModel, viewManagerModel,statisticsViewModel, gameDataAccessObject, gameSettingsViewModel);
-        views.add(menuView, menuView.viewName);
-
-
         RoundViewModel roundViewModel = new RoundViewModel();
+        SubmitAnswerViewModel submitAnswerViewModel = new SubmitAnswerViewModel();
+        GameOverViewModel gameOverViewModel = new GameOverViewModel();
+        StatisticsViewModel statisticsViewModel = new StatisticsViewModel();
+        ToggleAudioViewModel toggleAudioViewModel = new ToggleAudioViewModel();
+
+        
+        // Create views 
+        MenuView menuView = MenuViewUseCaseFactory.create(menuViewModel, viewManagerModel, statisticsViewModel, gameDataAccessObject, gameSettingsViewModel);
+        GameOverView gameOverView = new GameOverView(gameOverViewModel, viewManagerModel);
+        RoundView roundView = RoundViewFactory.create(viewManagerModel, roundViewModel, submitAnswerViewModel, toggleAudioViewModel, gameOverViewModel, gameDataAccessObject);
         CreateGameOutputBoundary createGamePresenter = new CreateGamePresenter(viewManagerModel, roundViewModel);
         CreateGameInputBoundary createGameInteractor = new CreateGameInteractor(gameDataAccessObject, createGamePresenter, roundViewModel);
         CreateGameController createGameController = new CreateGameController(createGameInteractor);
         GameSettingsView gameSettingsView = new GameSettingsView(gameSettingsViewModel, viewManagerModel, createGameController);
-        views.add(gameSettingsView, gameSettingsView.viewName);
-
-        GameOverViewModel gameOverViewModel = new GameOverViewModel();
-        GameOverView gameOverView = new GameOverView(gameOverViewModel, viewManagerModel);
-        views.add(gameOverView, gameOverView.viewName);
-
-        SubmitAnswerViewModel submitAnswerViewModel = new SubmitAnswerViewModel();
-        SubmitAnswerPresenter submitAnswerPresenter = new SubmitAnswerPresenter(submitAnswerViewModel);
-        SubmitAnswerInputBoundary submitAnswerInteractor = new SubmitAnswerInteractor(gameDataAccessObject, submitAnswerPresenter);
-        SubmitAnswerController submitAnswerController = new SubmitAnswerController(submitAnswerInteractor);
-
-        FinishRoundPresenter finishRoundPresenter = new FinishRoundPresenter(viewManagerModel, gameOverViewModel, roundViewModel);
-        FinishRoundInputBoundary finishRoundIteractor = new FinishRoundInteractor(finishRoundPresenter, gameDataAccessObject);
-        FinishRoundController finishRoundController = new FinishRoundController(finishRoundIteractor);
-
-        RoundView roundView = new RoundView(roundViewModel, submitAnswerViewModel, submitAnswerController, finishRoundController, viewManagerModel);
+        
+        // Add views
+        views.add(menuView, menuView.viewName);
         views.add(roundView, roundView.viewName);
+        views.add(gameOverView, gameOverView.viewName);
+        views.add(gameSettingsView, gameSettingsView.viewName);
 
         viewManagerModel.setActiveView(menuView.viewName);
         viewManagerModel.firePropertyChanged();
