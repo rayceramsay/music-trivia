@@ -1,7 +1,6 @@
 package app;
 
 import data_access.InMemoryGameDataAccessObject;
-import entity.*;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.create_game.CreateGameController;
 import interface_adapter.create_game.CreateGamePresenter;
@@ -11,7 +10,6 @@ import interface_adapter.game_over.GameOverViewModel;
 import interface_adapter.game_settings.GameSettingsState;
 import interface_adapter.game_settings.GameSettingsViewModel;
 import interface_adapter.menu.MenuViewModel;
-import interface_adapter.round.RoundState;
 import interface_adapter.round.RoundViewModel;
 import interface_adapter.statistics.StatisticsViewModel;
 import interface_adapter.submit_answer.SubmitAnswerController;
