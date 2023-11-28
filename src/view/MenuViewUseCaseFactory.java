@@ -14,10 +14,10 @@ import view.MenuView;
 public class MenuViewUseCaseFactory {
     public static MenuView create(MenuViewModel menuViewModel, ViewManagerModel viewManagerModel, StatisticsViewModel
             statisticsViewModel, StatisticsDataAccessInterface statisticsDataAccessInterface) {
-        StatisticsController statisticsController = StatisticsUseCase(viewManagerModel, statisticsViewModel, statisticsDataAccessInterface);
+        StatisticsController statisticsController = statisticsUseCase(viewManagerModel, statisticsViewModel, statisticsDataAccessInterface);
         return new MenuView(menuViewModel, viewManagerModel, statisticsViewModel, statisticsController);
     }
-    private static StatisticsController StatisticsUseCase(ViewManagerModel viewManagerModel, StatisticsViewModel statisticsViewModel, StatisticsDataAccessInterface statisticsDataAccessInterface) {
+    private static StatisticsController statisticsUseCase(ViewManagerModel viewManagerModel, StatisticsViewModel statisticsViewModel, StatisticsDataAccessInterface statisticsDataAccessInterface) {
         StatisticsOutputBoundary statisticsOutputBoundary = new StatisticsPresenter(statisticsViewModel);
         StatisticsInputBoundary statisticsInteractor = new StatisticsInteractor(statisticsDataAccessInterface, statisticsOutputBoundary);
         return new StatisticsController(statisticsInteractor);
