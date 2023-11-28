@@ -20,24 +20,23 @@ public class CreateGameInteractor implements CreateGameInputBoundary{
 
     @Override
     public void execute(CreateGameInputData inputData) {
-        String ID = gameAccessObject.addGame(inputData.getDifficulty(),
-                inputData.getGenre(),
-                inputData.getLives(),
-                inputData.getRounds());
+        Game game = new CommonGame(inputData.getGenre(), inputData.getDifficulty(), inputData.getRounds(), inputData.getLives());
 
         // temporary, will use factory in future
         PlayableAudio audio = new FileMP3PlayableAudio("path");
         Song song = new CommonSong("title", "artist", audio);
         Round firstRound = new TextInputRound(song, "What is this song?", song.getTitle());
 
-        gameAccessObject.getGameByID(ID).setCurrentRound(firstRound);
+        game.setCurrentRound(firstRound);
+
+        gameAccessObject.save(game);
 
         CreateGameOutputData createGameOutputData = new CreateGameOutputData();
-        createGameOutputData.setGameId(ID);
-        createGameOutputData.setGenre(inputData.getGenre());
-        createGameOutputData.setDifficulty(inputData.getDifficulty());
-        createGameOutputData.setRounds(inputData.getRounds());
-        createGameOutputData.setLives(inputData.getLives());
+        createGameOutputData.setGameId(game.getID());
+        createGameOutputData.setGenre(game.getGenre());
+        createGameOutputData.setDifficulty(game.getDifficulty());
+        createGameOutputData.setRounds(game.getMaxRounds());
+        createGameOutputData.setLives(game.getInitialLives());
 
         createGamePresenter.prepareFirstRoundView(createGameOutputData);
     }

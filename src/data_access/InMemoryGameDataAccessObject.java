@@ -27,14 +27,6 @@ public class InMemoryGameDataAccessObject implements CreateGameDataAccessInterfa
     }
 
     @Override
-    public String addGame(String difficulty, String genre, int initialLives, int maxRounds) {
-        Game game = new CommonGame(genre, difficulty, maxRounds, initialLives);
-        save(game);
-        return game.getID();
-    }
-
-
-    @Override
     public LifetimeStatistics avgStats() {
         int gamesPlayed = 0;
         int scoreSum = 0;
