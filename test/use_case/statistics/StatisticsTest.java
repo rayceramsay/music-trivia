@@ -20,6 +20,17 @@ public class StatisticsTest {
     public void init() {
         gameDataAccessObject = new InMemoryGameDataAccessObject();
     }
+    @Test
+    public void failTest() {
+        StatisticsOutputBoundary statsPresenter = new StatisticsOutputBoundary() {
+            @Override
+            public void prepareView(StatisticsOutputData outputData) {
+                assertFalse(outputData.hasStats());
+            }
+        };
+        StatisticsInputBoundary interactor = new StatisticsInteractor(gameDataAccessObject, statsPresenter);
+        interactor.execute();
+    }
     /**
      * Basic functionality tests.
      */
@@ -80,6 +91,7 @@ public class StatisticsTest {
                 outputData.setAverageScore(100);
                 assertEquals(100, outputData.getAverageScore());
                 assertEquals("Hard", outputData.getCommonGameDifficulty());
+                assertEquals(0, outputData.getAverageRoundsPlayed());
             }
         };
         StatisticsInputBoundary interactor = new StatisticsInteractor(gameDataAccessObject, statsPresenter);

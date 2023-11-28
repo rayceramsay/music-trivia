@@ -9,7 +9,6 @@ public class StatisticsOutputData {
     private int averageRoundsPlayed;
     private boolean hasStats;
 
-
     public StatisticsOutputData() {}
     public String getCommonGameDifficulty() {
         return commonGameDifficulty;

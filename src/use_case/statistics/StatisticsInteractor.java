@@ -15,9 +15,9 @@ public class StatisticsInteractor implements StatisticsInputBoundary {
     public void execute() {
       LifetimeStatistics data = gameDataAccessObject.avgStats();
         StatisticsOutputData statisticsOutputData = new StatisticsOutputData();
-        if(data == null){
+        if (data == null){
             statisticsOutputData.setHasStats(false);
-        }else{
+        } else {
             statisticsOutputData.setHasStats(true);
             statisticsOutputData.setAverageLives( data.getAverageInitialLives());
             statisticsOutputData.setAverageScore( data.getAverageScore());
