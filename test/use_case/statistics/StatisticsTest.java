@@ -66,11 +66,11 @@ public class StatisticsTest {
         StatisticsOutputBoundary statsPresenter = new StatisticsOutputBoundary() {
             @Override
             public void prepareView(StatisticsOutputData outputData) {
-                assertEquals("Rock", outputData.getStats().get("Most Common Genre"));
-                assertEquals(10, outputData.getStats().get("Average Initial Lives"));
-                outputData.getStats().put("Average Score Across All Games", 100);
-                assertEquals(100, outputData.getStats().get("Average Score Across All Games"));
-                assertEquals("Hard", outputData.getStats().get("Most Common Game Difficulty"));
+                assertEquals("Rock", outputData.getCommonGameGenre());
+                assertEquals(10, outputData.getAverageLives());
+                outputData.setAverageScore(100);
+                assertEquals(100, outputData.getAverageScore());
+                assertEquals("Hard", outputData.getCommonGameDifficulty());
             }
         };
         StatisticsInputBoundary interactor = new StatisticsInteractor(gameDataAccessObject, statsPresenter);
