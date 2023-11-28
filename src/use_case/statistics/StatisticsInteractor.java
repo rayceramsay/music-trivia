@@ -1,4 +1,6 @@
 package use_case.statistics;
+import entity.LifetimeStatistics;
+
 import java.util.HashMap;
 public class StatisticsInteractor implements StatisticsInputBoundary {
 
@@ -11,17 +13,17 @@ public class StatisticsInteractor implements StatisticsInputBoundary {
     }
     @Override
     public void execute() {
-      HashMap<String, Object> data = gameDataAccessObject.avgStats();
+      LifetimeStatistics data = gameDataAccessObject.avgStats();
         StatisticsOutputData statisticsOutputData = new StatisticsOutputData();
-        if(data.isEmpty()){
+        if(data == null){
             statisticsOutputData.setHasStats(false);
         }else{
             statisticsOutputData.setHasStats(true);
-            statisticsOutputData.setAverageLives((Integer) data.get("Average Initial Lives"));
-            statisticsOutputData.setAverageScore((Integer) data.get("Average Score"));
-            statisticsOutputData.setCommonGameDifficulty((String) data.get("Most Common Game Difficulty"));
-            statisticsOutputData.setCommonGameGenre((String) data.get("Most Common Genre"));
-            statisticsOutputData.setAverageRoundsPlayed((Integer) data.get("Average Number of Rounds Played"));
+            statisticsOutputData.setAverageLives( data.getAverageInitialLives());
+            statisticsOutputData.setAverageScore( data.getAverageScore());
+            statisticsOutputData.setCommonGameDifficulty( data.getTopDifficulty());
+            statisticsOutputData.setCommonGameGenre( data.getTopGenre());
+            statisticsOutputData.setAverageRoundsPlayed( data.getAverageRoundsPlayed());
         }
         statisticsPresenter.prepareView(statisticsOutputData);
 

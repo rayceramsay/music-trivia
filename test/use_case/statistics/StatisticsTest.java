@@ -27,7 +27,7 @@ public class StatisticsTest {
     public void averageInitialLivesTest() {
         game = new CommonGame("Hip-Hop", "hard", 15, INITIAL_LIVES);
         gameDataAccessObject.save(game);
-        assertEquals(10, gameDataAccessObject.avgStats().get("Average Initial Lives"));
+        assertEquals(10, gameDataAccessObject.avgStats().getAverageInitialLives());
     }
 
     @Test
@@ -35,35 +35,35 @@ public class StatisticsTest {
         game = new CommonGame("Hip-Hop", "hard", 15, INITIAL_LIVES);
         game.setScore(10);
         gameDataAccessObject.save(game);
-        assertEquals(10, gameDataAccessObject.avgStats().get("Average Initial Lives"));
+        assertEquals(10, gameDataAccessObject.avgStats().getAverageScore());
     }
     @Test
     public void averageRoundPlayedTest(){
         game = new CommonGame("Hip-Hop", "hard", 15, INITIAL_LIVES);
         gameDataAccessObject.save(game);
-        assertEquals(0, gameDataAccessObject.avgStats().get("Average Number of Rounds Played"));
+        assertEquals(0, gameDataAccessObject.avgStats().getAverageRoundsPlayed());
         Round round = null;
         game.setCurrentRound(round);
         game.setCurrentRound(round);
-        assertEquals(2, gameDataAccessObject.avgStats().get("Average Number of Rounds Played"));
+        assertEquals(2, gameDataAccessObject.avgStats().getAverageRoundsPlayed());
     }
     @Test
     public void commonDifficultyTest() {
         game = new CommonGame("Hip-Hop", "hard", 15, INITIAL_LIVES);
         gameDataAccessObject.save(game);
-        assertEquals("Hard", gameDataAccessObject.avgStats().get("Most Common Game Difficulty"));
+        assertEquals("Hard", gameDataAccessObject.avgStats().getTopDifficulty());
     }
 
     @Test
     public void commonGenreTest() {
         game = new CommonGame("Hip-Hop", "hard", 15, INITIAL_LIVES);
         gameDataAccessObject.save(game);
-        assertEquals("Hip-Hop", gameDataAccessObject.avgStats().get("Most Common Genre"));
+        assertEquals("Hip-Hop", gameDataAccessObject.avgStats().getTopGenre());
         game = new CommonGame("Pop", "hard", 15, INITIAL_LIVES);
         gameDataAccessObject.save(game);
         game = new CommonGame("Pop", "hard", 15, INITIAL_LIVES);
         gameDataAccessObject.save(game);
-        assertEquals("Pop", gameDataAccessObject.avgStats().get("Most Common Genre"));
+        assertEquals("Pop", gameDataAccessObject.avgStats().getTopGenre());
     }
     /**
      * Output data/presenter/interactor test to assure coverage of use_case.statistics

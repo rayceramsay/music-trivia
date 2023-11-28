@@ -1,6 +1,8 @@
 package data_access;
 
+import entity.CommonLifetimeStatistics;
 import entity.Game;
+import entity.LifetimeStatistics;
 import use_case.finish_round.FinishRoundGameDataAccessInterface;
 import use_case.statistics.StatisticsDataAccessInterface;
 import use_case.submit_answer.SubmitAnswerGameDataAccessInterface;
@@ -33,7 +35,7 @@ public class InMemoryGameDataAccessObject implements CreateGameDataAccessInterfa
 
     @Override
 
-    public HashMap<String, Object> avgStats() {
+    public LifetimeStatistics avgStats() {
         int gamesPlayed = 0;
         int scoreSum = 0;
         int sumInitialLives = 0;
@@ -79,16 +81,16 @@ public class InMemoryGameDataAccessObject implements CreateGameDataAccessInterfa
         String mostCommonGenre = genres[maxCountIndex2];
         HashMap<String, Object> allStats = new HashMap<>();
         if (gamesPlayed == 0) {
-            return allStats;
+            return null;
+        } else {
+            LifetimeStatistics lifetimeStatistics = new CommonLifetimeStatistics(
+                    scoreSum/gamesPlayed,
+                    sumInitialLives/gamesPlayed,
+                    roundsPlayed/gamesPlayed,
+                    mostCommonDifficulty,
+                    mostCommonGenre);
+            return lifetimeStatistics;
         }
-        if (gamesPlayed > 0) {
-            allStats.put("Average Score", scoreSum / gamesPlayed);
-            allStats.put("Average Initial Lives", sumInitialLives / gamesPlayed);
-            allStats.put("Most Common Genre", mostCommonGenre);
-            allStats.put("Most Common Game Difficulty", mostCommonDifficulty);
-            allStats.put("Average Number of Rounds Played", roundsPlayed);
-        }
-        return allStats;
 
     }
 }
