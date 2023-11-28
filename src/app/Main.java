@@ -11,6 +11,9 @@ import entity.*;
 import interface_adapter.game_settings.GameSettingsViewModel;
 import interface_adapter.menu.MenuViewModel;
 import interface_adapter.round.RoundViewModel;
+import interface_adapter.statistics.StatisticsViewModel;
+import interface_adapter.submit_answer.SubmitAnswerController;
+import interface_adapter.submit_answer.SubmitAnswerPresenter;
 import interface_adapter.submit_answer.SubmitAnswerViewModel;
 import use_case.create_game.CreateGameInteractor;
 import use_case.create_game.*;
@@ -44,9 +47,10 @@ public class Main{
         RoundViewModel roundViewModel = new RoundViewModel();
         SubmitAnswerViewModel submitAnswerViewModel = new SubmitAnswerViewModel();
         GameOverViewModel gameOverViewModel = new GameOverViewModel();
+        StatisticsViewModel statisticsViewModel = new StatisticsViewModel();
 
         // Views
-        MenuView menuView = new MenuView(menuViewModel, viewManagerModel, gameSettingsViewModel);
+        MenuView menuView = MenuViewUseCaseFactory.create(menuViewModel, viewManagerModel,statisticsViewModel, gameDataAccessObject, gameSettingsViewModel);
         GameOverView gameOverView = new GameOverView(gameOverViewModel, viewManagerModel);
         RoundView roundView = RoundViewFactory.create(viewManagerModel,
                 roundViewModel,
