@@ -1,5 +1,6 @@
 package view;
 
+import interface_adapter.ViewManagerModel;
 import interface_adapter.finish_round.FinishRoundController;
 import interface_adapter.round.RoundState;
 import interface_adapter.round.RoundViewModel;
@@ -39,7 +40,7 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
                      SubmitAnswerController submitAnswerController,
                      FinishRoundController finishRoundController,
                      ToggleAudioViewModel toggleAudioViewModel,
-                     ToggleAudioController toggleAudioController) {
+                     ToggleAudioController toggleAudioController)  {
         this.roundViewModel = roundViewModel;
         this.submitAnswerViewModel = submitAnswerViewModel;
         this.submitAnswerController = submitAnswerController;
@@ -105,7 +106,6 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         infoSection.setBorder(BorderFactory.createEmptyBorder(2,0,0,0));
         infoSection.setLayout(new GridLayout(1, 3, borderWidth, borderWidth));
 
-
         roundInfo = new JLabel("Round: ");
         JPanel roundCell = new JPanel();
         roundCell.setBackground(this.getBackground());
@@ -168,6 +168,7 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         livesInfo.setText("Lives left:" + roundViewModel.getState().getCurrentLives());
         genreInfo.setText("Genre: "  + roundViewModel.getState().getGenre());
     }
+      
     public ImageIcon setProperties(ImageIcon buttonImage) {
         return new ImageIcon(buttonImage.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
     }

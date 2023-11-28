@@ -1,6 +1,9 @@
 package entity;
 
+import java.util.Objects;
+
 public class TextInputRound implements Round {
+
     private final Song song;
     private final String question;
     private final String correctAnswer;
