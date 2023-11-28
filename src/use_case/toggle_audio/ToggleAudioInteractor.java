@@ -30,14 +30,11 @@ public class ToggleAudioInteractor implements ToggleAudioInputBoundary {
             //stopping audio and showing play button
             songAudio.stop();
             toggleAudioPresenter.showPlayButton();
-
         }
         else {
             //playing audio and showing pause button
             songAudio.play();
             toggleAudioPresenter.showPauseButton();
-
-
         }
     }
 }

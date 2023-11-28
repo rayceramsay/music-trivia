@@ -169,7 +169,7 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         genreInfo.setText("Genre: "  + roundViewModel.getState().getGenre());
     }
       
-    public ImageIcon setProperties(ImageIcon buttonImage) {
+    private ImageIcon setProperties(ImageIcon buttonImage) {
         return new ImageIcon(buttonImage.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
     }
 
