@@ -1,27 +1,42 @@
 package entity;
 
-public class OnlineMP3PlayableAudio implements PlayableAudio {
-    private final String audioUrl;
-    private boolean isPlaying;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.embed.swing.JFXPanel;
+import javafx.util.Duration;
 
-    public OnlineMP3PlayableAudio(String audioUrl) { this.audioUrl = audioUrl; }
+public class OnlineMP3PlayableAudio implements PlayableAudio {
+
+    private final static JFXPanel JFX_PANEL = new JFXPanel(); // required for MediaPlayer to work
+
+    private final String audioUrl;
+    private final MediaPlayer mediaPlayer;
+
+    public OnlineMP3PlayableAudio(String audioUrl) {
+        this.audioUrl = audioUrl;
+
+        Media audioMedia = new Media(audioUrl);
+        mediaPlayer = new MediaPlayer(audioMedia);
+        mediaPlayer.setStopTime(new Duration(10000));
+    }
 
     @Override
-    public String getPath() { return audioUrl; }
+    public String getPath() {
+        return audioUrl;
+    }
 
     @Override
     public void play() {
-        this.isPlaying = true;
+        mediaPlayer.play();
     }
 
     @Override
     public void stop() {
-        this.isPlaying = false;
+        mediaPlayer.stop();
     }
 
     @Override
     public boolean isPlaying() {
-        return this.isPlaying;
+        return mediaPlayer.getStatus().equals(MediaPlayer.Status.PLAYING);
     }
-
 }
