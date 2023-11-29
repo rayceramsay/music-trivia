@@ -26,6 +26,7 @@ public class LoadGamePresenter implements LoadGameOutputBoundary {
         roundState.setInitialLives(outputData.getInitialLives());
         roundState.setGenre(outputData.getGenre());
         roundState.setUserAnswer("");
+        roundState.setScore(outputData.getScore());
 
         roundViewModel.setState(roundState);
         viewManagerModel.setActiveView(roundViewModel.getViewName());

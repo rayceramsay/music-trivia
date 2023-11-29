@@ -6,8 +6,6 @@ public class CreateGameOutputData {
     private String genre;
     private int rounds;
     private int lives;
-    private int currentScore;
-
     public CreateGameOutputData() {};
 
     public void setGameId(String gameId) {
@@ -49,7 +47,4 @@ public class CreateGameOutputData {
     public int getLives() {
         return lives;
     }
-    public int getCurrentScore() {return currentScore;}
-
-    public void setCurrentScore(int currentScore) {this.currentScore = currentScore;}
 }
