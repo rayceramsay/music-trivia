@@ -6,10 +6,12 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 public class ToggleAudioViewModel extends ViewModel {
+
     public static final String STATE_PROPERTY = "toggleAudioState";
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
     private ToggleAudioState state = new ToggleAudioState();
-    public ToggleAudioViewModel() {
+
+    public ToggleAudioViewModel(String viewName) {
         super("round");
     }
 

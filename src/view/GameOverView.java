@@ -12,7 +12,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 public class GameOverView extends JPanel implements ActionListener, PropertyChangeListener {
-    public final String viewName = "game over";
+
+    public final static String VIEW_NAME = "game over";
+
     private final GameOverViewModel gameOverViewModel;
     private final ViewManagerModel viewManagerModel;
 
@@ -54,7 +56,7 @@ public class GameOverView extends JPanel implements ActionListener, PropertyChan
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(mainMenu)) {
-            viewManagerModel.setActiveView("menu");
+            viewManagerModel.setActiveView(MenuView.VIEW_NAME);
             viewManagerModel.firePropertyChanged();
         }
     }

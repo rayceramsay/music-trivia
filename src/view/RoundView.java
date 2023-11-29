@@ -19,7 +19,10 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 public class RoundView extends JPanel implements ActionListener, PropertyChangeListener {
-    public final String viewName = "round";
+
+    public final static String VIEW_NAME = "round";
+
+    private final ViewManagerModel viewManagerModel;
     private final RoundViewModel roundViewModel;
     private final SubmitAnswerViewModel submitAnswerViewModel;
     private final SubmitAnswerController submitAnswerController;
@@ -27,20 +30,22 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
     private final ToggleAudioController toggleAudioController;
     private final FinishRoundController finishRoundController;
 
-    final JButton playSong;
-    final JButton submit;
-    JLabel roundInfo;
-    JLabel livesInfo;
-    JLabel genreInfo;
-    JTextField answerInputField;
-    final int borderWidth = 2;
+    private final JButton playSong;
+    private final JButton submit;
+    private final JLabel roundInfo;
+    private final JLabel livesInfo;
+    private final JLabel genreInfo;
+    private final JTextField answerInputField;
+    private final int borderWidth = 2;
 
-    public RoundView(RoundViewModel roundViewModel,
+    public RoundView(ViewManagerModel viewManagerModel,
+                     RoundViewModel roundViewModel,
                      SubmitAnswerViewModel submitAnswerViewModel,
                      SubmitAnswerController submitAnswerController,
                      FinishRoundController finishRoundController,
                      ToggleAudioViewModel toggleAudioViewModel,
-                     ToggleAudioController toggleAudioController)  {
+                     ToggleAudioController toggleAudioController) {
+        this.viewManagerModel = viewManagerModel;
         this.roundViewModel = roundViewModel;
         this.submitAnswerViewModel = submitAnswerViewModel;
         this.submitAnswerController = submitAnswerController;
@@ -82,9 +87,7 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
             }
 
             @Override
-            public void keyPressed(KeyEvent e) {
-
-            }
+            public void keyPressed(KeyEvent e) {}
 
             @Override
             public void keyReleased(KeyEvent e) {}
@@ -124,8 +127,22 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         genreCell.add(genreInfo);
         infoSection.add(genreCell);
 
+        // Menu button
+        JButton menuButton = new JButton("Go to main menu");
+        menuButton.addActionListener(e -> {
+            RoundState roundState = roundViewModel.getState();
+            roundState.setUserAnswer("");
+            answerInputField.setText("");
+
+            viewManagerModel.setActiveView(MenuView.VIEW_NAME);
+            viewManagerModel.firePropertyChanged();
+        });
+        JPanel menuButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        menuButtonPanel.add(menuButton);
+
         // Set view layout
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.add(menuButtonPanel);
         this.add(prompt);
         this.add(playSong);
         this.add(answerSection);
@@ -172,5 +189,4 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
     private ImageIcon setProperties(ImageIcon buttonImage) {
         return new ImageIcon(buttonImage.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
     }
-
 }

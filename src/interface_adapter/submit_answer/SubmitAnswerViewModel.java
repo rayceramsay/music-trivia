@@ -10,7 +10,9 @@ public class SubmitAnswerViewModel extends ViewModel {
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
     private SubmitAnswerState state = new SubmitAnswerState();
 
-    public SubmitAnswerViewModel() { super("round"); }
+    public SubmitAnswerViewModel(String viewName) {
+        super(viewName);
+    }
 
     @Override
     public void firePropertyChanged() {
