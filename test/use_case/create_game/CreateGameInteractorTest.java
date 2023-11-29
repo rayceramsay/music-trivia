@@ -1,6 +1,7 @@
 package use_case.create_game;
 
 import data_access.InMemoryGameDataAccessObject;
+import data_access.api.MockAPI;
 import data_access.api.SongAPI;
 import data_access.api.SpotifyAPI;
 import entity.*;
@@ -22,8 +23,7 @@ public class CreateGameInteractorTest {
 
     @Before
     public void init() {
-        SongFactory songFactory = new CommonSongFactory();
-        SongAPI songAPI = new SpotifyAPI(songFactory);
+        SongAPI songAPI = new MockAPI(new CommonSongFactory());
         roundFactory = new CommonRoundFactory(songAPI);
         gameDataAccessObject = new InMemoryGameDataAccessObject();
     }

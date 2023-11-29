@@ -1,6 +1,7 @@
 package use_case.finish_round;
 
 import data_access.InMemoryGameDataAccessObject;
+import data_access.api.MockAPI;
 import data_access.api.SongAPI;
 import data_access.api.SpotifyAPI;
 import entity.*;
@@ -20,8 +21,7 @@ public class FinishRoundInteractorTest {
     @Before
     public void init() {
         gameDataAccessObject = new InMemoryGameDataAccessObject();
-        SongFactory songFactory = new CommonSongFactory();
-        SongAPI songAPI = new SpotifyAPI(songFactory);
+        SongAPI songAPI = new MockAPI(new CommonSongFactory());
         roundFactory = new CommonRoundFactory(songAPI);
         round = roundFactory.createHardRound("pop");
 

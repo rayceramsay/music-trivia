@@ -20,7 +20,7 @@ public class SpotifyAPI implements SongAPI{
     private final SongFactory songFactory;
 
     public SpotifyAPI(SongFactory songFactory){
-        Dotenv dotenv = Dotenv.configure().filename("api.env").load();
+        Dotenv dotenv = Dotenv.configure().filename("src/api.env").load();
         this.CLIENT_ID = dotenv.get("CLIENT_ID");
         this.CLIENT_SECRET = dotenv.get("CLIENT_SECRET");
         this.client = new OkHttpClient().newBuilder().build();
@@ -55,15 +55,12 @@ public class SpotifyAPI implements SongAPI{
     private JSONObject retrieveSongData(String genre)  {
         String url = getRandomEndpoint(genre);
         JSONObject response;
-        try {
-            Request request = new Request.Builder()
-                    .url(url)
-                    .addHeader("Authorization", "Bearer " + authToken)
-                    .addHeader("Content-Type", "application/json")
-                    .build();
-
-            Response responseRequest = client.newCall(request).execute();
-
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("Authorization", "Bearer " + authToken)
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try (Response responseRequest = client.newCall(request).execute()){
             if(responseRequest.code() == 401){ // Code 401 - bad (expired or null) auth token
                 generateAuthToken();
                 return retrieveSongData(genre); // recall api with auth token
@@ -89,9 +86,7 @@ public class SpotifyAPI implements SongAPI{
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
                 .post(body)
                 .build();
-        try{
-            Response response = client.newCall(request).execute();
-
+        try (Response response = client.newCall(request).execute()){
             if(response.body() == null) {throw new RuntimeException("Error - no response body");}
 
             JSONObject responseBody = new JSONObject(response.body().string());
