@@ -4,15 +4,19 @@ import entity.CommonLifetimeStatistics;
 import entity.Game;
 import entity.LifetimeStatistics;
 import use_case.finish_round.FinishRoundGameDataAccessInterface;
+import use_case.get_loadable_games.GetLoadableGamesGameDataAccessInterface;
+import use_case.load_game.LoadGameGameDataAccessInterface;
 import use_case.statistics.StatisticsDataAccessInterface;
 import use_case.submit_answer.SubmitAnswerGameDataAccessInterface;
+import use_case.toggle_audio.ToggleAudioGameDataAccessInterface;
 import entity.CommonGame;
 import use_case.create_game.CreateGameDataAccessInterface;
 
 import java.util.*;
 
-
-public class InMemoryGameDataAccessObject implements CreateGameDataAccessInterface, SubmitAnswerGameDataAccessInterface, FinishRoundGameDataAccessInterface, StatisticsDataAccessInterface {
+public class InMemoryGameDataAccessObject implements SubmitAnswerGameDataAccessInterface, FinishRoundGameDataAccessInterface,
+        CreateGameDataAccessInterface, GetLoadableGamesGameDataAccessInterface, LoadGameGameDataAccessInterface,
+        StatisticsDataAccessInterface, ToggleAudioGameDataAccessInterface {
 
     private final Map<String, Game> games = new HashMap<>();  // maps gameID to game object
 
@@ -27,15 +31,28 @@ public class InMemoryGameDataAccessObject implements CreateGameDataAccessInterfa
     }
 
     @Override
+    public List<Game> getLoadableGames() {
+        List<Game> loadableGames = new ArrayList<>();
+        for (Game game : games.values()) {
+            if (!game.isGameOver()) {
+                loadableGames.add(game);
+            }
+        }
+
+        loadableGames.sort(Comparator.comparing(Game::getCreatedAt, Comparator.reverseOrder()));
+
+        return loadableGames;
+    }
+
+    @Override
     public String addGame(String difficulty, String genre, int initialLives, int maxRounds) {
         Game game = new CommonGame(genre, difficulty, maxRounds, initialLives);
         save(game);
+
         return game.getID();
     }
 
-
     @Override
-
     public LifetimeStatistics avgStats() {
         int gamesPlayed = 0;
         int scoreSum = 0;

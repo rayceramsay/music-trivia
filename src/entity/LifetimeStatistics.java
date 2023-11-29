@@ -6,6 +6,4 @@ public interface LifetimeStatistics {
     int getAverageRoundsPlayed();
     String getTopDifficulty();
     String getTopGenre();
-
-
 }

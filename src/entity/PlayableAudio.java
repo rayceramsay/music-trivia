@@ -6,5 +6,4 @@ public interface PlayableAudio {
     void play();
     void stop();
     boolean isPlaying();
-
 }

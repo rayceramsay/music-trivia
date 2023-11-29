@@ -11,8 +11,8 @@ public class RoundViewModel extends ViewModel {
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
     private RoundState state = new RoundState();
 
-    public RoundViewModel() {
-        super("round");
+    public RoundViewModel(String viewName) {
+        super(viewName);
     }
 
     @Override

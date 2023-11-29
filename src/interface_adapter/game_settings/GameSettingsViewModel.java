@@ -1,8 +1,6 @@
 package interface_adapter.game_settings;
 
 import interface_adapter.ViewModel;
-import interface_adapter.menu.MenuState;
-import view.GameSettingsView;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -17,13 +15,11 @@ public class GameSettingsViewModel extends ViewModel {
     public final String PLAY_GAME_LABEL = "PLAY GAME";
     public final String BACK_LABEL = "BACK";
 
-
     private GameSettingsState state = new GameSettingsState();
-
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
-    public GameSettingsViewModel() {
-        super("game settings");
+    public GameSettingsViewModel(String viewName) {
+        super(viewName);
     }
 
     @Override

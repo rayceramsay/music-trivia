@@ -11,6 +11,9 @@ import interface_adapter.round.RoundViewModel;
 import interface_adapter.submit_answer.SubmitAnswerController;
 import interface_adapter.submit_answer.SubmitAnswerPresenter;
 import interface_adapter.submit_answer.SubmitAnswerViewModel;
+import interface_adapter.toggle_audio.ToggleAudioController;
+import interface_adapter.toggle_audio.ToggleAudioPresenter;
+import interface_adapter.toggle_audio.ToggleAudioViewModel;
 import use_case.finish_round.FinishRoundGameDataAccessInterface;
 import use_case.finish_round.FinishRoundInputBoundary;
 import use_case.finish_round.FinishRoundInteractor;
@@ -19,38 +22,45 @@ import use_case.submit_answer.SubmitAnswerGameDataAccessInterface;
 import use_case.submit_answer.SubmitAnswerInputBoundary;
 import use_case.submit_answer.SubmitAnswerInteractor;
 import use_case.submit_answer.SubmitAnswerOutputBoundary;
-
-import javax.swing.text.View;
+import use_case.toggle_audio.*;
 
 public class RoundViewFactory {
+
     private RoundViewFactory() {}
 
     public static RoundView create(ViewManagerModel viewManagerModel,
                                    RoundViewModel roundViewModel,
                                    SubmitAnswerViewModel submitAnswerViewModel,
+                                   ToggleAudioViewModel toggleAudioViewModel,
                                    GameOverViewModel gameOverViewModel,
                                    SubmitAnswerGameDataAccessInterface submitAnswerGameDataAccessInterface,
                                    RoundFactory roundFactory
     ) {
 
-        // submitAnswerGameDataAccessInterface and FinishRoundGameDataAccessInterface are the same so cast to reduce repeated parameters passed to function
-        FinishRoundGameDataAccessInterface finishRoundGameDataAccessInterface = (FinishRoundGameDataAccessInterface) submitAnswerGameDataAccessInterface;
 
+        FinishRoundGameDataAccessInterface finishRoundGameDataAccessInterface = (FinishRoundGameDataAccessInterface) submitAnswerGameDataAccessInterface;
+        ToggleAudioGameDataAccessInterface toggleAudioDataAccessInterface = (ToggleAudioGameDataAccessInterface) submitAnswerGameDataAccessInterface;
         SubmitAnswerController submitAnswerController = createSubmitAnswerUseCase(submitAnswerViewModel, submitAnswerGameDataAccessInterface);
         FinishRoundController finishRoundController = createFinishRoundUseCase(viewManagerModel, gameOverViewModel, roundViewModel, finishRoundGameDataAccessInterface, roundFactory);
-
-        return new RoundView(roundViewModel, submitAnswerViewModel, submitAnswerController, finishRoundController, viewManagerModel);
-
+        ToggleAudioController toggleAudioController = createToggleAudioUseCase(toggleAudioViewModel, toggleAudioDataAccessInterface, roundViewModel);
+        return new RoundView(viewManagerModel, roundViewModel, submitAnswerViewModel, submitAnswerController, finishRoundController, toggleAudioViewModel, toggleAudioController);
     }
 
     private static SubmitAnswerController createSubmitAnswerUseCase(SubmitAnswerViewModel submitAnswerViewModel,
                                                                     SubmitAnswerGameDataAccessInterface gameDataAccessObject) {
         SubmitAnswerOutputBoundary submitAnswerPresenter = new SubmitAnswerPresenter(submitAnswerViewModel);
-
         SubmitAnswerInputBoundary submitAnswerInteractor = new SubmitAnswerInteractor(gameDataAccessObject, submitAnswerPresenter);
-
         return new SubmitAnswerController(submitAnswerInteractor);
     }
+
+    private static ToggleAudioController createToggleAudioUseCase(ToggleAudioViewModel toggleAudioViewModel,
+                                                                  ToggleAudioGameDataAccessInterface gameDataAccessObject,
+                                                                  RoundViewModel roundViewModel){
+            ToggleAudioOutputBoundary toggleAudioPresenter = new ToggleAudioPresenter(toggleAudioViewModel, roundViewModel);
+            ToggleAudioInputBoundary toggleAudioInteractor = new ToggleAudioInteractor(gameDataAccessObject, toggleAudioPresenter);
+            return new ToggleAudioController(toggleAudioInteractor);
+    }
+
     private static FinishRoundController createFinishRoundUseCase(ViewManagerModel viewManagerModel,
                                                                   GameOverViewModel gameOverViewModel,
                                                                   RoundViewModel roundViewModel,
@@ -58,7 +68,7 @@ public class RoundViewFactory {
                                                                   RoundFactory roundFactory) {
         FinishRoundOutputBoundary finishRoundPresenter = new FinishRoundPresenter(viewManagerModel, gameOverViewModel, roundViewModel);
         FinishRoundInputBoundary finishRoundInteractor = new FinishRoundInteractor(finishRoundPresenter, gameDataAccessObject, roundFactory);
-
         return new FinishRoundController(finishRoundInteractor);
+
     }
 }

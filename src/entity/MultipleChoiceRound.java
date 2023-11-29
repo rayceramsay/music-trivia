@@ -9,14 +9,13 @@ public class MultipleChoiceRound implements Round{
     private final Song song;
     private final String question;
     private final String correctAnswer;
-    private String userAnswer = "";
+    private String userAnswer;
     private ArrayList<String> incorrectOptions;
     public MultipleChoiceRound(Song song, String question, String correctAnswer){
         this.song = song;
         this.question = question;
         this.correctAnswer = correctAnswer;
         this.incorrectOptions = new ArrayList<>();
-
     }
     @Override
     public String getQuestion() {
@@ -45,9 +44,14 @@ public class MultipleChoiceRound implements Round{
 
     @Override
     public boolean isUserAnswerCorrect() {
+        if (userAnswer == null) {
+            return false;
+        }
+
         String cleanedUserAnswer = cleanString(userAnswer);
         return cleanedUserAnswer.equalsIgnoreCase(correctAnswer);
     }
+
     public void addIncorrectOptions(ArrayList<String> options){
         this.incorrectOptions.addAll(options);
     }
@@ -57,6 +61,13 @@ public class MultipleChoiceRound implements Round{
         options.add(rand, this.correctAnswer);
         return options;
     }
+
+
+    @Override
+    public boolean isFinished() {
+        return userAnswer != null;
+    }
+
     private String cleanString(String string) {
         return string.replaceAll("\\p{C}", "").trim();
     }

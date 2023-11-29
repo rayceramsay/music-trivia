@@ -9,71 +9,71 @@ import interface_adapter.create_game.CreateGamePresenter;
 import interface_adapter.game_over.GameOverViewModel;
 import entity.*;
 import interface_adapter.game_settings.GameSettingsViewModel;
-import interface_adapter.menu.MenuViewModel;
+import interface_adapter.get_loadable_games.GetLoadableGamesViewModel;
 import interface_adapter.round.RoundViewModel;
 import interface_adapter.statistics.StatisticsViewModel;
-import interface_adapter.submit_answer.SubmitAnswerController;
-import interface_adapter.submit_answer.SubmitAnswerPresenter;
 import interface_adapter.submit_answer.SubmitAnswerViewModel;
+import interface_adapter.toggle_audio.ToggleAudioViewModel;
 import use_case.create_game.CreateGameInteractor;
 import use_case.create_game.*;
 import view.*;
 import javax.swing.*;
 import java.awt.*;
 
-public class Main{
-    public static void main(String[] args){
-        // View
+
+public class Main {
+
+    public static void main(String[] args) {
+        // Setup JFrame app
         JFrame application = new JFrame("Spotify Bandits");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
         CardLayout cardLayout = new CardLayout();
-
-        application.setMinimumSize(new Dimension(300, 200));
-
+        application.setMinimumSize(new Dimension(500, 300));
         JPanel views = new JPanel(cardLayout);
         application.add(views);
 
-        InMemoryGameDataAccessObject gameDataAccessObject = new InMemoryGameDataAccessObject();
-
-        RoundFactory roundFactory = new CommonRoundFactory(new SpotifyAPI(new CommonSongFactory()));
-
+        // Setup view manager and api
         ViewManagerModel viewManagerModel = new ViewManagerModel();
         new ViewManager(views, cardLayout, viewManagerModel);
+        RoundFactory roundFactory = new CommonRoundFactory(new SpotifyAPI(new CommonSongFactory()));
 
-        // View Models
-        MenuViewModel menuViewModel = new MenuViewModel();
-        GameSettingsViewModel gameSettingsViewModel = new GameSettingsViewModel();
-        RoundViewModel roundViewModel = new RoundViewModel();
-        SubmitAnswerViewModel submitAnswerViewModel = new SubmitAnswerViewModel();
-        GameOverViewModel gameOverViewModel = new GameOverViewModel();
-        StatisticsViewModel statisticsViewModel = new StatisticsViewModel();
+        // Create view models
+        GameSettingsViewModel gameSettingsViewModel = new GameSettingsViewModel(GameSettingsView.VIEW_NAME);
+        GameOverViewModel gameOverViewModel = new GameOverViewModel(GameOverView.VIEW_NAME);
+        RoundViewModel roundViewModel = new RoundViewModel(RoundView.VIEW_NAME);
+        SubmitAnswerViewModel submitAnswerViewModel = new SubmitAnswerViewModel(RoundView.VIEW_NAME);
+        GetLoadableGamesViewModel getLoadableGamesViewModel = new GetLoadableGamesViewModel(LoadableGamesView.VIEW_NAME);
+        StatisticsViewModel statisticsViewModel = new StatisticsViewModel(MenuView.VIEW_NAME);
+        ToggleAudioViewModel toggleAudioViewModel = new ToggleAudioViewModel(RoundView.VIEW_NAME);
 
-        // Views
-        MenuView menuView = MenuViewUseCaseFactory.create(menuViewModel, viewManagerModel,statisticsViewModel, gameDataAccessObject, gameSettingsViewModel);
-        GameOverView gameOverView = new GameOverView(gameOverViewModel, viewManagerModel);
-        RoundView roundView = RoundViewFactory.create(viewManagerModel,
-                roundViewModel,
-                submitAnswerViewModel,
-                gameOverViewModel,
-                gameDataAccessObject,
-                roundFactory);
+        // Create data access objects
+        InMemoryGameDataAccessObject gameDataAccessObject = new InMemoryGameDataAccessObject();
+
+        // Create objects for GameSettings View (TEMPORARY UNTIL FACTORY IS CREATED)
         CreateGameOutputBoundary createGamePresenter = new CreateGamePresenter(viewManagerModel, roundViewModel);
-        CreateGameInputBoundary createGameInteractor = new CreateGameInteractor(gameDataAccessObject, createGamePresenter, roundViewModel, roundFactory);
+        CreateGameInputBoundary createGameInteractor = new CreateGameInteractor(gameDataAccessObject, createGamePresenter, roundFactory);
         CreateGameController createGameController = new CreateGameController(createGameInteractor);
+
+        // Create views
+        MenuView menuView = MenuViewFactory.create(viewManagerModel, gameSettingsViewModel, getLoadableGamesViewModel, statisticsViewModel, gameDataAccessObject, gameDataAccessObject);
         GameSettingsView gameSettingsView = new GameSettingsView(gameSettingsViewModel, viewManagerModel, createGameController);
+        GameOverView gameOverView = new GameOverView(gameOverViewModel, viewManagerModel);
+        RoundView roundView = RoundViewFactory.create(viewManagerModel, roundViewModel, submitAnswerViewModel, toggleAudioViewModel, gameOverViewModel, gameDataAccessObject, roundFactory);
+        LoadableGamesView loadableGamesView = LoadableGamesViewFactory.create(viewManagerModel, getLoadableGamesViewModel, roundViewModel, gameDataAccessObject);
 
-        // Add views
-        views.add(menuView, menuView.viewName);
-        views.add(roundView, roundView.viewName);
-        views.add(gameOverView, gameOverView.viewName);
-        views.add(gameSettingsView, gameSettingsView.viewName);
+        // Add views to app
+        views.add(menuView, MenuView.VIEW_NAME);
+        views.add(gameSettingsView, GameSettingsView.VIEW_NAME);
+        views.add(gameOverView, GameOverView.VIEW_NAME);
+        views.add(roundView, RoundView.VIEW_NAME);
+        views.add(loadableGamesView, LoadableGamesView.VIEW_NAME);
 
-        viewManagerModel.setActiveView(menuView.viewName);
+        // Set starting view
+        viewManagerModel.setActiveView(MenuView.VIEW_NAME);
         viewManagerModel.firePropertyChanged();
 
+        // Display app
         application.setLocationRelativeTo(null); // app opens on center of screen
-
         application.pack();
         application.setVisible(true);
     }

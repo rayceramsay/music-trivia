@@ -7,6 +7,9 @@ import interface_adapter.round.RoundViewModel;
 import interface_adapter.submit_answer.SubmitAnswerController;
 import interface_adapter.submit_answer.SubmitAnswerState;
 import interface_adapter.submit_answer.SubmitAnswerViewModel;
+import interface_adapter.toggle_audio.ToggleAudioController;
+import interface_adapter.toggle_audio.ToggleAudioState;
+import interface_adapter.toggle_audio.ToggleAudioViewModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,40 +19,57 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 public class RoundView extends JPanel implements ActionListener, PropertyChangeListener {
-    public final String viewName = "round";
-    private final RoundViewModel roundViewModel;
+
+    public final static String VIEW_NAME = "round";
+
     private final ViewManagerModel viewManagerModel;
+    private final RoundViewModel roundViewModel;
     private final SubmitAnswerViewModel submitAnswerViewModel;
     private final SubmitAnswerController submitAnswerController;
+    private final ToggleAudioViewModel toggleAudioViewModel;
+    private final ToggleAudioController toggleAudioController;
     private final FinishRoundController finishRoundController;
 
-    final JButton playSong;
-    final JButton submit;
-    JLabel roundInfo;
-    JLabel livesInfo;
-    JLabel genreInfo;
-    JTextField answerInputField;
-    JLabel loadingLabel;
-    final int borderWidth = 2;
+    private final JButton playSong;
+    private final JButton submit;
+    private final JLabel roundInfo;
+    private final JLabel livesInfo;
+    private final JLabel genreInfo;
+    private final JTextField answerInputField;
+    private final JLabel loadingLabel;
+    private final int borderWidth = 2;
 
-    public RoundView(RoundViewModel roundViewModel,
+    public RoundView(ViewManagerModel viewManagerModel,
+                     RoundViewModel roundViewModel,
                      SubmitAnswerViewModel submitAnswerViewModel,
                      SubmitAnswerController submitAnswerController,
                      FinishRoundController finishRoundController,
-                     ViewManagerModel viewManagerModel) {
+                     ToggleAudioViewModel toggleAudioViewModel,
+                     ToggleAudioController toggleAudioController) {
         this.viewManagerModel = viewManagerModel;
         this.roundViewModel = roundViewModel;
         this.submitAnswerViewModel = submitAnswerViewModel;
         this.submitAnswerController = submitAnswerController;
         this.finishRoundController = finishRoundController;
+        this.toggleAudioViewModel = toggleAudioViewModel;
+        this.toggleAudioController = toggleAudioController;
 
         this.roundViewModel.addPropertyChangeListener(this);
         this.submitAnswerViewModel.addPropertyChangeListener(this);
+        this.toggleAudioViewModel.addPropertyChangeListener(this);
 
         // Prompt
         JLabel prompt = new JLabel(roundViewModel.TITLE_LABEL);
         prompt.setAlignmentX(Component.CENTER_ALIGNMENT);
-        playSong = new JButton("Play");
+        playSong = new JButton();
+        ImageIcon playIcon = new ImageIcon("src/assets/play-img2.png");
+        playSong.setIcon(setProperties(playIcon));
+        playSong.setMaximumSize(new Dimension(50, 350));
+        playSong.setAlignmentX(Component.CENTER_ALIGNMENT);
+        playSong.setAlignmentY(Component.CENTER_ALIGNMENT);
+        playSong.addActionListener(event -> {
+            toggleAudioController.execute(roundViewModel.getState().getGameId());
+        });
         playSong.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Answer Section
@@ -113,8 +133,22 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         genreCell.add(genreInfo);
         infoSection.add(genreCell);
 
+        // Menu button
+        JButton menuButton = new JButton("Go to main menu");
+        menuButton.addActionListener(e -> {
+            RoundState roundState = roundViewModel.getState();
+            roundState.setUserAnswer("");
+            answerInputField.setText("");
+
+            viewManagerModel.setActiveView(MenuView.VIEW_NAME);
+            viewManagerModel.firePropertyChanged();
+        });
+        JPanel menuButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        menuButtonPanel.add(menuButton);
+
         // Set view layout
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.add(menuButtonPanel);
         this.add(prompt);
         this.add(playSong);
         this.add(answerSection);
@@ -132,6 +166,10 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getPropertyName().equals(ToggleAudioViewModel.STATE_PROPERTY)) {
+            ToggleAudioState toggleAudioState = (ToggleAudioState) evt.getNewValue();
+            playSong.setIcon(setProperties(new ImageIcon(toggleAudioState.getImgPath())));
+        }
         if (evt.getPropertyName().equals(SubmitAnswerViewModel.STATE_PROPERTY)) {
             SubmitAnswerState submitAnswerState = (SubmitAnswerState) evt.getNewValue();
 
@@ -167,4 +205,7 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         submit.setEnabled(true);
     }
 
+    private ImageIcon setProperties(ImageIcon buttonImage) {
+        return new ImageIcon(buttonImage.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
+    }
 }

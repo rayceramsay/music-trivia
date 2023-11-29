@@ -39,6 +39,7 @@ public class FinishRoundInteractorTest {
         int maxRounds = 1;
         Game game = new CommonGame("pop", "hard", maxRounds, initialLives);
         game.setCurrentRound(round);
+        round.setUserAnswer("answer");
         gameDataAccessObject.save(game);
 
         FinishRoundInputData inputData = new FinishRoundInputData(game.getID());
