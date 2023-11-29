@@ -46,6 +46,7 @@ public class FinishRoundInteractorTest {
                 assertEquals(game.getRoundsPlayed(), game.getMaxRounds());
                 assertNotEquals(0, game.getCurrentLives());
                 assertNotNull(game.getFinishedAt());
+                assertEquals(game.getScore(), outputData.getScore());
 
                 // Verify output data
                 assertEquals(game.getScore(), outputData.getScore());
