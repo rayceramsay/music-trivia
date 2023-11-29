@@ -1,9 +1,27 @@
 package entity;
 
+/**
+ * Interface for Playable Audio
+ */
 public interface PlayableAudio {
 
-    String getPath(); // e.g. Spotify preview_url or file location
+    /**
+     * @return Spotify preview_url.
+     */
+    String getPath();
+
+    /**
+     * Play song.
+     */
     void play();
+
+    /**
+     * Stop playing song.
+     */
     void stop();
+
+    /**
+     * @return if song is currently playing.
+     */
     boolean isPlaying();
 }
