@@ -69,10 +69,10 @@ public class InMemoryGameDataAccessObject implements SubmitAnswerGameDataAccessI
     /**
      * Creates game with set difficulty, genre, initial lives, and max rounds
      *
-     * @param difficulty
-     * @param genre
-     * @param initialLives
-     * @param maxRounds
+     * @param difficulty of game
+     * @param genre type of music selected by API
+     * @param initialLives total starting lives before game starts
+     * @param maxRounds total rounds until game over
      * @return String
      */
     @Override
