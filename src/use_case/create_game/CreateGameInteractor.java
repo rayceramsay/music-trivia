@@ -1,16 +1,17 @@
 package use_case.create_game;
 
+import data_access.game_data.GameDataAccessInterface;
 import entity.*;
 import interface_adapter.round.RoundViewModel;
 
 import java.util.Objects;
 
 public class CreateGameInteractor implements CreateGameInputBoundary{
-    final CreateGameDataAccessInterface gameAccessObject;
+    final GameDataAccessInterface gameAccessObject;
     final CreateGameOutputBoundary createGamePresenter;
     final RoundFactory roundFactory;
 
-    public CreateGameInteractor (CreateGameDataAccessInterface gameAccessObject,
+    public CreateGameInteractor (GameDataAccessInterface gameAccessObject,
                                  CreateGameOutputBoundary createGamePresenter,
                                  RoundFactory roundFactory) {
         this.gameAccessObject = gameAccessObject;

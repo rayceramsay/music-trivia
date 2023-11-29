@@ -1,13 +1,14 @@
 package use_case.load_game;
 
+import data_access.game_data.GameDataAccessInterface;
 import entity.Game;
 
 public class LoadGameInteractor implements LoadGameInputBoundary {
 
     private final LoadGameOutputBoundary presenter;
-    private final LoadGameGameDataAccessInterface gameRepository;
+    private final GameDataAccessInterface gameRepository;
 
-    public LoadGameInteractor(LoadGameOutputBoundary presenter, LoadGameGameDataAccessInterface gameRepository) {
+    public LoadGameInteractor(LoadGameOutputBoundary presenter, GameDataAccessInterface gameRepository) {
         this.presenter = presenter;
         this.gameRepository = gameRepository;
     }

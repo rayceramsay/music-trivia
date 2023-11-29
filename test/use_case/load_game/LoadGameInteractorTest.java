@@ -1,6 +1,8 @@
 package use_case.load_game;
 
-import data_access.InMemoryGameDataAccessObject;
+import data_access.api.MockAPI;
+import data_access.game_data.GameDataAccessInterface;
+import data_access.game_data.InMemoryGameDataAccessObject;
 import entity.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,7 +11,7 @@ import static org.junit.Assert.*;
 
 public class LoadGameInteractorTest {
 
-    private LoadGameGameDataAccessInterface gameRepository;
+    private GameDataAccessInterface gameRepository;
     private Game expectedGame;
     private boolean isPresenterCalled = false;
 
@@ -19,7 +21,7 @@ public class LoadGameInteractorTest {
     @Before
     public void setupGameRepository() {
         gameRepository = new InMemoryGameDataAccessObject();
-        RoundFactory roundFactory = new CommonRoundFactory();
+        RoundFactory roundFactory = new CommonRoundFactory(new MockAPI(new CommonSongFactory()));
 
         for (int i = 0; i < 3; i++) {
             Game game = new CommonGame("hip hop " + i, "hard", 1, 3);

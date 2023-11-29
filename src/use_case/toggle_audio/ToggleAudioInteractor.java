@@ -1,16 +1,17 @@
 package use_case.toggle_audio;
 
 
+import data_access.game_data.GameDataAccessInterface;
 import entity.Game;
 import entity.PlayableAudio;
 import entity.Round;
 import entity.Song;
 
 public class ToggleAudioInteractor implements ToggleAudioInputBoundary {
-    private final ToggleAudioGameDataAccessInterface toggleAudioDataAccessObject;
+    private final GameDataAccessInterface toggleAudioDataAccessObject;
     private final ToggleAudioOutputBoundary toggleAudioPresenter;
 
-    public ToggleAudioInteractor(ToggleAudioGameDataAccessInterface toggleAudioDataAccessObject, ToggleAudioOutputBoundary toggleAudioPresenter) {
+    public ToggleAudioInteractor(GameDataAccessInterface toggleAudioDataAccessObject, ToggleAudioOutputBoundary toggleAudioPresenter) {
         this.toggleAudioDataAccessObject = toggleAudioDataAccessObject;
         this.toggleAudioPresenter = toggleAudioPresenter;
     }

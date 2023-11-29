@@ -1,11 +1,10 @@
 package use_case.statistics;
 
-import data_access.InMemoryGameDataAccessObject;
+import data_access.game_data.GameDataAccessInterface;
+import data_access.game_data.InMemoryGameDataAccessObject;
 import entity.*;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.HashMap;
 
 import static org.junit.Assert.*;
 public class StatisticsTest {
@@ -13,7 +12,7 @@ public class StatisticsTest {
      * Initialize each test to have an existing game with the current round already set and a data access object.
      */
     private final int INITIAL_LIVES = 10;
-    private StatisticsDataAccessInterface gameDataAccessObject;
+    private GameDataAccessInterface gameDataAccessObject;
     private Game game;
 
     @Before

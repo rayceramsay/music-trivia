@@ -1,6 +1,7 @@
 package app;
 
-import data_access.InMemoryGameDataAccessObject;
+import data_access.game_data.GameDataAccessInterface;
+import data_access.game_data.InMemoryGameDataAccessObject;
 
 import data_access.api.SpotifyAPI;
 import interface_adapter.ViewManagerModel;
@@ -47,7 +48,7 @@ public class Main {
         ToggleAudioViewModel toggleAudioViewModel = new ToggleAudioViewModel(RoundView.VIEW_NAME);
 
         // Create data access objects
-        InMemoryGameDataAccessObject gameDataAccessObject = new InMemoryGameDataAccessObject();
+        GameDataAccessInterface gameDataAccessObject = new InMemoryGameDataAccessObject();
 
         // Create objects for GameSettings View (TEMPORARY UNTIL FACTORY IS CREATED)
         CreateGameOutputBoundary createGamePresenter = new CreateGamePresenter(viewManagerModel, roundViewModel);
@@ -55,7 +56,7 @@ public class Main {
         CreateGameController createGameController = new CreateGameController(createGameInteractor);
 
         // Create views
-        MenuView menuView = MenuViewFactory.create(viewManagerModel, gameSettingsViewModel, getLoadableGamesViewModel, statisticsViewModel, gameDataAccessObject, gameDataAccessObject);
+        MenuView menuView = MenuViewFactory.create(viewManagerModel, gameSettingsViewModel, getLoadableGamesViewModel, statisticsViewModel, gameDataAccessObject);
         GameSettingsView gameSettingsView = new GameSettingsView(gameSettingsViewModel, viewManagerModel, createGameController);
         GameOverView gameOverView = new GameOverView(gameOverViewModel, viewManagerModel);
         RoundView roundView = RoundViewFactory.create(viewManagerModel, roundViewModel, submitAnswerViewModel, toggleAudioViewModel, gameOverViewModel, gameDataAccessObject, roundFactory);

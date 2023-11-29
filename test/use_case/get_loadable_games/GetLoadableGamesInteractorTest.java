@@ -1,19 +1,20 @@
 package use_case.get_loadable_games;
 
-import data_access.InMemoryGameDataAccessObject;
+import data_access.api.MockAPI;
+import data_access.game_data.GameDataAccessInterface;
+import data_access.game_data.InMemoryGameDataAccessObject;
 import entity.*;
 
 import org.junit.Test;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.*;
 
 public class GetLoadableGamesInteractorTest {
 
-    private GetLoadableGamesGameDataAccessInterface gameRepository;
+    private GameDataAccessInterface gameRepository;
     private List<Game> loadableGames;
 
     /**
@@ -25,7 +26,7 @@ public class GetLoadableGamesInteractorTest {
     private void setupGameRepository(boolean finishAllGames) {
         gameRepository = new InMemoryGameDataAccessObject();
         loadableGames = new ArrayList<>();
-        RoundFactory roundFactory = new CommonRoundFactory();
+        RoundFactory roundFactory = new CommonRoundFactory(new MockAPI(new CommonSongFactory()));
 
         for (int i = 0; i < 6; i++) {
             Game game = new CommonGame("hip hop", "hard", 1, 3);

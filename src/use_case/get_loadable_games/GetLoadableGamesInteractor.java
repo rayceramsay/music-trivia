@@ -1,5 +1,6 @@
 package use_case.get_loadable_games;
 
+import data_access.game_data.GameDataAccessInterface;
 import entity.Game;
 
 import java.time.format.DateTimeFormatter;
@@ -8,10 +9,10 @@ import java.util.*;
 public class GetLoadableGamesInteractor implements GetLoadableGamesInputBoundary {
 
     private final GetLoadableGamesOutputBoundary presenter;
-    private final GetLoadableGamesGameDataAccessInterface gameDataAccessObject;
+    private final GameDataAccessInterface gameDataAccessObject;
 
     public GetLoadableGamesInteractor(GetLoadableGamesOutputBoundary presenter,
-                                      GetLoadableGamesGameDataAccessInterface gameDataAccessObject) {
+                                      GameDataAccessInterface gameDataAccessObject) {
         this.presenter = presenter;
         this.gameDataAccessObject = gameDataAccessObject;
     }
