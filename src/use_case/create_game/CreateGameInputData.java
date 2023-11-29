@@ -28,4 +28,5 @@ public class CreateGameInputData {
     public int getLives() {
         return lives;
     }
+
 }

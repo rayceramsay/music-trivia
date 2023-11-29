@@ -7,6 +7,7 @@ public class FinishRoundOutputData {
     private int roundNumber;
     private int lives;
     public FinishRoundOutputData() {}
+
     public int getScore() {
         return score;
     }

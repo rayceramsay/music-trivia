@@ -35,6 +35,7 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
     private final JLabel roundInfo;
     private final JLabel livesInfo;
     private final JLabel genreInfo;
+    private final JLabel scoreInfo;
     private final JTextField answerInputField;
     private final int borderWidth = 2;
 
@@ -127,6 +128,12 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         genreCell.add(genreInfo);
         infoSection.add(genreCell);
 
+        scoreInfo = new JLabel("Current Score: ");
+        JPanel scoreCell = new JPanel();
+        scoreCell.setBackground(this.getBackground());
+        scoreCell.add(scoreInfo);
+        infoSection.add(scoreCell);
+
         // Menu button
         JButton menuButton = new JButton("Go to main menu");
         menuButton.addActionListener(e -> {
@@ -184,6 +191,7 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         roundInfo.setText("Round: " + roundViewModel.getState().getCurrentRoundNumber() + "/" + roundViewModel.getState().getMaxRounds());
         livesInfo.setText("Lives left:" + roundViewModel.getState().getCurrentLives());
         genreInfo.setText("Genre: "  + roundViewModel.getState().getGenre());
+        scoreInfo.setText("Score: " + roundViewModel.getState().getScore());
     }
       
     private ImageIcon setProperties(ImageIcon buttonImage) {

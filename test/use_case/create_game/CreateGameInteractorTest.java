@@ -26,6 +26,7 @@ public class CreateGameInteractorTest {
         String difficulty = "Hard";
         int lives = 3;
         int rounds = 10;
+        int currentScore = 0;
 
         CreateGameInputData createGameInputData = new CreateGameInputData(genre, difficulty, lives, rounds);
         CreateGameOutputBoundary createGamePresenter = new CreateGameOutputBoundary() {
@@ -35,6 +36,7 @@ public class CreateGameInteractorTest {
                 assert outputData.getDifficulty().equals(difficulty);
                 assert outputData.getLives() == lives;
                 assert outputData.getRounds() == rounds;
+                assert outputData.getCurrentScore() == currentScore;
             }
         };
 
@@ -49,6 +51,7 @@ public class CreateGameInteractorTest {
         String difficulty = "Hard";
         int lives = 3;
         int rounds = 10;
+        int currentScore = 0;
 
         CreateGameInputData createGameInputData = new CreateGameInputData(genre, difficulty, lives, rounds);
 
@@ -63,6 +66,7 @@ public class CreateGameInteractorTest {
                 assert gameDataAccessObject.getGameByID(ID).getCurrentLives() == lives;
                 assert gameDataAccessObject.getGameByID(ID).getMaxRounds() == rounds;
                 assert gameDataAccessObject.getGameByID(ID).getRounds().size() == 1;
+                assert gameDataAccessObject.getGameByID(ID).getScore() == currentScore;
             }
         };
 
@@ -76,6 +80,7 @@ public class CreateGameInteractorTest {
         String difficulty = "Hard";
         int lives = 3;
         int rounds = 10;
+        int currentScore = 0;
 
         ViewManagerModel viewManagerModel = new ViewManagerModel();
         CreateGameInputData createGameInputData = new CreateGameInputData(genre, difficulty, lives, rounds);
@@ -93,5 +98,6 @@ public class CreateGameInteractorTest {
         assert state.getMaxRounds() == rounds;
         assertEquals(state.getGenre(), genre);
         assert state.getCurrentRoundNumber() == 1;
+        assert state.getScore() == currentScore;
     }
 }
