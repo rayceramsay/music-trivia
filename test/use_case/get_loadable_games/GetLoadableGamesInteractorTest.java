@@ -99,6 +99,7 @@ public class GetLoadableGamesInteractorTest {
                 assertEquals(exampleGame.getRoundsPlayed(), exampleGameData.getCurrentRoundNumber());
                 assertEquals(exampleGame.getMaxRounds(), exampleGameData.getMaxRounds());
                 assertEquals(exampleGame.getCreatedAt(), exampleGameData.getCreatedAt());
+                assertEquals(exampleGame.getScore(), exampleGameData.getScore());
             }
 
             @Override
