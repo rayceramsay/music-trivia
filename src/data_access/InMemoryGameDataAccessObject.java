@@ -1,8 +1,6 @@
 package data_access;
 
-import entity.CommonLifetimeStatistics;
-import entity.Game;
-import entity.LifetimeStatistics;
+import entity.*;
 import use_case.finish_round.FinishRoundGameDataAccessInterface;
 import use_case.get_loadable_games.GetLoadableGamesGameDataAccessInterface;
 import use_case.load_game.LoadGameGameDataAccessInterface;
