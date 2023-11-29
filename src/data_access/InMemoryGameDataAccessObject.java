@@ -1,35 +1,57 @@
 package data_access;
 
+import entity.CommonGame;
 import entity.CommonLifetimeStatistics;
 import entity.Game;
 import entity.LifetimeStatistics;
+import use_case.create_game.CreateGameDataAccessInterface;
 import use_case.finish_round.FinishRoundGameDataAccessInterface;
 import use_case.get_loadable_games.GetLoadableGamesGameDataAccessInterface;
 import use_case.load_game.LoadGameGameDataAccessInterface;
 import use_case.statistics.StatisticsDataAccessInterface;
 import use_case.submit_answer.SubmitAnswerGameDataAccessInterface;
 import use_case.toggle_audio.ToggleAudioGameDataAccessInterface;
-import entity.CommonGame;
-import use_case.create_game.CreateGameDataAccessInterface;
 
 import java.util.*;
 
+/**
+ * Implementation of the Game DAO using in memory storage.
+ * The Game DAO class includes all interfaces that define methods for accessing the required data for the game
+ */
 public class InMemoryGameDataAccessObject implements SubmitAnswerGameDataAccessInterface, FinishRoundGameDataAccessInterface,
         CreateGameDataAccessInterface, GetLoadableGamesGameDataAccessInterface, LoadGameGameDataAccessInterface,
         StatisticsDataAccessInterface, ToggleAudioGameDataAccessInterface {
 
     private final Map<String, Game> games = new HashMap<>();  // maps gameID to game object
 
+    /**
+     * Gets a specific game via its gameID.
+     *
+     * @param gameID
+     * @return Game
+     */
     @Override
     public Game getGameByID(String gameID) {
         return games.get(gameID);
     }
 
+    /**
+     * Saves a specific game within a HashMap of 'games'.
+     * Adds functionality of allowing a user to return to an incomplete game and continue where they left off.
+     *
+     * @param game
+     */
     @Override
     public void save(Game game) {
         games.put(game.getID(), game);
     }
 
+    /**
+     * Adds incomplete games to a list of possible loadable games
+     * Adds functionality of being able to load a previously played game which is still incomplete
+     *
+     * @return List of Games
+     */
     @Override
     public List<Game> getLoadableGames() {
         List<Game> loadableGames = new ArrayList<>();
@@ -44,6 +66,15 @@ public class InMemoryGameDataAccessObject implements SubmitAnswerGameDataAccessI
         return loadableGames;
     }
 
+    /**
+     * Creates game with set difficulty, genre, initial lives, and max rounds
+     *
+     * @param difficulty
+     * @param genre
+     * @param initialLives
+     * @param maxRounds
+     * @return String
+     */
     @Override
     public String addGame(String difficulty, String genre, int initialLives, int maxRounds) {
         Game game = new CommonGame(genre, difficulty, maxRounds, initialLives);
@@ -52,6 +83,16 @@ public class InMemoryGameDataAccessObject implements SubmitAnswerGameDataAccessI
         return game.getID();
     }
 
+    /**
+     * Outputs statistics:
+     * Average score,
+     * Average initial lives,
+     * Average rounds played,
+     * Most common difficulty level,
+     * Most common genre,
+     *
+     * @return LifetimeStatistics
+     */
     @Override
     public LifetimeStatistics avgStats() {
         int gamesPlayed = 0;
@@ -101,12 +142,11 @@ public class InMemoryGameDataAccessObject implements SubmitAnswerGameDataAccessI
             return null;
         } else {
             return new CommonLifetimeStatistics(
-                    scoreSum/gamesPlayed,
-                    sumInitialLives/gamesPlayed,
-                    roundsPlayed/gamesPlayed,
+                    scoreSum / gamesPlayed,
+                    sumInitialLives / gamesPlayed,
+                    roundsPlayed / gamesPlayed,
                     mostCommonDifficulty,
                     mostCommonGenre);
         }
-
     }
 }
