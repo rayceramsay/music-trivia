@@ -7,4 +7,5 @@ public interface Round {
     String getUserAnswer();
     void setUserAnswer(String userAnswer);
     boolean isUserAnswerCorrect();
+    boolean isFinished();
 }

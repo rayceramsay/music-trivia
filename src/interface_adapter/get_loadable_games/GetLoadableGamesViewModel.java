@@ -1,23 +1,24 @@
-package interface_adapter.round;
+package interface_adapter.get_loadable_games;
 
 import interface_adapter.ViewModel;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-public class RoundViewModel extends ViewModel {
-    public String TITLE_LABEL = "What song is this?";
+public class GetLoadableGamesViewModel extends ViewModel {
+
+    public final static String STATE_PROPERTY = "getLoadableGamesState";
 
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
-    private RoundState state = new RoundState();
+    private final GetLoadableGamesState state = new GetLoadableGamesState();
 
-    public RoundViewModel(String viewName) {
+    public GetLoadableGamesViewModel(String viewName) {
         super(viewName);
     }
 
     @Override
     public void firePropertyChanged() {
-        support.firePropertyChange("roundState", null, this.state);
+        support.firePropertyChange(STATE_PROPERTY, null, state);
     }
 
     @Override
@@ -25,11 +26,7 @@ public class RoundViewModel extends ViewModel {
         support.addPropertyChangeListener(listener);
     }
 
-    public RoundState getState() {
+    public GetLoadableGamesState getState() {
         return state;
-    }
-
-    public void setState(RoundState state) {
-        this.state = state;
     }
 }

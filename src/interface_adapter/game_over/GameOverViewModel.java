@@ -13,8 +13,8 @@ public class GameOverViewModel extends ViewModel {
 
     private GameOverState state = new GameOverState();
 
-    public GameOverViewModel() {
-        super("game over");
+    public GameOverViewModel(String viewName) {
+        super(viewName);
     }
 
     public void setState(GameOverState state) {

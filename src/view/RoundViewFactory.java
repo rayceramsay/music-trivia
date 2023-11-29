@@ -21,9 +21,8 @@ import use_case.submit_answer.SubmitAnswerInteractor;
 import use_case.submit_answer.SubmitAnswerOutputBoundary;
 import use_case.toggle_audio.*;
 
-import javax.swing.text.View;
-
 public class RoundViewFactory {
+
     private RoundViewFactory() {}
 
     public static RoundView create(ViewManagerModel viewManagerModel,
@@ -39,7 +38,7 @@ public class RoundViewFactory {
         ToggleAudioController toggleAudioController = createToggleAudioUseCase(toggleAudioViewModel, toggleAudioDataAccessInterface, roundViewModel);
         FinishRoundController finishRoundController = createFinishRoundUseCase(viewManagerModel, gameOverViewModel, roundViewModel, finishRoundGameDataAccessInterface);
 
-        return new RoundView(roundViewModel, submitAnswerViewModel, submitAnswerController, finishRoundController, toggleAudioViewModel, toggleAudioController);
+        return new RoundView(viewManagerModel, roundViewModel, submitAnswerViewModel, submitAnswerController, finishRoundController, toggleAudioViewModel, toggleAudioController);
     }
 
     private static SubmitAnswerController createSubmitAnswerUseCase(SubmitAnswerViewModel submitAnswerViewModel,

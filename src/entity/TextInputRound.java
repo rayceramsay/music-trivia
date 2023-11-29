@@ -45,8 +45,17 @@ public class TextInputRound implements Round {
 
     @Override
     public boolean isUserAnswerCorrect() {
+        if (userAnswer == null) {
+            return false;
+        }
+
         String cleanedUserAnswer = cleanString(userAnswer);
         return cleanedUserAnswer.equalsIgnoreCase(correctAnswer);
+    }
+
+    @Override
+    public boolean isFinished() {
+        return userAnswer != null;
     }
 
     private String cleanString(String string) {

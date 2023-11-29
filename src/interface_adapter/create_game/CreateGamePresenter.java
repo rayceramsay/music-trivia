@@ -30,7 +30,7 @@ public class CreateGamePresenter implements CreateGameOutputBoundary {
         roundState.setCurrentLives(createGameOutputData.getLives());
         roundState.setInitialLives(createGameOutputData.getLives());
 
-        viewManagerModel.setActiveView("round");
+        viewManagerModel.setActiveView(roundViewModel.getViewName());
 
         roundViewModel.firePropertyChanged();
         viewManagerModel.firePropertyChanged();

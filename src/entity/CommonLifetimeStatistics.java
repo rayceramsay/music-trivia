@@ -1,6 +1,7 @@
 package entity;
 
 public class CommonLifetimeStatistics implements LifetimeStatistics {
+
     int getAverageScore;
     int getAverageInitialLives;
     int averageRoundsPlayed;

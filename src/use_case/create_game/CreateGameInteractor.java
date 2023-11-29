@@ -1,21 +1,14 @@
 package use_case.create_game;
 
 import entity.*;
-import interface_adapter.create_game.CreateGameController;
-import interface_adapter.create_game.CreateGamePresenter;
-import interface_adapter.round.RoundState;
-import interface_adapter.round.RoundViewModel;
-import view.RoundView;
 
 public class CreateGameInteractor implements CreateGameInputBoundary{
     final CreateGameDataAccessInterface gameAccessObject;
     final CreateGameOutputBoundary createGamePresenter;
-    final RoundViewModel roundViewModel;
 
-    public CreateGameInteractor (CreateGameDataAccessInterface gameAccessObject, CreateGameOutputBoundary createGamePresenter, RoundViewModel roundViewModel) {
+    public CreateGameInteractor (CreateGameDataAccessInterface gameAccessObject, CreateGameOutputBoundary createGamePresenter) {
         this.gameAccessObject = gameAccessObject;
         this.createGamePresenter = createGamePresenter;
-        this.roundViewModel = roundViewModel;
     }
 
     @Override

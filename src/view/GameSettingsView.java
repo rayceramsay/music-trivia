@@ -15,9 +15,7 @@ import java.beans.PropertyChangeListener;
 
 public class GameSettingsView extends JPanel implements ActionListener, PropertyChangeListener {
 
-
-    public final String viewName = "game settings";
-
+    public final static String VIEW_NAME =  "game settings";
 
     private final GameSettingsViewModel gameSettingsViewModel;
 
@@ -193,11 +191,11 @@ public class GameSettingsView extends JPanel implements ActionListener, Property
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(back)) {
-            viewManagerModel.setActiveView("menu");
+            viewManagerModel.setActiveView(MenuView.VIEW_NAME);
             viewManagerModel.firePropertyChanged();
         }
         if (e.getSource().equals(playGame)) {
-            viewManagerModel.setActiveView("round");
+            viewManagerModel.setActiveView(RoundView.VIEW_NAME);
             viewManagerModel.firePropertyChanged();
         }
     }
