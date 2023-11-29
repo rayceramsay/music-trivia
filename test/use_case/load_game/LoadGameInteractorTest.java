@@ -1,4 +1,4 @@
-package use_case.get_loadable_games.load_game;
+package use_case.load_game;
 
 import data_access.InMemoryGameDataAccessObject;
 import entity.*;
