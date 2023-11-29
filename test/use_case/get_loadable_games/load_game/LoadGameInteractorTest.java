@@ -1,9 +1,10 @@
-package use_case.load_game;
+package use_case.get_loadable_games.load_game;
 
 import data_access.InMemoryGameDataAccessObject;
 import entity.*;
 import org.junit.Before;
 import org.junit.Test;
+import use_case.load_game.*;
 
 import static org.junit.Assert.*;
 
