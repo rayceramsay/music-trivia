@@ -30,7 +30,7 @@ public class LoadGamePresenter implements LoadGameOutputBoundary {
         roundState.setUserAnswer("");
 
 
-roundState.setMultipleChoiceOptions(createGameOutputData.getMultipleChoiceAnswers());
+        roundState.setMultipleChoiceOptions(outputData.getMultipleChoiceAnswers());
 
         roundViewModel.setState(roundState);
         viewManagerModel.setActiveView(roundViewModel.getViewName());

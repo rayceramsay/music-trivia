@@ -41,7 +41,8 @@ public class FinishRoundPresenter implements FinishRoundOutputBoundary {
         roundState.setGenre(outputData.getGenre());
         roundState.setCurrentLives(outputData.getLives());
         roundState.setUserAnswer("");
-roundState.setMultipleChoiceOptions(createGameOutputData.getMultipleChoiceAnswers());
+
+        roundState.setMultipleChoiceOptions(outputData.getMultipleChoiceAnswers());
 
         this.roundViewModel.setState(roundState);
 

@@ -2,6 +2,7 @@ package interface_adapter.round;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class RoundState {
 
@@ -94,7 +95,7 @@ public class RoundState {
     public void setMultipleChoiceOptions(ArrayList<String> options){
         this.multipleChoiceOptions = options;
     }
-    public ArrayList<String> getMultipleChoiceOptions(){
+    public List<String> getMultipleChoiceOptions(){
         return this.multipleChoiceOptions;
     }
 

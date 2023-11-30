@@ -32,23 +32,7 @@ public class CreateGamePresenter implements CreateGameOutputBoundary {
         roundState.setCurrentLives(createGameOutputData.getLives());
         roundState.setInitialLives(createGameOutputData.getLives());
 
-        if (createGameOutputData.getDifficulty().equalsIgnoreCase("easy")) {
-            roundState.setEasyRound(true);
-            roundState.setMediumRound(false);
-            roundState.setHardRound(false);
-            roundState.setMultipleChoiceOptions(createGameOutputData.getMultipleChoiceAnswers());
-        }
-        else if (createGameOutputData.getDifficulty().equalsIgnoreCase("Medium")) {
-            roundState.setEasyRound(false);
-            roundState.setMediumRound(true);
-            roundState.setHardRound(false);
-            roundState.setMultipleChoiceOptions(createGameOutputData.getMultipleChoiceAnswers());
-        }
-        else if (createGameOutputData.getDifficulty().equalsIgnoreCase("Hard")) {
-            roundState.setEasyRound(false);
-            roundState.setMediumRound(false);
-            roundState.setHardRound(true);
-        }
+        roundState.setMultipleChoiceOptions(createGameOutputData.getMultipleChoiceAnswers());
 
         viewManagerModel.setActiveView(roundViewModel.getViewName());
 

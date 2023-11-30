@@ -227,6 +227,25 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         this.updateViewComponents();
     }
 
+    private void updateAnswerSection() {
+        answerSection.removeAll();
+
+        RoundState roundState = roundViewModel.getState();
+        if (roundState.isMultipleChoiceRound()) {
+            for (String option : roundState.getMultipleChoiceOptions()) {
+                JButton optionButton = new JButton(option);
+                optionButton.addActionListener(event -> submitAnswerController.execute(option, roundState.getGameId()));
+                answerSection.add(optionButton);
+            }
+        } else {
+            answerSection.add(answerInputField);
+            answerSection.add(submit);
+        }
+
+        answerSection.revalidate();
+        answerSection.repaint();
+    }
+
     private void updateViewComponents(){
         roundInfo.setText("Round: " + roundViewModel.getState().getCurrentRoundNumber() + "/" + roundViewModel.getState().getMaxRounds());
         livesInfo.setText("Lives left:" + roundViewModel.getState().getCurrentLives());

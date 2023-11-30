@@ -16,7 +16,7 @@ public class LoadGameInteractor implements LoadGameInputBoundary {
     @Override
     public void execute(LoadGameInputData inputData) {
         Game gameToLoad = gameRepository.getGameByID(inputData.getGameID());
-        Round lastRound = gameToLoad.currentRound()
+        Round lastRound = gameToLoad.getCurrentRound();
 
         LoadGameOutputData outputData = new LoadGameOutputData(gameToLoad.getID(),
                 gameToLoad.getCurrentRound().getQuestion(),
