@@ -193,9 +193,7 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
             playSong.setIcon(setProperties(new ImageIcon(toggleAudioState.getImgPath())));
         }
         else if (propertyName.equals(SubmitAnswerViewModel.STATE_PROPERTY)) {
-            easyAnswerSection.setVisible(false);
-            mediumAnswerSection.setVisible(false);
-            hardAnswerSection.setVisible(false);
+            answerSection.setVisible(false);
 
             SubmitAnswerState submitAnswerState = (SubmitAnswerState) evt.getNewValue();
 
