@@ -97,55 +97,11 @@ public class RoundState {
     public void setCurrentRoundNumber(int currentRoundNumber) {
         this.currentRoundNumber = currentRoundNumber;
     }
-
-    public String getMultipleChoice1() {
-        return multipleChoice1;
+    public void setMultipleChoiceOptions(ArrayList<String> options){
+        this.multipleChoiceOptions = options;
     }
-
-    public String getMultipleChoice2() {
-        return multipleChoice2;
-    }
-
-    public String getMultipleChoice3() {
-        return multipleChoice3;
-    }
-
-    public String getMultipleChoice4() {
-        return multipleChoice4;
-    }
-
-    public ArrayList<String> getEasyChoices () {
-        ArrayList<String> ret = new ArrayList<>();
-        ret.add(multipleChoice1);
-        ret.add(multipleChoice2);
-        Collections.shuffle(ret);
-        return ret;
-    }
-
-    public ArrayList<String> getMediumChoices () {
-        ArrayList<String> ret = new ArrayList<>();
-        ret.add(multipleChoice1);
-        ret.add(multipleChoice2);
-        ret.add(multipleChoice3);
-        ret.add(multipleChoice4);
-        Collections.shuffle(ret);
-        return ret;
-    }
-
-    public void setMultipleChoice1(String multipleChoice1) {
-        this.multipleChoice1 = multipleChoice1;
-    }
-
-    public void setMultipleChoice2(String multipleChoice2) {
-        this.multipleChoice2 = multipleChoice2;
-    }
-
-    public void setMultipleChoice3(String multipleChoice3) {
-        this.multipleChoice3 = multipleChoice3;
-    }
-
-    public void setMultipleChoice4(String multipleChoice4) {
-        this.multipleChoice4 = multipleChoice4;
+    public ArrayList<String> getMultipleChoiceOptions(){
+        return this.multipleChoiceOptions;
     }
 
     public boolean isEasyRound() {
