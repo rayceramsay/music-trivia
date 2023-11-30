@@ -55,14 +55,9 @@ public class Main {
         // Create data access objects
         InMemoryGameDataAccessObject gameDataAccessObject = new InMemoryGameDataAccessObject();
 
-        // Create objects for GameSettings View (TEMPORARY UNTIL FACTORY IS CREATED)
-        CreateGameOutputBoundary createGamePresenter = new CreateGamePresenter(viewManagerModel, roundViewModel, createGameViewModel);
-        CreateGameInputBoundary createGameInteractor = new CreateGameInteractor(gameDataAccessObject, createGamePresenter, roundFactory);
-        CreateGameController createGameController = new CreateGameController(createGameInteractor);
-
         // Create views
         MenuView menuView = MenuViewFactory.create(viewManagerModel, gameSettingsViewModel, getLoadableGamesViewModel, statisticsViewModel, gameDataAccessObject, gameDataAccessObject);
-        GameSettingsView gameSettingsView = new GameSettingsView(gameSettingsViewModel, viewManagerModel, createGameController);
+        GameSettingsView gameSettingsView = GameSettingsViewFactory.create(viewManagerModel, roundViewModel, createGameViewModel, gameSettingsViewModel, gameDataAccessObject, roundFactory);
         GameOverView gameOverView = new GameOverView(gameOverViewModel, viewManagerModel);
         RoundView roundView = RoundViewFactory.create(viewManagerModel, roundViewModel, submitAnswerViewModel, finishRoundViewModel, createGameViewModel, loadGameViewModel, toggleAudioViewModel, gameOverViewModel, gameDataAccessObject, roundFactory);
         LoadableGamesView loadableGamesView = LoadableGamesViewFactory.create(viewManagerModel, getLoadableGamesViewModel, roundViewModel, loadGameViewModel, gameDataAccessObject);
