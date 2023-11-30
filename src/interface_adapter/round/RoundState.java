@@ -14,9 +14,6 @@ public class RoundState {
     private int maxRounds;
     private int currentRoundNumber;
     private List<String> multipleChoiceOptions;
-    private boolean isEasyRound = false;
-    private boolean isMediumRound = false;
-    private boolean isHardRound = false;
 
     public RoundState(RoundState copy) {
         gameId = copy.gameId;
@@ -27,9 +24,6 @@ public class RoundState {
         currentLives = copy.currentLives;
         maxRounds = copy.maxRounds;
         currentRoundNumber = copy.currentRoundNumber;
-        isEasyRound = copy.isEasyRound;
-        isMediumRound = copy.isMediumRound;
-        isHardRound = copy.isHardRound;
     }
 
     public RoundState() {}

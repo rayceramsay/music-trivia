@@ -112,15 +112,12 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
             @Override
             public void keyReleased(KeyEvent e) {}
         });
-        hardAnswerSection.add(answerInputField);
 
         submit = new JButton("Submit");
         submit.addActionListener(event -> {
             RoundState roundState = roundViewModel.getState();
             submitAnswerController.execute(roundState.getUserAnswer(), roundState.getGameId());
         });
-
-        hardAnswerSection.add(submit);
 
         // Loading Label
         loadingLabel = new JLabel("loading round ... ");
