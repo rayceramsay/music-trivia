@@ -10,6 +10,17 @@ public class LoadGameOutputData {
     private final int maxRounds;
     private final int currentRoundNumber;
 
+    /**
+     * Constructor to initialize objects of LoadGameOutputData
+     *
+     * @param gameId             ID of game
+     * @param question           Prompt used throughout the game
+     * @param genre              genre of songs used in game
+     * @param initialLives       initial amount of lives in game
+     * @param currentLives       current amount of lives left
+     * @param maxRounds          maximum amount of rounds left
+     * @param currentRoundNumber current round
+     */
     public LoadGameOutputData(String gameId, String question, String genre, int initialLives, int currentLives,
                               int maxRounds, int currentRoundNumber) {
         this.gameId = gameId;

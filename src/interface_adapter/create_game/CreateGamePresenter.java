@@ -5,18 +5,31 @@ import interface_adapter.round.RoundState;
 import interface_adapter.round.RoundViewModel;
 import use_case.create_game.CreateGameOutputBoundary;
 import use_case.create_game.CreateGameOutputData;
-import view.RoundView;
 
+/**
+ * Presenter which implements the Output Boundary for the CreateGame interface adapter
+ */
 public class CreateGamePresenter implements CreateGameOutputBoundary {
 
     private final ViewManagerModel viewManagerModel;
     private final RoundViewModel roundViewModel;
 
-    public CreateGamePresenter (ViewManagerModel viewManagerModel, RoundViewModel roundViewModel) {
+    /**
+     * Constructor to initialize objects of CreateGamePresenter
+     *
+     * @param viewManagerModel View Manager Model
+     * @param roundViewModel   View Model for a round
+     */
+    public CreateGamePresenter(ViewManagerModel viewManagerModel, RoundViewModel roundViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.roundViewModel = roundViewModel;
     }
 
+    /**
+     * Sets the starting round using data such as GameID, MaxRounds, Genre, Initial lives from output data
+     *
+     * @param createGameOutputData Output Data for CreateGame use case
+     */
     @Override
     public void prepareFirstRoundView(CreateGameOutputData createGameOutputData) {
 

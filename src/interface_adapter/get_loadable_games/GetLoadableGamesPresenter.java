@@ -7,15 +7,22 @@ import use_case.get_loadable_games.GetLoadableGamesOutputDataItem;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+/**
+ * Implementation of GetLoadableGamesOutputBoundary interface
+ */
 public class GetLoadableGamesPresenter implements GetLoadableGamesOutputBoundary {
 
     private final GetLoadableGamesViewModel getLoadableGamesViewModel;
     private final ViewManagerModel viewManagerModel;
 
+    /**
+     * Constructor to initialize objects of GetLoadableGamesPresenter
+     *
+     * @param getLoadableGamesViewModel View Model for getLoadableGames
+     * @param viewManagerModel          View Manager Model
+     */
     public GetLoadableGamesPresenter(GetLoadableGamesViewModel getLoadableGamesViewModel, ViewManagerModel viewManagerModel) {
         this.getLoadableGamesViewModel = getLoadableGamesViewModel;
         this.viewManagerModel = viewManagerModel;
