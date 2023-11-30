@@ -21,7 +21,7 @@ public class SubmitAnswerInteractorTest {
     @Before
     public void init() {
         game = new CommonGame("pop", "hard", 15, INITIAL_LIVES);
-        Song song = new CommonSong(CORRECT_ANSWER, "me", new FileMP3PlayableAudio("path/song.mp3"));
+        Song song = new CommonSong(CORRECT_ANSWER, "me", new OnlineMP3PlayableAudio("path/song.mp3"));
         Round round = new TextInputRound(song, "What song is this?", CORRECT_ANSWER);
         game.setCurrentRound(round);
 

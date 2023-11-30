@@ -200,11 +200,15 @@ public class SQLiteDatabaseGameDataAccessObject implements SubmitAnswerGameDataA
                 String songAudioPath = roundDataResults.getString("audio_path");
 
                 Song song = new CommonSong(songTitle, songArtist, new OnlineMP3PlayableAudio(songAudioPath));
-                Round round = switch (game.getDifficulty().toLowerCase()) {
-                    case "easy" -> new FourMultipleChoiceRound(song, question, correctAnswer, userAnswer);
-                    case "medium" -> new TwoMultipleChoiceRound(song, question, correctAnswer, userAnswer);
-                    default -> new TextInputRound(song, question, correctAnswer, userAnswer);
-                };
+
+                Round round;
+                if (game.getDifficulty().equalsIgnoreCase("easy") || game.getDifficulty().equalsIgnoreCase("medium")) {
+                   round = new MultipleChoiceRound(song, question, correctAnswer, userAnswer);
+                } else {
+                    round = new TextInputRound(song, question, correctAnswer, userAnswer);
+                }
+
+                // TODO: populate round with multiple choice options - requires changes to DB schema
 
                 game.setCurrentRound(round);
             }
