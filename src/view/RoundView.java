@@ -307,32 +307,8 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
                 || propertyName.equals(FinishRoundViewModel.STATE_PROPERTY)) {
             RoundState roundState = roundViewModel.getState();
 
-            if (roundState.isEasyRound()) {
-                ArrayList<String> answers = roundState.getEasyChoices();
-
-                easyButton1.setText(answers.get(0));
-                easyButton2.setText(answers.get(1));
-
-                easyAnswerSection.setVisible(true);
-            }
-            else {
-                easyAnswerSection.setVisible(false);
-            }
-            if (roundState.isMediumRound()) {
-                ArrayList<String> answers = roundState.getMediumChoices();
-
-                mediumButton1.setText(answers.get(0));
-                mediumButton2.setText(answers.get(1));
-                mediumButton3.setText(answers.get(2));
-                mediumButton4.setText(answers.get(3));
-
-                mediumAnswerSection.setVisible(true);
-            }
-            else {
-                mediumAnswerSection.setVisible(false);
-            }
-
-            hardAnswerSection.setVisible(roundState.isHardRound());
+            updateAnswerSection();
+            answerSection.setVisible(true);
         }
         this.updateViewComponents();
     }
