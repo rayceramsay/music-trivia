@@ -42,10 +42,7 @@ public class CreateGamePresenter implements CreateGameOutputBoundary {
             roundState.setEasyRound(false);
             roundState.setMediumRound(true);
             roundState.setHardRound(false);
-            roundState.setMultipleChoice1(createGameOutputData.getMultipleChoiceAnswers().get(0));
-            roundState.setMultipleChoice2(createGameOutputData.getMultipleChoiceAnswers().get(1));
-            roundState.setMultipleChoice3(createGameOutputData.getMultipleChoiceAnswers().get(2));
-            roundState.setMultipleChoice4(createGameOutputData.getMultipleChoiceAnswers().get(3));
+            roundState.setMultipleChoiceOptions(createGameOutputData.getMultipleChoiceAnswers());
         }
         else if (createGameOutputData.getDifficulty().equalsIgnoreCase("Hard")) {
             roundState.setEasyRound(false);
