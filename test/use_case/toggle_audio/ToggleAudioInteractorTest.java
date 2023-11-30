@@ -8,9 +8,11 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class ToggleAudioInteractorTest {
+
     private Song song;
     private Game game;
     private ToggleAudioGameDataAccessInterface gameDataAccessObject;
+
     @Before
     public void init() {
         song = new CommonSong("Closer", "The Chainsmokers", new TestPlayableAudio("path/song.mp3"));
@@ -37,7 +39,6 @@ public class ToggleAudioInteractorTest {
         ToggleAudioInputBoundary interactor = new ToggleAudioInteractor(gameDataAccessObject, toggleAudioPresenter);
         interactor.execute(inputData);
     }
-
 
     @Test
     public void songIsPlayingTest() {
