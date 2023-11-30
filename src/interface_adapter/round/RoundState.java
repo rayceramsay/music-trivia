@@ -13,10 +13,7 @@ public class RoundState {
     private int currentLives;
     private int maxRounds;
     private int currentRoundNumber;
-    private String multipleChoice1 = "";
-    private String multipleChoice2 = "";
-    private String multipleChoice3 = "";
-    private String multipleChoice4 = "";
+    private List<String> multipleChoiceOptions;
     private boolean isEasyRound = false;
     private boolean isMediumRound = false;
     private boolean isHardRound = false;
