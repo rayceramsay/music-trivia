@@ -36,6 +36,7 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
     private final JLabel livesInfo;
     private final JLabel genreInfo;
     private final JTextField answerInputField;
+    private final JLabel loadingLabel;
     private final int borderWidth = 2;
 
     public RoundView(ViewManagerModel viewManagerModel,
@@ -101,6 +102,11 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         });
         answerSection.add(submit);
 
+        // Loading Label
+        loadingLabel = new JLabel("loading round ... ");
+        loadingLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        loadingLabel.setVisible(false);
+
         // Round Info Section
         JPanel infoSection = new JPanel();
         infoSection.setMinimumSize(new Dimension(300,10));
@@ -146,8 +152,13 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         this.add(prompt);
         this.add(playSong);
         this.add(answerSection);
+        this.add(loadingLabel);
         this.add(new JPanel());
         this.add(infoSection);
+
+        loadingLabel.setVisible(true); // showing loading label
+        submit.setEnabled(false); // disable submit button while loading next round
+        playSong.setEnabled(false); // disable play button while loading next round
     }
 
     @Override
@@ -166,26 +177,34 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
             JOptionPane optionPane = new JOptionPane(submitAnswerState.getCorrectnessMessage(),
                     JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{"Next"});
             JDialog dialog = optionPane.createDialog(this, submitAnswerState.getCorrectnessTitle());
+
+            loadingLabel.setVisible(true); // showing loading label
+            submit.setEnabled(false); // disable submit button while loading next round
+            playSong.setEnabled(false); // disable play button while loading next round
+
             optionPane.addPropertyChangeListener(e -> {
                 if (JOptionPane.VALUE_PROPERTY.equals(e.getPropertyName())) {
                     // Call finish round controller
                     RoundState roundState = roundViewModel.getState();
                     finishRoundController.execute(roundState.getGameId());
                     answerInputField.setText("");
-                    this.updateRoundTextInfo();
                 }
             });
             dialog.setVisible(true);
         }
-        this.updateRoundTextInfo();
+        this.updateViewComponents();
     }
 
-    private void updateRoundTextInfo(){
+    private void updateViewComponents(){
         roundInfo.setText("Round: " + roundViewModel.getState().getCurrentRoundNumber() + "/" + roundViewModel.getState().getMaxRounds());
         livesInfo.setText("Lives left:" + roundViewModel.getState().getCurrentLives());
         genreInfo.setText("Genre: "  + roundViewModel.getState().getGenre());
+
+        loadingLabel.setVisible(false);
+        playSong.setEnabled(true);
+        submit.setEnabled(true);
     }
-      
+
     private ImageIcon setProperties(ImageIcon buttonImage) {
         return new ImageIcon(buttonImage.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
     }

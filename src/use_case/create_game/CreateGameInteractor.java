@@ -1,14 +1,21 @@
 package use_case.create_game;
 
 import entity.*;
+import interface_adapter.round.RoundViewModel;
+
+import java.util.Objects;
 
 public class CreateGameInteractor implements CreateGameInputBoundary{
     final CreateGameDataAccessInterface gameAccessObject;
     final CreateGameOutputBoundary createGamePresenter;
+    final RoundFactory roundFactory;
 
-    public CreateGameInteractor (CreateGameDataAccessInterface gameAccessObject, CreateGameOutputBoundary createGamePresenter) {
+    public CreateGameInteractor (CreateGameDataAccessInterface gameAccessObject,
+                                 CreateGameOutputBoundary createGamePresenter,
+                                 RoundFactory roundFactory) {
         this.gameAccessObject = gameAccessObject;
         this.createGamePresenter = createGamePresenter;
+        this.roundFactory = roundFactory;
     }
 
     @Override
@@ -18,12 +25,20 @@ public class CreateGameInteractor implements CreateGameInputBoundary{
                 inputData.getLives(),
                 inputData.getRounds());
 
-        // temporary, will use factory in future
-        PlayableAudio audio = new FileMP3PlayableAudio("path");
-        Song song = new CommonSong("title", "artist", audio);
-        Round firstRound = new TextInputRound(song, "What is this song?", song.getTitle());
+        String genre = inputData.getGenre();
+        String difficulty = inputData.getDifficulty().toLowerCase().trim();
+        Round firstRound;
 
-        gameAccessObject.getGameByID(ID).setCurrentRound(firstRound);
+        if(Objects.equals(difficulty, "hard")){
+            firstRound = roundFactory.createHardRound(genre);
+        }else if(Objects.equals(difficulty, "medium")){
+            firstRound = roundFactory.createMediumRound(genre);
+        }else{
+            firstRound = roundFactory.createEasyRound(genre);
+        }
+        Game game = gameAccessObject.getGameByID(ID);
+        game.setCurrentRound(firstRound);
+        gameAccessObject.save(game);
 
         CreateGameOutputData createGameOutputData = new CreateGameOutputData();
         createGameOutputData.setGameId(ID);

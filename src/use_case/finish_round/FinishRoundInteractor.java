@@ -1,9 +1,7 @@
 package use_case.finish_round;
 
-import entity.CommonRoundFactory;
-import entity.Game;
-import entity.Round;
-import entity.RoundFactory;
+import data_access.api.SpotifyAPI;
+import entity.*;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -12,10 +10,12 @@ public class FinishRoundInteractor implements FinishRoundInputBoundary{
     private final FinishRoundGameDataAccessInterface gameDataAccessObject;
     private final FinishRoundOutputBoundary finishRoundPresenter;
     private final RoundFactory roundFactory;
-    public FinishRoundInteractor(FinishRoundOutputBoundary finishRoundPresenter, FinishRoundGameDataAccessInterface gameDataAccessObject){
+    public FinishRoundInteractor(FinishRoundOutputBoundary finishRoundPresenter,
+                                 FinishRoundGameDataAccessInterface gameDataAccessObject,
+                                 RoundFactory roundFactory){
         this.gameDataAccessObject = gameDataAccessObject;
         this.finishRoundPresenter = finishRoundPresenter;
-        this.roundFactory = new CommonRoundFactory();
+        this.roundFactory = roundFactory;
         }
     @Override
     public void execute(FinishRoundInputData inputData){

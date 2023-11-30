@@ -1,5 +1,8 @@
 package view;
 
+import data_access.api.SongAPI;
+import data_access.api.SpotifyAPI;
+import entity.*;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.finish_round.FinishRoundController;
 import interface_adapter.finish_round.FinishRoundPresenter;
@@ -30,14 +33,16 @@ public class RoundViewFactory {
                                    SubmitAnswerViewModel submitAnswerViewModel,
                                    ToggleAudioViewModel toggleAudioViewModel,
                                    GameOverViewModel gameOverViewModel,
-                                   SubmitAnswerGameDataAccessInterface submitAnswerGameDataAccessInterface) {
+                                   SubmitAnswerGameDataAccessInterface submitAnswerGameDataAccessInterface,
+                                   RoundFactory roundFactory
+    ) {
+
 
         FinishRoundGameDataAccessInterface finishRoundGameDataAccessInterface = (FinishRoundGameDataAccessInterface) submitAnswerGameDataAccessInterface;
         ToggleAudioGameDataAccessInterface toggleAudioDataAccessInterface = (ToggleAudioGameDataAccessInterface) submitAnswerGameDataAccessInterface;
         SubmitAnswerController submitAnswerController = createSubmitAnswerUseCase(submitAnswerViewModel, submitAnswerGameDataAccessInterface);
+        FinishRoundController finishRoundController = createFinishRoundUseCase(viewManagerModel, gameOverViewModel, roundViewModel, finishRoundGameDataAccessInterface, roundFactory);
         ToggleAudioController toggleAudioController = createToggleAudioUseCase(toggleAudioViewModel, toggleAudioDataAccessInterface, roundViewModel);
-        FinishRoundController finishRoundController = createFinishRoundUseCase(viewManagerModel, gameOverViewModel, roundViewModel, finishRoundGameDataAccessInterface);
-
         return new RoundView(viewManagerModel, roundViewModel, submitAnswerViewModel, submitAnswerController, finishRoundController, toggleAudioViewModel, toggleAudioController);
     }
 
@@ -45,7 +50,6 @@ public class RoundViewFactory {
                                                                     SubmitAnswerGameDataAccessInterface gameDataAccessObject) {
         SubmitAnswerOutputBoundary submitAnswerPresenter = new SubmitAnswerPresenter(submitAnswerViewModel);
         SubmitAnswerInputBoundary submitAnswerInteractor = new SubmitAnswerInteractor(gameDataAccessObject, submitAnswerPresenter);
-
         return new SubmitAnswerController(submitAnswerInteractor);
     }
 
@@ -54,17 +58,16 @@ public class RoundViewFactory {
                                                                   RoundViewModel roundViewModel){
             ToggleAudioOutputBoundary toggleAudioPresenter = new ToggleAudioPresenter(toggleAudioViewModel, roundViewModel);
             ToggleAudioInputBoundary toggleAudioInteractor = new ToggleAudioInteractor(gameDataAccessObject, toggleAudioPresenter);
-
             return new ToggleAudioController(toggleAudioInteractor);
     }
 
     private static FinishRoundController createFinishRoundUseCase(ViewManagerModel viewManagerModel,
                                                                   GameOverViewModel gameOverViewModel,
                                                                   RoundViewModel roundViewModel,
-                                                                  FinishRoundGameDataAccessInterface gameDataAccessObject) {
+                                                                  FinishRoundGameDataAccessInterface gameDataAccessObject,
+                                                                  RoundFactory roundFactory) {
         FinishRoundOutputBoundary finishRoundPresenter = new FinishRoundPresenter(viewManagerModel, gameOverViewModel, roundViewModel);
-        FinishRoundInputBoundary finishRoundInteractor = new FinishRoundInteractor(finishRoundPresenter, gameDataAccessObject);
-
+        FinishRoundInputBoundary finishRoundInteractor = new FinishRoundInteractor(finishRoundPresenter, gameDataAccessObject, roundFactory);
         return new FinishRoundController(finishRoundInteractor);
 
     }
