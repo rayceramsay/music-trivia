@@ -6,6 +6,7 @@ import data_access.api.SongAPI;
 import entity.*;
 import org.junit.Before;
 import org.junit.Test;
+import use_case.load_game.*;
 
 import static org.junit.Assert.*;
 
