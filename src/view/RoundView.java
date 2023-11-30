@@ -38,20 +38,12 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
     private final LoadGameViewModel loadGameViewModel;
     private final JButton playSong;
     private final JButton submit;
-    private final JButton easyButton1;
-    private final JButton easyButton2;
-    private final JButton mediumButton1;
-    private final JButton mediumButton2;
-    private final JButton mediumButton3;
-    private final JButton mediumButton4;
     private final JLabel roundInfo;
     private final JLabel livesInfo;
     private final JLabel genreInfo;
     private final JTextField answerInputField;
     private final JLabel loadingLabel;
-    private final JPanel easyAnswerSection;
-    private final JPanel mediumAnswerSection;
-    private final JPanel hardAnswerSection;
+    private final JPanel answerSection;
     private final int borderWidth = 2;
 
     public RoundView(ViewManagerModel viewManagerModel,
