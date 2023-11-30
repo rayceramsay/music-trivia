@@ -1,7 +1,5 @@
 package entity;
 
-import org.checkerframework.checker.units.qual.A;
-
 import java.util.ArrayList;
 import java.util.Random;
 
