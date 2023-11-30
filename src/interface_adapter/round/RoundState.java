@@ -11,6 +11,11 @@ public class RoundState {
     private int maxRounds;
     private int currentRoundNumber;
 
+    /**
+     * Constructor to initialize objects of RoundState
+     *
+     * @param copy copy of RoundState
+     */
     public RoundState(RoundState copy) {
         gameId = copy.gameId;
         promptText = copy.promptText;
@@ -22,7 +27,8 @@ public class RoundState {
         currentRoundNumber = copy.currentRoundNumber;
     }
 
-    public RoundState() {}
+    public RoundState() {
+    }
 
     public String getGameId() {
         return gameId;

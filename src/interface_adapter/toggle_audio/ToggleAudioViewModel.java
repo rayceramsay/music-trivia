@@ -5,12 +5,20 @@ import interface_adapter.ViewModel;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+/**
+ * Extension of ViewModel for toggle audio interface adapter
+ */
 public class ToggleAudioViewModel extends ViewModel {
 
     public static final String STATE_PROPERTY = "toggleAudioState";
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
     private ToggleAudioState state = new ToggleAudioState();
 
+    /**
+     * Constructor to initialize objects of ToggleAudioViewModel
+     *
+     * @param viewName name of view
+     */
     public ToggleAudioViewModel(String viewName) {
         super("round");
     }
