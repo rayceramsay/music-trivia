@@ -179,9 +179,7 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         this.add(menuButtonPanel);
         this.add(prompt);
         this.add(playSong);
-        this.add(hardAnswerSection);
-        this.add(easyAnswerSection);
-        this.add(mediumAnswerSection);
+        this.add(answerSection);
         this.add(loadingLabel);
         this.add(new JPanel());
         this.add(infoSection);
