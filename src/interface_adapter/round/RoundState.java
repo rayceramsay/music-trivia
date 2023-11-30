@@ -104,27 +104,7 @@ public class RoundState {
         return this.multipleChoiceOptions;
     }
 
-    public boolean isEasyRound() {
-        return isEasyRound;
-    }
-
-    public boolean isMediumRound() {
-        return isMediumRound;
-    }
-
-    public boolean isHardRound() {
-        return isHardRound;
-    }
-
-    public void setEasyRound(boolean easyRound) {
-        isEasyRound = easyRound;
-    }
-
-    public void setMediumRound(boolean mediumRound) {
-        isMediumRound = mediumRound;
-    }
-
-    public void setHardRound(boolean hardRound) {
-        isHardRound = hardRound;
+    public boolean isMultipleChoiceRound() {
+        return multipleChoiceOptions != null && !multipleChoiceOptions.isEmpty();
     }
 }
