@@ -6,6 +6,7 @@ import data_access.api.SpotifyAPI;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.create_game.CreateGameController;
 import interface_adapter.create_game.CreateGamePresenter;
+import interface_adapter.exit_round.ExitRoundViewModel;
 import interface_adapter.game_over.GameOverViewModel;
 import entity.*;
 import interface_adapter.game_settings.GameSettingsViewModel;
@@ -45,6 +46,7 @@ public class Main {
         GetLoadableGamesViewModel getLoadableGamesViewModel = new GetLoadableGamesViewModel(LoadableGamesView.VIEW_NAME);
         StatisticsViewModel statisticsViewModel = new StatisticsViewModel(MenuView.VIEW_NAME);
         ToggleAudioViewModel toggleAudioViewModel = new ToggleAudioViewModel(RoundView.VIEW_NAME);
+        ExitRoundViewModel exitRoundViewModel = new ExitRoundViewModel(MenuView.VIEW_NAME);
 
         // Create data access objects
         InMemoryGameDataAccessObject gameDataAccessObject = new InMemoryGameDataAccessObject();
@@ -58,7 +60,7 @@ public class Main {
         MenuView menuView = MenuViewFactory.create(viewManagerModel, gameSettingsViewModel, getLoadableGamesViewModel, statisticsViewModel, gameDataAccessObject, gameDataAccessObject);
         GameSettingsView gameSettingsView = new GameSettingsView(gameSettingsViewModel, viewManagerModel, createGameController);
         GameOverView gameOverView = new GameOverView(gameOverViewModel, viewManagerModel);
-        RoundView roundView = RoundViewFactory.create(viewManagerModel, roundViewModel, submitAnswerViewModel, toggleAudioViewModel, gameOverViewModel, gameDataAccessObject, roundFactory);
+        RoundView roundView = RoundViewFactory.create(viewManagerModel, roundViewModel, submitAnswerViewModel, toggleAudioViewModel, gameOverViewModel, exitRoundViewModel, gameDataAccessObject, roundFactory);
         LoadableGamesView loadableGamesView = LoadableGamesViewFactory.create(viewManagerModel, getLoadableGamesViewModel, roundViewModel, gameDataAccessObject);
 
         // Add views to app
