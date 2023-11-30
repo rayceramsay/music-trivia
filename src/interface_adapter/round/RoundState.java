@@ -27,10 +27,6 @@ public class RoundState {
         currentLives = copy.currentLives;
         maxRounds = copy.maxRounds;
         currentRoundNumber = copy.currentRoundNumber;
-        multipleChoice1 = copy.multipleChoice1;
-        multipleChoice2 = copy.multipleChoice2;
-        multipleChoice3 = copy.multipleChoice3;
-        multipleChoice4 = copy.multipleChoice4;
         isEasyRound = copy.isEasyRound;
         isMediumRound = copy.isMediumRound;
         isHardRound = copy.isHardRound;
