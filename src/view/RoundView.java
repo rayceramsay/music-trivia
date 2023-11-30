@@ -97,82 +97,11 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         });
         playSong.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-
-        //
-        // Easy Answer Section
-        //
-
-        easyAnswerSection = new JPanel();
-        easyAnswerSection.setLayout(new GridLayout(2,1));
-        easyAnswerSection.setMinimumSize(new Dimension(300,10));
-        easyAnswerSection.setMaximumSize(new Dimension(getMaximumSize().width, 10));
-        easyAnswerSection.setVisible(false);
-
-        // Easy Multiple Choice
-
-        easyButton1 = new JButton("");
-        easyButton1.addActionListener(event -> {
-            RoundState roundState = roundViewModel.getState();
-            submitAnswerController.execute(easyButton1.getText(), roundState.getGameId());
-        });
-        easyAnswerSection.add(easyButton1);
-
-        easyButton2 = new JButton("");
-        easyButton2.addActionListener(event -> {
-            RoundState roundState = roundViewModel.getState();
-            submitAnswerController.execute(easyButton2.getText(), roundState.getGameId());
-        });
-        easyAnswerSection.add(easyButton2);
-
-        //
-        // Medium Answer Section
-        //
-
-        mediumAnswerSection = new JPanel();
-        mediumAnswerSection.setLayout(new GridLayout(4,1));
-        mediumAnswerSection.setMinimumSize(new Dimension(300,20));
-        mediumAnswerSection.setMaximumSize(new Dimension(getMaximumSize().width, 20));
-        mediumAnswerSection.setVisible(false);
-
-        // Medium Multiple Choice
-
-        mediumButton1 = new JButton("");
-        mediumButton1.addActionListener(event -> {
-            RoundState roundState = roundViewModel.getState();
-            submitAnswerController.execute(mediumButton1.getText(), roundState.getGameId());
-        });
-        mediumAnswerSection.add(mediumButton1);
-
-        mediumButton2 = new JButton("");
-        mediumButton2.addActionListener(event -> {
-            RoundState roundState = roundViewModel.getState();
-            submitAnswerController.execute(mediumButton2.getText(), roundState.getGameId());
-        });
-        mediumAnswerSection.add(mediumButton2);
-
-        mediumButton3 = new JButton("");
-        mediumButton3.addActionListener(event -> {
-            RoundState roundState = roundViewModel.getState();
-            submitAnswerController.execute(mediumButton3.getText(), roundState.getGameId());
-        });
-        mediumAnswerSection.add(mediumButton3);
-
-        mediumButton4 = new JButton("");
-        mediumButton4.addActionListener(event -> {
-            RoundState roundState = roundViewModel.getState();
-            submitAnswerController.execute(mediumButton4.getText(), roundState.getGameId());
-        });
-        mediumAnswerSection.add(mediumButton4);
-
-        //
-        // Hard Answer Section
-        //
-
-        hardAnswerSection = new JPanel();
-        hardAnswerSection.setLayout(new GridLayout(2,1));
-        hardAnswerSection.setMinimumSize(new Dimension(300,10));
-        hardAnswerSection.setMaximumSize(new Dimension(getMaximumSize().width, 10));
-        hardAnswerSection.setVisible(false);
+        // Answer section - gets populated with either multiple choice input or text input
+        answerSection = new JPanel();
+        answerSection.setLayout(new GridLayout(0, 1));
+        answerSection.setMinimumSize(new Dimension(300, 10));
+        answerSection.setMaximumSize(new Dimension(getMaximumSize().width, 10));
 
         // Hard Text Answer
 
