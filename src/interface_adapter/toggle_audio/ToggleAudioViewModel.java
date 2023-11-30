@@ -32,4 +32,12 @@ public class ToggleAudioViewModel extends ViewModel {
     public void setState(ToggleAudioState state) {
         this.state = state;
     }
+
+    public String getPlayButtonImagePath() {
+        return "src/assets/play-img2.png";
+    }
+
+    public String getPauseButtonImagePath() {
+        return "src/assets/pause-img2.png";
+    }
 }
