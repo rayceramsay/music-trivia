@@ -1,6 +1,9 @@
 package use_case.finish_round;
 
 import data_access.InMemoryGameDataAccessObject;
+import data_access.api.MockAPI;
+import data_access.api.SongAPI;
+import data_access.api.SpotifyAPI;
 import entity.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,16 +13,18 @@ import static org.junit.Assert.*;
 public class FinishRoundInteractorTest {
     private FinishRoundGameDataAccessInterface gameDataAccessObject;
     private Round round;
+    private RoundFactory roundFactory;
 
     /**
      * Initialize each test to have an existing DAO, song and round object.
      */
     @Before
     public void init() {
-        final String CORRECT_ANSWER = "SpotifyBanditsTestCorrectAnswer";
-        Song song = new CommonSong(CORRECT_ANSWER, "me", new FileMP3PlayableAudio("path/song.mp3"));
-        round = new TextInputRound(song, "What song is this?", CORRECT_ANSWER);
         gameDataAccessObject = new InMemoryGameDataAccessObject();
+        SongAPI songAPI = new MockAPI(new CommonSongFactory());
+        roundFactory = new CommonRoundFactory(songAPI);
+        round = roundFactory.createHardRound("pop");
+
     }
 
     /**
@@ -56,7 +61,7 @@ public class FinishRoundInteractorTest {
             }
         };
 
-        FinishRoundInputBoundary interactor = new FinishRoundInteractor(gameOverPresenter, gameDataAccessObject);
+        FinishRoundInputBoundary interactor = new FinishRoundInteractor(gameOverPresenter, gameDataAccessObject, roundFactory);
         interactor.execute(inputData);
     }
 
@@ -95,7 +100,7 @@ public class FinishRoundInteractorTest {
             }
         };
 
-        FinishRoundInputBoundary interactor = new FinishRoundInteractor(gameOverPresenter, gameDataAccessObject);
+        FinishRoundInputBoundary interactor = new FinishRoundInteractor(gameOverPresenter, gameDataAccessObject, roundFactory);
         interactor.execute(inputData);
     }
 
@@ -134,7 +139,7 @@ public class FinishRoundInteractorTest {
             }
         };
 
-        FinishRoundInputBoundary interactor = new FinishRoundInteractor(gameOverPresenter, gameDataAccessObject);
+        FinishRoundInputBoundary interactor = new FinishRoundInteractor(gameOverPresenter, gameDataAccessObject, roundFactory);
         interactor.execute(inputData);
     }
 
@@ -180,7 +185,7 @@ public class FinishRoundInteractorTest {
             }
         };
 
-        FinishRoundInputBoundary interactor = new FinishRoundInteractor(gameOverPresenter, gameDataAccessObject);
+        FinishRoundInputBoundary interactor = new FinishRoundInteractor(gameOverPresenter, gameDataAccessObject, roundFactory);
         interactor.execute(inputData);
     }
 
@@ -217,7 +222,9 @@ public class FinishRoundInteractorTest {
                 // Verify info about new current round
                 assertEquals(2, game.getRoundsPlayed());
                 assertNotEquals(game.getCurrentRound(), round);
-                assertEquals(game.getCurrentRound().getClass(), FourMultipleChoiceRound.class);
+                assertEquals(game.getCurrentRound().getClass(), MultipleChoiceRound.class);
+                MultipleChoiceRound currRound =  (MultipleChoiceRound) game.getCurrentRound();
+                assertEquals(4, currRound.getRandomOrderOptions().size());
 
                 // Verify output data
                 assertEquals(game.getGenre(), outputData.getGenre());
@@ -226,7 +233,7 @@ public class FinishRoundInteractorTest {
             }
         };
 
-        FinishRoundInputBoundary interactor = new FinishRoundInteractor(gameOverPresenter, gameDataAccessObject);
+        FinishRoundInputBoundary interactor = new FinishRoundInteractor(gameOverPresenter, gameDataAccessObject, roundFactory);
         interactor.execute(inputData);
     }
 
@@ -263,8 +270,9 @@ public class FinishRoundInteractorTest {
                 // Verify info about new current round
                 assertEquals(game.getRoundsPlayed(), 2);
                 assertNotEquals(game.getCurrentRound(), round);
-                assertEquals(game.getCurrentRound().getClass(), TwoMultipleChoiceRound.class);
-
+                assertEquals(game.getCurrentRound().getClass(), MultipleChoiceRound.class);
+                MultipleChoiceRound currRound =  (MultipleChoiceRound) game.getCurrentRound();
+                assertEquals(2, currRound.getRandomOrderOptions().size());
                 // Verify output data
                 assertEquals(game.getGenre(), outputData.getGenre());
                 assertEquals(outputData.getRoundNumber(), 2);
@@ -273,7 +281,7 @@ public class FinishRoundInteractorTest {
             }
         };
 
-        FinishRoundInputBoundary interactor = new FinishRoundInteractor(gameOverPresenter, gameDataAccessObject);
+        FinishRoundInputBoundary interactor = new FinishRoundInteractor(gameOverPresenter, gameDataAccessObject, roundFactory);
         interactor.execute(inputData);
     }
 }
