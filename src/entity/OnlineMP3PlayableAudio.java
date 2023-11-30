@@ -18,6 +18,7 @@ public class OnlineMP3PlayableAudio implements PlayableAudio {
         Media audioMedia = new Media(audioUrl);
         mediaPlayer = new MediaPlayer(audioMedia);
         mediaPlayer.setStopTime(new Duration(10000));
+        mediaPlayer.setOnEndOfMedia(mediaPlayer::stop);  // fixes bug where stopped audio after setStopTime duration still registers as playing
     }
 
     @Override
