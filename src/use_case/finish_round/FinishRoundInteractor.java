@@ -1,6 +1,4 @@
 package use_case.finish_round;
-
-import data_access.api.SpotifyAPI;
 import entity.*;
 
 import java.time.LocalDateTime;
@@ -49,6 +47,8 @@ public class FinishRoundInteractor implements FinishRoundInputBoundary{
             outputData.setGenre(gameGenre);
             outputData.setLives(game.getCurrentLives());
             outputData.setRoundNumber(game.getRoundsPlayed());
+
+            outputData.setMultipleChoiceAnswers(nextRound.getMultipleChoiceAnswers());
 
             finishRoundPresenter.prepareNextRoundView(outputData);
         }

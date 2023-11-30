@@ -1,24 +1,30 @@
 package use_case.load_game;
 
+import java.util.ArrayList;
+
 public class LoadGameOutputData {
 
     private final String gameId;
     private final String question;
     private final String genre;
+    private final String difficulty;
     private final int initialLives;
     private final int currentLives;
     private final int maxRounds;
     private final int currentRoundNumber;
+    private final ArrayList<String> multipleChoiceAnswers;
 
-    public LoadGameOutputData(String gameId, String question, String genre, int initialLives, int currentLives,
-                              int maxRounds, int currentRoundNumber) {
+    public LoadGameOutputData(String gameId, String question, String genre, String difficulty, int initialLives, int currentLives,
+                              int maxRounds, int currentRoundNumber, ArrayList<String> multipleChoiceAnswers) {
         this.gameId = gameId;
         this.question = question;
         this.genre = genre;
+        this.difficulty = difficulty;
         this.initialLives = initialLives;
         this.currentLives = currentLives;
         this.maxRounds = maxRounds;
         this.currentRoundNumber = currentRoundNumber;
+        this.multipleChoiceAnswers = multipleChoiceAnswers;
     }
 
     public String getGameId() {
@@ -47,5 +53,13 @@ public class LoadGameOutputData {
 
     public int getCurrentRoundNumber() {
         return currentRoundNumber;
+    }
+
+    public String getDifficulty() {
+        return difficulty;
+    }
+
+    public ArrayList<String> getMultipleChoiceAnswers() {
+        return multipleChoiceAnswers;
     }
 }

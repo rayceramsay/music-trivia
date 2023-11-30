@@ -21,7 +21,9 @@ public class CommonRoundFactory implements RoundFactory{
     public Round createMediumRound (String songGenre) {
         Song song = songAPI.getRandomSongFromGenre(songGenre);
         MultipleChoiceRound round = new MultipleChoiceRound(song, "What is the title of this song?", song.getTitle());
+        System.out.println(round.getSong().getAudio().getPath());
         round.addIncorrectOptions(createIncorrectOptions(song, songGenre, 3));
+        System.out.println(round.getRandomOrderOptions());
         return round;
     }
     @Override

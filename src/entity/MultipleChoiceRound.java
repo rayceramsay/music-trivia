@@ -1,7 +1,5 @@
 package entity;
 
-import org.checkerframework.checker.units.qual.A;
-
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -10,7 +8,7 @@ public class MultipleChoiceRound implements Round{
     private final String question;
     private final String correctAnswer;
     private String userAnswer;
-    private ArrayList<String> incorrectOptions;
+    private final ArrayList<String> incorrectOptions;
     public MultipleChoiceRound(Song song, String question, String correctAnswer){
         this.song = song;
         this.question = question;
@@ -66,6 +64,14 @@ public class MultipleChoiceRound implements Round{
     @Override
     public boolean isFinished() {
         return userAnswer != null;
+    }
+
+    @Override
+    public ArrayList<String> getMultipleChoiceAnswers() {
+        ArrayList<String> ret = new ArrayList<>();
+        ret.add(correctAnswer);
+        ret.addAll(incorrectOptions);
+        return ret;
     }
 
     private String cleanString(String string) {

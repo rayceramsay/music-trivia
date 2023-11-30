@@ -6,10 +6,13 @@ import data_access.api.SpotifyAPI;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.create_game.CreateGameController;
 import interface_adapter.create_game.CreateGamePresenter;
+import interface_adapter.create_game.CreateGameViewModel;
+import interface_adapter.finish_round.FinishRoundViewModel;
 import interface_adapter.game_over.GameOverViewModel;
 import entity.*;
 import interface_adapter.game_settings.GameSettingsViewModel;
 import interface_adapter.get_loadable_games.GetLoadableGamesViewModel;
+import interface_adapter.load_game.LoadGameViewModel;
 import interface_adapter.round.RoundViewModel;
 import interface_adapter.statistics.StatisticsViewModel;
 import interface_adapter.submit_answer.SubmitAnswerViewModel;
@@ -45,12 +48,15 @@ public class Main {
         GetLoadableGamesViewModel getLoadableGamesViewModel = new GetLoadableGamesViewModel(LoadableGamesView.VIEW_NAME);
         StatisticsViewModel statisticsViewModel = new StatisticsViewModel(MenuView.VIEW_NAME);
         ToggleAudioViewModel toggleAudioViewModel = new ToggleAudioViewModel(RoundView.VIEW_NAME);
+        FinishRoundViewModel finishRoundViewModel = new FinishRoundViewModel();
+        CreateGameViewModel createGameViewModel = new CreateGameViewModel();
+        LoadGameViewModel loadGameViewModel = new LoadGameViewModel();
 
         // Create data access objects
         InMemoryGameDataAccessObject gameDataAccessObject = new InMemoryGameDataAccessObject();
 
         // Create objects for GameSettings View (TEMPORARY UNTIL FACTORY IS CREATED)
-        CreateGameOutputBoundary createGamePresenter = new CreateGamePresenter(viewManagerModel, roundViewModel);
+        CreateGameOutputBoundary createGamePresenter = new CreateGamePresenter(viewManagerModel, roundViewModel, createGameViewModel);
         CreateGameInputBoundary createGameInteractor = new CreateGameInteractor(gameDataAccessObject, createGamePresenter, roundFactory);
         CreateGameController createGameController = new CreateGameController(createGameInteractor);
 
@@ -58,8 +64,8 @@ public class Main {
         MenuView menuView = MenuViewFactory.create(viewManagerModel, gameSettingsViewModel, getLoadableGamesViewModel, statisticsViewModel, gameDataAccessObject, gameDataAccessObject);
         GameSettingsView gameSettingsView = new GameSettingsView(gameSettingsViewModel, viewManagerModel, createGameController);
         GameOverView gameOverView = new GameOverView(gameOverViewModel, viewManagerModel);
-        RoundView roundView = RoundViewFactory.create(viewManagerModel, roundViewModel, submitAnswerViewModel, toggleAudioViewModel, gameOverViewModel, gameDataAccessObject, roundFactory);
-        LoadableGamesView loadableGamesView = LoadableGamesViewFactory.create(viewManagerModel, getLoadableGamesViewModel, roundViewModel, gameDataAccessObject);
+        RoundView roundView = RoundViewFactory.create(viewManagerModel, roundViewModel, submitAnswerViewModel, finishRoundViewModel, createGameViewModel, loadGameViewModel, toggleAudioViewModel, gameOverViewModel, gameDataAccessObject, roundFactory);
+        LoadableGamesView loadableGamesView = LoadableGamesViewFactory.create(viewManagerModel, getLoadableGamesViewModel, roundViewModel, loadGameViewModel, gameDataAccessObject);
 
         // Add views to app
         views.add(menuView, MenuView.VIEW_NAME);

@@ -1,7 +1,6 @@
 package use_case.create_game;
 
 import entity.*;
-import interface_adapter.round.RoundViewModel;
 
 import java.util.Objects;
 
@@ -29,11 +28,13 @@ public class CreateGameInteractor implements CreateGameInputBoundary{
         String difficulty = inputData.getDifficulty().toLowerCase().trim();
         Round firstRound;
 
-        if(Objects.equals(difficulty, "hard")){
+        if (Objects.equals(difficulty, "hard")) {
             firstRound = roundFactory.createHardRound(genre);
-        }else if(Objects.equals(difficulty, "medium")){
+        }
+        else if (Objects.equals(difficulty, "medium")){
             firstRound = roundFactory.createMediumRound(genre);
-        }else{
+        }
+        else {
             firstRound = roundFactory.createEasyRound(genre);
         }
         Game game = gameAccessObject.getGameByID(ID);
@@ -46,6 +47,8 @@ public class CreateGameInteractor implements CreateGameInputBoundary{
         createGameOutputData.setDifficulty(inputData.getDifficulty());
         createGameOutputData.setRounds(inputData.getRounds());
         createGameOutputData.setLives(inputData.getLives());
+
+        createGameOutputData.setMultipleChoiceAnswers(firstRound.getMultipleChoiceAnswers());
 
         createGamePresenter.prepareFirstRoundView(createGameOutputData);
     }

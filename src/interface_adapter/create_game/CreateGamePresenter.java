@@ -11,10 +11,12 @@ public class CreateGamePresenter implements CreateGameOutputBoundary {
 
     private final ViewManagerModel viewManagerModel;
     private final RoundViewModel roundViewModel;
+    private final CreateGameViewModel createGameViewModel;
 
-    public CreateGamePresenter (ViewManagerModel viewManagerModel, RoundViewModel roundViewModel) {
+    public CreateGamePresenter (ViewManagerModel viewManagerModel, RoundViewModel roundViewModel, CreateGameViewModel createGameViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.roundViewModel = roundViewModel;
+        this.createGameViewModel = createGameViewModel;
     }
 
     @Override
@@ -30,8 +32,31 @@ public class CreateGamePresenter implements CreateGameOutputBoundary {
         roundState.setCurrentLives(createGameOutputData.getLives());
         roundState.setInitialLives(createGameOutputData.getLives());
 
+        if (createGameOutputData.getDifficulty().equalsIgnoreCase("easy")) {
+            roundState.setEasyRound(true);
+            roundState.setMediumRound(false);
+            roundState.setHardRound(false);
+            roundState.setMultipleChoice1(createGameOutputData.getMultipleChoiceAnswers().get(0));
+            roundState.setMultipleChoice2(createGameOutputData.getMultipleChoiceAnswers().get(1));
+        }
+        else if (createGameOutputData.getDifficulty().equalsIgnoreCase("Medium")) {
+            roundState.setEasyRound(false);
+            roundState.setMediumRound(true);
+            roundState.setHardRound(false);
+            roundState.setMultipleChoice1(createGameOutputData.getMultipleChoiceAnswers().get(0));
+            roundState.setMultipleChoice2(createGameOutputData.getMultipleChoiceAnswers().get(1));
+            roundState.setMultipleChoice3(createGameOutputData.getMultipleChoiceAnswers().get(2));
+            roundState.setMultipleChoice4(createGameOutputData.getMultipleChoiceAnswers().get(3));
+        }
+        else if (createGameOutputData.getDifficulty().equalsIgnoreCase("Hard")) {
+            roundState.setEasyRound(false);
+            roundState.setMediumRound(false);
+            roundState.setHardRound(true);
+        }
+
         viewManagerModel.setActiveView(roundViewModel.getViewName());
 
+        createGameViewModel.firePropertyChanged();
         roundViewModel.firePropertyChanged();
         viewManagerModel.firePropertyChanged();
     }
