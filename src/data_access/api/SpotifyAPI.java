@@ -8,7 +8,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.Objects;
 import java.util.Random;
 
 public class SpotifyAPI implements SongAPI {
@@ -102,9 +101,12 @@ public class SpotifyAPI implements SongAPI {
     }
 
     private String getRandomEndpoint(String genre) {
-        String baseEndpoint = "https://api.spotify.com/v1/search?q=";
-        char search = (char) ('a' + (new Random()).nextInt(26));
+        Random random = new Random();
 
-        return String.format("%s%s&genre:%s&type=track&limit=50", baseEndpoint, search, genre);
+        String baseEndpoint = "https://api.spotify.com/v1/search?q=";
+        char search = (char) ('a' + random.nextInt(26));
+        int offset = random.nextInt(10);
+
+        return String.format("%s%s&genre:%s&type=track&limit=50&offset=%s", baseEndpoint, search, genre, offset);
     }
 }
