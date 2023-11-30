@@ -48,9 +48,9 @@ public class ToggleAudioInteractor implements ToggleAudioInputBoundary {
 
         checkToggleStateThread = new Thread(() -> {
             try {
-                int timeBetweenChecks = 50;
+                int timeBetweenChecks = 20;
                 int audioMaxDuration = 10000;
-                int buffer = 100;
+                int buffer = 500;
 
                 int i = 0;
                 while (i < audioMaxDuration + buffer) {
