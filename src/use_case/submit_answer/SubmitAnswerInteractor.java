@@ -7,18 +7,18 @@ public class SubmitAnswerInteractor implements SubmitAnswerInputBoundary {
     private final SubmitAnswerGameDataAccessInterface gameDataAccessObject;
     private final SubmitAnswerOutputBoundary submitAnswerPresenter;
 
+    /**
+     * Constructor to initialize objects of SubmitAnswerInteractor
+     *
+     * @param gameDataAccessObject  Data access interface for submit answer use case
+     * @param submitAnswerPresenter Output boundary for submit answer use case
+     */
     public SubmitAnswerInteractor(SubmitAnswerGameDataAccessInterface gameDataAccessObject,
                                   SubmitAnswerOutputBoundary submitAnswerPresenter) {
         this.gameDataAccessObject = gameDataAccessObject;
         this.submitAnswerPresenter = submitAnswerPresenter;
     }
 
-    /**
-     * Check the correctness of the user's answer and update/save the game accordingly. Report back the user's
-     * correctness and what the correct answer is.
-     *
-     * @param inputData The input data object holding the game ID and user answer
-     */
     @Override
     public void execute(SubmitAnswerInputData inputData) {
         String userAnswer = inputData.getUserAnswer();
