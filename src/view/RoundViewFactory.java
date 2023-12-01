@@ -50,7 +50,7 @@ public class RoundViewFactory {
         ToggleAudioController toggleAudioController = createToggleAudioUseCase(toggleAudioViewModel, gameDataAccessInterface, roundViewModel);
         ExitRoundController exitRoundController = createExitRoundUseCase(viewManagerModel, exitRoundViewModel, roundViewModel, toggleAudioViewModel, gameDataAccessInterface);
 
-        return new RoundView(viewManagerModel, roundViewModel, submitAnswerViewModel, toggleAudioViewModel, createGameViewModel, loadGameViewModel, submitAnswerController, toggleAudioController, finishRoundController, exitRoundController);
+        return new RoundView(viewManagerModel, roundViewModel, submitAnswerViewModel, toggleAudioViewModel, finishRoundViewModel, createGameViewModel, loadGameViewModel, submitAnswerController, toggleAudioController, finishRoundController, exitRoundController);
     }
 
     private static SubmitAnswerController createSubmitAnswerUseCase(SubmitAnswerViewModel submitAnswerViewModel,

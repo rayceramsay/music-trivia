@@ -29,7 +29,6 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
     private final RoundViewModel roundViewModel;
     private final SubmitAnswerController submitAnswerController;
     private final FinishRoundController finishRoundController;
-    private final ExitRoundController exitRoundController;
     private final JButton playSong;
     private final JButton submit;
     private final JLabel roundInfo;
@@ -45,6 +44,7 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
                      RoundViewModel roundViewModel,
                      SubmitAnswerViewModel submitAnswerViewModel,
                      ToggleAudioViewModel toggleAudioViewModel,
+                     FinishRoundViewModel finishRoundViewModel,
                      CreateGameViewModel createGameViewModel,
                      LoadGameViewModel loadGameViewModel,
                      SubmitAnswerController submitAnswerController,
@@ -54,14 +54,13 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         this.roundViewModel = roundViewModel;
         this.submitAnswerController = submitAnswerController;
         this.finishRoundController = finishRoundController;
-        this.exitRoundController = exitRoundController;
 
         this.roundViewModel.addPropertyChangeListener(this);
         submitAnswerViewModel.addPropertyChangeListener(this);
         toggleAudioViewModel.addPropertyChangeListener(this);
         createGameViewModel.addPropertyChangeListener(this);
         loadGameViewModel.addPropertyChangeListener(this);
-
+        finishRoundViewModel.addPropertyChangeListener(this);
 
         // Prompt
         JLabel prompt = new JLabel(roundViewModel.TITLE_LABEL);
