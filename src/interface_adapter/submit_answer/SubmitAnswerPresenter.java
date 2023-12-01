@@ -25,5 +25,6 @@ public class SubmitAnswerPresenter implements SubmitAnswerOutputBoundary {
         }
 
         submitAnswerViewModel.firePropertyChanged();
+
     }
 }
