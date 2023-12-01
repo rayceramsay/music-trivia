@@ -4,7 +4,6 @@ package entity;
  * Interface for Song
  */
 public interface Song {
-
     /**
      * @return Title of song.
      */
@@ -19,5 +18,4 @@ public interface Song {
      * @return Song Audio.
      */
     PlayableAudio getAudio();
-
 }

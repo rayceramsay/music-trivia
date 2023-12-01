@@ -9,10 +9,9 @@ import java.beans.PropertyChangeSupport;
  * Implementation of ViewModel for GameOver interface adapter
  */
 public class GameOverViewModel extends ViewModel {
-    public final String TITLE_LABEL = "GAME OVER!";
 
+    public static final String TITLE_LABEL = "GAME OVER!";
     public static final String MAIN_MENU_LABEL = "Go to main menu";
-    public static final String PLAY_AGAIN_LABEL = "Play again";
 
     private GameOverState state = new GameOverState();
 

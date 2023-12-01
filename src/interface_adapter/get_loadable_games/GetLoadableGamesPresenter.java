@@ -42,7 +42,8 @@ public class GetLoadableGamesPresenter implements GetLoadableGamesOutputBoundary
                     String.valueOf(outputDataItem.getCurrentLives()),
                     String.valueOf(outputDataItem.getMaxRounds()),
                     String.valueOf(outputDataItem.getCurrentRoundNumber()),
-                    outputDataItem.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+                    outputDataItem.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
+                    String.valueOf(outputDataItem.getScore()));
 
             gamesData.add(gameData);
         }

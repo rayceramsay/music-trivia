@@ -4,7 +4,6 @@ package entity;
  * Implementation of Round for text input version of user answer instead of multiple choice
  */
 public class TextInputRound implements Round {
-
     private final Song song;
     private final String question;
     private final String correctAnswer;

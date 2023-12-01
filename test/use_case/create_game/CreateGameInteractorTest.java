@@ -1,6 +1,9 @@
 package use_case.create_game;
 
 import data_access.InMemoryGameDataAccessObject;
+import data_access.api.MockAPI;
+import data_access.api.SongAPI;
+import entity.*;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.create_game.CreateGamePresenter;
 import interface_adapter.round.RoundState;
@@ -14,9 +17,12 @@ import static org.junit.Assert.*;
 public class CreateGameInteractorTest {
 
     private InMemoryGameDataAccessObject gameDataAccessObject;
+    private RoundFactory roundFactory;
 
     @Before
     public void init() {
+        SongAPI songAPI = new MockAPI(new CommonSongFactory());
+        roundFactory = new CommonRoundFactory(songAPI);
         gameDataAccessObject = new InMemoryGameDataAccessObject();
     }
 
@@ -37,8 +43,7 @@ public class CreateGameInteractorTest {
                 assert outputData.getRounds() == rounds;
             }
         };
-
-        CreateGameInputBoundary interactor = new CreateGameInteractor(gameDataAccessObject, createGamePresenter);
+        CreateGameInputBoundary interactor = new CreateGameInteractor(gameDataAccessObject, createGamePresenter, roundFactory);
         interactor.execute(createGameInputData);
     }
 
@@ -51,12 +56,10 @@ public class CreateGameInteractorTest {
         int rounds = 10;
 
         CreateGameInputData createGameInputData = new CreateGameInputData(genre, difficulty, lives, rounds);
-
         CreateGameOutputBoundary createGamePresenter = new CreateGameOutputBoundary() {
             @Override
             public void prepareFirstRoundView(CreateGameOutputData outputData) {
                 String ID = outputData.getGameId();
-
                 assertEquals(gameDataAccessObject.getGameByID(ID).getDifficulty(), difficulty);
                 assertEquals(gameDataAccessObject.getGameByID(ID).getGenre(), genre);
                 assert gameDataAccessObject.getGameByID(ID).getInitialLives() == lives;
@@ -66,7 +69,7 @@ public class CreateGameInteractorTest {
             }
         };
 
-        CreateGameInputBoundary interactor = new CreateGameInteractor(gameDataAccessObject, createGamePresenter);
+        CreateGameInputBoundary interactor = new CreateGameInteractor(gameDataAccessObject, createGamePresenter, roundFactory);
         interactor.execute(createGameInputData);
     }
 
@@ -81,8 +84,7 @@ public class CreateGameInteractorTest {
         CreateGameInputData createGameInputData = new CreateGameInputData(genre, difficulty, lives, rounds);
         RoundViewModel roundViewModel = new RoundViewModel(RoundView.VIEW_NAME);
         CreateGamePresenter createGamePresenter = new CreateGamePresenter(viewManagerModel, roundViewModel);
-
-        CreateGameInputBoundary interactor = new CreateGameInteractor(gameDataAccessObject, createGamePresenter);
+        CreateGameInputBoundary interactor = new CreateGameInteractor(gameDataAccessObject, createGamePresenter, roundFactory);
 
         interactor.execute(createGameInputData);
 

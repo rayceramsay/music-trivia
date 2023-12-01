@@ -1,13 +1,18 @@
 package entity;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 /**
  * Implementation of Round for 4 possible multiple choice answers
  */
-public class FourMultipleChoiceRound implements Round {
+public class MultipleChoiceRound implements Round {
     private final Song song;
     private final String question;
     private final String correctAnswer;
     private String userAnswer;
+
+    private ArrayList<String> incorrectOptions;
 
     /**
      * Constructor to initialize objects of FourMultipleChoiceRound
@@ -16,11 +21,11 @@ public class FourMultipleChoiceRound implements Round {
      * @param question      prompt of round
      * @param correctAnswer correct answer of round
      */
-    public FourMultipleChoiceRound(Song song, String question, String correctAnswer) {
+    public MultipleChoiceRound(Song song, String question, String correctAnswer) {
         this.song = song;
         this.question = question;
         this.correctAnswer = correctAnswer;
-
+        this.incorrectOptions = new ArrayList<>();
     }
 
     /**
@@ -74,6 +79,17 @@ public class FourMultipleChoiceRound implements Round {
 
         String cleanedUserAnswer = cleanString(userAnswer);
         return cleanedUserAnswer.equalsIgnoreCase(correctAnswer);
+    }
+
+    public void addIncorrectOptions(ArrayList<String> options) {
+        this.incorrectOptions.addAll(options);
+    }
+
+    public ArrayList<String> getRandomOrderOptions() {
+        ArrayList<String> options = new ArrayList<>(this.incorrectOptions);
+        int rand = new Random().nextInt(0, this.incorrectOptions.size());
+        options.add(rand, this.correctAnswer);
+        return options;
     }
 
     /**

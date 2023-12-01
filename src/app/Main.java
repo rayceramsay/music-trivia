@@ -1,10 +1,13 @@
 package app;
 
 import data_access.InMemoryGameDataAccessObject;
+
+import data_access.api.SpotifyAPI;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.create_game.CreateGameController;
 import interface_adapter.create_game.CreateGamePresenter;
 import interface_adapter.game_over.GameOverViewModel;
+import entity.*;
 import interface_adapter.game_settings.GameSettingsViewModel;
 import interface_adapter.get_loadable_games.GetLoadableGamesViewModel;
 import interface_adapter.round.RoundViewModel;
@@ -35,9 +38,10 @@ public class Main {
         JPanel views = new JPanel(cardLayout);
         application.add(views);
 
-        // Setup view manager
+        // Setup view manager and api
         ViewManagerModel viewManagerModel = new ViewManagerModel();
         new ViewManager(views, cardLayout, viewManagerModel);
+        RoundFactory roundFactory = new CommonRoundFactory(new SpotifyAPI(new CommonSongFactory()));
 
         // Create view models
         GameSettingsViewModel gameSettingsViewModel = new GameSettingsViewModel(GameSettingsView.VIEW_NAME);
@@ -53,14 +57,14 @@ public class Main {
 
         // Create objects for GameSettings View (TEMPORARY UNTIL FACTORY IS CREATED)
         CreateGameOutputBoundary createGamePresenter = new CreateGamePresenter(viewManagerModel, roundViewModel);
-        CreateGameInputBoundary createGameInteractor = new CreateGameInteractor(gameDataAccessObject, createGamePresenter);
+        CreateGameInputBoundary createGameInteractor = new CreateGameInteractor(gameDataAccessObject, createGamePresenter, roundFactory);
         CreateGameController createGameController = new CreateGameController(createGameInteractor);
 
         // Create views
         MenuView menuView = MenuViewFactory.create(viewManagerModel, gameSettingsViewModel, getLoadableGamesViewModel, statisticsViewModel, gameDataAccessObject, gameDataAccessObject);
         GameSettingsView gameSettingsView = new GameSettingsView(gameSettingsViewModel, viewManagerModel, createGameController);
         GameOverView gameOverView = new GameOverView(gameOverViewModel, viewManagerModel);
-        RoundView roundView = RoundViewFactory.create(viewManagerModel, roundViewModel, submitAnswerViewModel, toggleAudioViewModel, gameOverViewModel, gameDataAccessObject);
+        RoundView roundView = RoundViewFactory.create(viewManagerModel, roundViewModel, submitAnswerViewModel, toggleAudioViewModel, gameOverViewModel, gameDataAccessObject, roundFactory);
         LoadableGamesView loadableGamesView = LoadableGamesViewFactory.create(viewManagerModel, getLoadableGamesViewModel, roundViewModel, gameDataAccessObject);
 
         // Add views to app

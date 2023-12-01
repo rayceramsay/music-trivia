@@ -75,14 +75,15 @@ public class LoadableGamesView extends JPanel implements ActionListener, Propert
         loadableGames.setLayout(new GridLayout(0, 1));
 
         for (GetLoadableGamesStateItem gameData : gamesData) {
-            String gameDescription = String.format("<html>%s<br>Difficulty: %s | Genre: %s | Round: %s/%s | Lives: %s/%s</html>",
+            String gameDescription = String.format("<html>%s<br>Difficulty: %s | Genre: %s | Round: %s/%s | Lives: %s/%s | Score: %s</html>",
                     gameData.getCreatedAt(),
                     gameData.getDifficulty(),
                     gameData.getGenre(),
                     gameData.getCurrentRoundNumber(),
                     gameData.getMaxRounds(),
                     gameData.getCurrentLives(),
-                    gameData.getInitialLives());
+                    gameData.getInitialLives(),
+                    gameData.getScore());
             JButton loadableGameButton = new JButton(gameDescription);
             loadableGameButton.addActionListener(e -> {
                 String gameID = gameData.getGameID();

@@ -20,4 +20,5 @@ public interface CreateGameDataAccessInterface {
      * @return The String for the Game
      */
     String addGame(String difficulty, String genre, int lives, int rounds);
+    void save(Game game);
 }

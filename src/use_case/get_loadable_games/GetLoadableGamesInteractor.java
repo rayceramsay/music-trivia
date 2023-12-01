@@ -38,7 +38,8 @@ public class GetLoadableGamesInteractor implements GetLoadableGamesInputBoundary
                     game.getCurrentLives(),
                     game.getMaxRounds(),
                     game.getRoundsPlayed(),
-                    game.getCreatedAt());
+                    game.getCreatedAt(),
+                    game.getScore());
 
             loadableGamesData.add(gameData);
         }

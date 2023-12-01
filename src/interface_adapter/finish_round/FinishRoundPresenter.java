@@ -49,6 +49,7 @@ public class FinishRoundPresenter implements FinishRoundOutputBoundary {
         roundState.setGenre(outputData.getGenre());
         roundState.setCurrentLives(outputData.getLives());
         roundState.setUserAnswer("");
+        roundState.setScore(outputData.getScore());
         this.roundViewModel.setState(roundState);
 
         roundViewModel.firePropertyChanged();

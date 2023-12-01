@@ -1,6 +1,5 @@
 package use_case.finish_round;
 
-import entity.CommonRoundFactory;
 import entity.Game;
 import entity.Round;
 import entity.RoundFactory;
@@ -21,11 +20,14 @@ public class FinishRoundInteractor implements FinishRoundInputBoundary {
      *
      * @param finishRoundPresenter Output boundary for finish round use case
      * @param gameDataAccessObject Data access interface for finish round use case
+     * @param roundFactory         RoundFactory
      */
-    public FinishRoundInteractor(FinishRoundOutputBoundary finishRoundPresenter, FinishRoundGameDataAccessInterface gameDataAccessObject) {
+    public FinishRoundInteractor(FinishRoundOutputBoundary finishRoundPresenter,
+                                 FinishRoundGameDataAccessInterface gameDataAccessObject,
+                                 RoundFactory roundFactory) {
         this.gameDataAccessObject = gameDataAccessObject;
         this.finishRoundPresenter = finishRoundPresenter;
-        this.roundFactory = new CommonRoundFactory();
+        this.roundFactory = roundFactory;
     }
 
     @Override
@@ -60,6 +62,7 @@ public class FinishRoundInteractor implements FinishRoundInputBoundary {
             outputData.setGenre(gameGenre);
             outputData.setLives(game.getCurrentLives());
             outputData.setRoundNumber(game.getRoundsPlayed());
+            outputData.setScore(game.getScore());
 
             finishRoundPresenter.prepareNextRoundView(outputData);
         }

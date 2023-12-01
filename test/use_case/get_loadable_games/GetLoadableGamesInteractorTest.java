@@ -1,6 +1,8 @@
 package use_case.get_loadable_games;
 
 import data_access.InMemoryGameDataAccessObject;
+import data_access.api.MockAPI;
+import data_access.api.SongAPI;
 import entity.*;
 
 import org.junit.Test;
@@ -25,7 +27,8 @@ public class GetLoadableGamesInteractorTest {
     private void setupGameRepository(boolean finishAllGames) {
         gameRepository = new InMemoryGameDataAccessObject();
         loadableGames = new ArrayList<>();
-        RoundFactory roundFactory = new CommonRoundFactory();
+        SongAPI songAPI = new MockAPI(new CommonSongFactory());
+        RoundFactory roundFactory =  new CommonRoundFactory(songAPI);
 
         for (int i = 0; i < 6; i++) {
             Game game = new CommonGame("hip hop", "hard", 1, 3);
@@ -99,6 +102,7 @@ public class GetLoadableGamesInteractorTest {
                 assertEquals(exampleGame.getRoundsPlayed(), exampleGameData.getCurrentRoundNumber());
                 assertEquals(exampleGame.getMaxRounds(), exampleGameData.getMaxRounds());
                 assertEquals(exampleGame.getCreatedAt(), exampleGameData.getCreatedAt());
+                assertEquals(exampleGame.getScore(), exampleGameData.getScore());
             }
 
             @Override
