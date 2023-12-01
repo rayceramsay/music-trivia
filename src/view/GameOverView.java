@@ -20,7 +20,7 @@ public class GameOverView extends JPanel implements ActionListener, PropertyChan
 
     JLabel scoreInfo;
     final JButton mainMenu;
-    final JButton playAgain;
+
     public GameOverView(GameOverViewModel gameOverViewModel,
                         ViewManagerModel viewManagerModel) {
         this.viewManagerModel = viewManagerModel;
@@ -28,7 +28,7 @@ public class GameOverView extends JPanel implements ActionListener, PropertyChan
         this.gameOverViewModel.addPropertyChangeListener(this);
 
         // Create title label and horizontally align in view
-        JLabel title = new JLabel(gameOverViewModel.TITLE_LABEL);
+        JLabel title = new JLabel(GameOverViewModel.TITLE_LABEL);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Create score label and horizontally align in view
@@ -37,13 +37,9 @@ public class GameOverView extends JPanel implements ActionListener, PropertyChan
 
         // Create panel for buttons
         JPanel buttons = new JPanel();
-        mainMenu = new JButton(gameOverViewModel.MAIN_MENU_LABEL);
+        mainMenu = new JButton(GameOverViewModel.MAIN_MENU_LABEL);
         mainMenu.addActionListener(this);
 
-        playAgain = new JButton(gameOverViewModel.PLAY_AGAIN_LABEL);
-        playAgain.addActionListener(this);
-
-        buttons.add(playAgain);
         buttons.add(mainMenu);
 
         // Set view layout

@@ -14,6 +14,7 @@ public class RoundState {
     private int currentLives;
     private int maxRounds;
     private int currentRoundNumber;
+    private int score;
     private List<String> multipleChoiceOptions;
 
     public RoundState(RoundState copy) {
@@ -25,6 +26,7 @@ public class RoundState {
         currentLives = copy.currentLives;
         maxRounds = copy.maxRounds;
         currentRoundNumber = copy.currentRoundNumber;
+        score = copy.score;
     }
 
     public RoundState() {}
@@ -92,6 +94,9 @@ public class RoundState {
     public void setCurrentRoundNumber(int currentRoundNumber) {
         this.currentRoundNumber = currentRoundNumber;
     }
+    public int getScore() {return score;}
+    public void setScore(int score) {this.score = score;}
+
     public void setMultipleChoiceOptions(ArrayList<String> options){
         this.multipleChoiceOptions = options;
     }

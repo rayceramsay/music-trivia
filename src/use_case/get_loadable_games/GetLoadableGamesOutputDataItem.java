@@ -12,9 +12,10 @@ public class GetLoadableGamesOutputDataItem {
     private final int maxRounds;
     private final int currentRoundNumber;
     private final LocalDateTime createdAt;
+    private final int score;
 
     public GetLoadableGamesOutputDataItem(String gameID, String genre, String difficulty, int initialLives,
-                                          int currentLives, int maxRounds, int currentRoundNumber, LocalDateTime createdAt) {
+                                          int currentLives, int maxRounds, int currentRoundNumber, LocalDateTime createdAt, int score) {
         this.gameID = gameID;
         this.genre = genre;
         this.difficulty = difficulty;
@@ -23,6 +24,7 @@ public class GetLoadableGamesOutputDataItem {
         this.maxRounds = maxRounds;
         this.currentRoundNumber = currentRoundNumber;
         this.createdAt = createdAt;
+        this.score = score;
     }
 
     public String getGameID() {
@@ -55,5 +57,9 @@ public class GetLoadableGamesOutputDataItem {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public int getScore() {
+        return score;
     }
 }

@@ -1,6 +1,5 @@
 package data_access.api;
 
-import entity.CommonSongFactory;
 import entity.Song;
 import entity.SongFactory;
 import io.github.cdimascio.dotenv.Dotenv;
@@ -9,7 +8,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Random;
 
 public class SpotifyAPI implements SongAPI{

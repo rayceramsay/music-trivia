@@ -1,11 +1,14 @@
 package use_case.load_game;
 
 import data_access.InMemoryGameDataAccessObject;
+import data_access.api.MockAPI;
+import data_access.api.SongAPI;
 import entity.*;
 import data_access.api.MockAPI;
 import data_access.api.SongAPI;
 import org.junit.Before;
 import org.junit.Test;
+import use_case.load_game.*;
 
 import static org.junit.Assert.*;
 

@@ -27,6 +27,8 @@ public class LoadGameInteractor implements LoadGameInputBoundary {
                 gameToLoad.getMaxRounds(),
                 gameToLoad.getRoundsPlayed(),
                 lastRound.getMultipleChoiceAnswers());
+                gameToLoad.getRoundsPlayed(),
+                gameToLoad.getScore());
         presenter.prepareView(outputData);
     }
 }

@@ -13,9 +13,10 @@ public class LoadGameOutputData {
     private final int maxRounds;
     private final int currentRoundNumber;
     private final ArrayList<String> multipleChoiceAnswers;
+    private final int score;
 
     public LoadGameOutputData(String gameId, String question, String genre, String difficulty, int initialLives, int currentLives,
-                              int maxRounds, int currentRoundNumber, ArrayList<String> multipleChoiceAnswers) {
+                              int maxRounds, int currentRoundNumber, ArrayList<String> multipleChoiceAnswers, int score) {
         this.gameId = gameId;
         this.question = question;
         this.genre = genre;
@@ -25,6 +26,7 @@ public class LoadGameOutputData {
         this.maxRounds = maxRounds;
         this.currentRoundNumber = currentRoundNumber;
         this.multipleChoiceAnswers = multipleChoiceAnswers;
+        this.score = score;
     }
 
     public String getGameId() {
@@ -54,6 +56,8 @@ public class LoadGameOutputData {
     public int getCurrentRoundNumber() {
         return currentRoundNumber;
     }
+
+    public int getScore() {return score;}
 
     public String getDifficulty() {
         return difficulty;

@@ -31,6 +31,7 @@ public class CreateGamePresenter implements CreateGameOutputBoundary {
         roundState.setGenre(createGameOutputData.getGenre());
         roundState.setCurrentLives(createGameOutputData.getLives());
         roundState.setInitialLives(createGameOutputData.getLives());
+        roundState.setScore(0);
 
         roundState.setMultipleChoiceOptions(createGameOutputData.getMultipleChoiceAnswers());
 
