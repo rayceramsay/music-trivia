@@ -59,7 +59,7 @@ public class MultipleChoiceRound implements Round {
     }
 
     public List<String> getRandomOrderOptions(){
-        ArrayList<String> options = new ArrayList<>(this.incorrectOptions);
+        List<String> options = new ArrayList<>(this.incorrectOptions);
         int rand = new Random().nextInt(0, this.incorrectOptions.size());
         options.add(rand, this.correctAnswer);
         return options;
