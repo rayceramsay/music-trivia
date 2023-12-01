@@ -17,12 +17,12 @@ public class SQLiteDatabaseGameDataAccessObjectTest {
     private SQLiteDatabaseGameDataAccessObject gameRepository;
 
     /**
-     * Initialize game repository and ensure that it gets reset before every test.
+     * Initialize game repository and ensure that it gets cleared before every test.
      */
     @Before
     public void init() {
         gameRepository = new SQLiteDatabaseGameDataAccessObject(TEST_DATABASE_PATH);
-        gameRepository.reset();
+        gameRepository.clear();
     }
 
     /**
@@ -140,10 +140,10 @@ public class SQLiteDatabaseGameDataAccessObjectTest {
     }
 
     /**
-     * Test that a non-empty game repository is empty after resetting.
+     * Test that a non-empty game repository is empty after clearing.
      */
     @Test
-    public void resetTest() {
+    public void clearTest() {
         Game mockedGame1 = createMockGame();
         Game mockedGame2 = createMockGame();
 
@@ -152,7 +152,7 @@ public class SQLiteDatabaseGameDataAccessObjectTest {
         assertTrue(gameRepository.gameExists(mockedGame1));
         assertTrue(gameRepository.gameExists(mockedGame2));
 
-        gameRepository.reset();
+        gameRepository.clear();
         assertFalse(gameRepository.gameExists(mockedGame1));
         assertFalse(gameRepository.gameExists(mockedGame2));
     }
