@@ -39,7 +39,7 @@ public class RoundViewFactory {
                                    RoundFactory roundFactory
     ) {
         SubmitAnswerController submitAnswerController = createSubmitAnswerUseCase(submitAnswerViewModel, gameDataAccessInterface);
-        FinishRoundController finishRoundController = createFinishRoundUseCase(viewManagerModel, gameOverViewModel, roundViewModel, gameDataAccessInterface, roundFactory);
+        FinishRoundController finishRoundController = createFinishRoundUseCase(viewManagerModel, gameOverViewModel, finishRoundViewModel, roundViewModel, gameDataAccessInterface, roundFactory);
         ToggleAudioController toggleAudioController = createToggleAudioUseCase(toggleAudioViewModel, gameDataAccessInterface, roundViewModel);
         return new RoundView(viewManagerModel, roundViewModel, submitAnswerViewModel, submitAnswerController, finishRoundController, toggleAudioViewModel, toggleAudioController, finishRoundViewModel, createGameViewModel, loadGameViewModel);
     }

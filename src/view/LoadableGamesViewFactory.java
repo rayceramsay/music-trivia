@@ -27,9 +27,9 @@ public class LoadableGamesViewFactory {
 
     private static LoadGameController createLoadGameUseCase(ViewManagerModel viewManagerModel,
                                                             RoundViewModel roundViewModel,
-                                                            LoadGameViewModel loadGameViewModel,                            
+                                                            LoadGameViewModel loadGameViewModel,
                                                             GameDataAccessInterface gameDataAccessObject) {
-        LoadGameOutputBoundary loadGamePresenter = new LoadGamePresenter(viewManagerModel, roundViewModel);
+        LoadGameOutputBoundary loadGamePresenter = new LoadGamePresenter(viewManagerModel, roundViewModel, loadGameViewModel);
         LoadGameInputBoundary loadGameInteractor = new LoadGameInteractor(loadGamePresenter, gameDataAccessObject);
 
         return new LoadGameController(loadGameInteractor);
