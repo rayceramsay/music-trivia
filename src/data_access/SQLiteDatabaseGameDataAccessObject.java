@@ -24,14 +24,13 @@ public class SQLiteDatabaseGameDataAccessObject implements SubmitAnswerGameDataA
     private final static DateTimeFormatter sqliteDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
     private final String databasePath;
 
-    public SQLiteDatabaseGameDataAccessObject() {
-        Dotenv dotenv = Dotenv.load();
-        databasePath = dotenv.get("SQLITE_DB_PATH");
+    public SQLiteDatabaseGameDataAccessObject(String databasePath) {
+        this.databasePath = databasePath;
 
         try {
             setupDatabase();
         } catch (SQLException e) {
-            throw new RuntimeException("Could not setup SQLite database.");
+            throw new RuntimeException("Could not setup SQLite database object.");
         }
     }
 
@@ -58,7 +57,7 @@ public class SQLiteDatabaseGameDataAccessObject implements SubmitAnswerGameDataA
 
             return game;
         } catch (SQLException e) {
-            throw new RuntimeException("Could not get game by ID.");
+            throw new RuntimeException("A problem occurred while getting game by ID.");
         }
     }
 
@@ -84,7 +83,7 @@ public class SQLiteDatabaseGameDataAccessObject implements SubmitAnswerGameDataA
 
             return games;
         } catch (SQLException e) {
-            throw new RuntimeException("Could not get loadable games.");
+            throw new RuntimeException("A problem occurred while getting loadable games.");
         }
     }
 
@@ -131,9 +130,13 @@ public class SQLiteDatabaseGameDataAccessObject implements SubmitAnswerGameDataA
             String topDifficulty = resultSet.getString("top_difficulty");
             String topGenre = resultSet.getString("top_genre");
 
+            if (topDifficulty == null && topGenre == null) {
+                return null;
+            }
+
             return new CommonLifetimeStatistics(averageScore, averageInitialLives, averageRoundsPerGame, topDifficulty, topGenre);
         } catch (SQLException e) {
-            throw new RuntimeException("Could not get lifetime statistics.");
+            throw new RuntimeException("A problem occurred while getting lifetime statistics.");
         }
     }
 
@@ -149,16 +152,35 @@ public class SQLiteDatabaseGameDataAccessObject implements SubmitAnswerGameDataA
         } catch (SQLException e) {
             try {
                 connection.rollback();
-            } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
-            }
-            throw new RuntimeException(e);
+            } catch (SQLException ignored) {}
+
+            throw new RuntimeException("A problem occurred while saving the game.");
         } finally {
             try {
                 connection.close();
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-            }
+            } catch (SQLException ignored) {}
+        }
+    }
+
+    public boolean gameExists(Game game) {
+        String sql = "SELECT id FROM game WHERE external_id = ? LIMIT 1";
+
+        try (Connection connection = getConnection(); PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, game.getID());
+            ResultSet resultSet = statement.executeQuery();
+
+            return resultSet.next();
+        } catch (SQLException e) {
+            throw new RuntimeException("A problem occurred while checking if the game exists.");
+        }
+    }
+
+    public void reset() {
+        try {
+            destroyDatabase();
+            setupDatabase();
+        } catch (SQLException e) {
+            throw new RuntimeException("A problem occurred while resetting the database.");
         }
     }
 
@@ -298,17 +320,6 @@ public class SQLiteDatabaseGameDataAccessObject implements SubmitAnswerGameDataA
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(getLastInsertedRowidSql);
             return resultSet.getInt(1);
-        }
-    }
-
-    private boolean gameExists(Game game, Connection connection) throws SQLException {
-        String sql = "SELECT id FROM game WHERE external_id = ? LIMIT 1";
-
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, game.getID());
-            ResultSet resultSet = statement.executeQuery();
-
-            return resultSet.next();
         }
     }
 
