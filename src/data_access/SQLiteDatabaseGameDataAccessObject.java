@@ -1,7 +1,6 @@
 package data_access;
 
 import entity.*;
-import io.github.cdimascio.dotenv.Dotenv;
 import org.sqlite.SQLiteConfig;
 import use_case.create_game.CreateGameDataAccessInterface;
 import use_case.finish_round.FinishRoundGameDataAccessInterface;
@@ -22,128 +21,43 @@ public class SQLiteDatabaseGameDataAccessObject implements SubmitAnswerGameDataA
         StatisticsDataAccessInterface, ToggleAudioGameDataAccessInterface {
 
     private final static DateTimeFormatter sqliteDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+
     private final String databasePath;
+    private final InMemoryGameDataAccessObject cache = new InMemoryGameDataAccessObject();
 
     public SQLiteDatabaseGameDataAccessObject(String databasePath) {
         this.databasePath = databasePath;
 
         try {
             setupDatabase();
+            populateCache();
         } catch (SQLException e) {
             throw new RuntimeException("Could not setup SQLite database object.");
         }
     }
 
+    public boolean gameExists(Game game) {
+        return cache.gameExists(game);
+    }
+
     @Override
     public Game getGameByID(String gameID) {
-        String selectGameSql = """
-                SELECT id, external_id, difficulty, genre, initial_lives, max_rounds, current_lives, score, created_at, finished_at
-                FROM game
-                WHERE external_id = ?
-                LIMIT 1""";
-
-        try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(selectGameSql)) {
-            statement.setString(1, gameID);
-            ResultSet gameResults = statement.executeQuery();
-
-            if (!gameResults.next()) {
-                return null;
-            }
-
-            int internalGameId = gameResults.getInt("id");
-            Game game = createBaseGameFromResultSet(gameResults);
-            populateGameWithExistingRounds(game, internalGameId, connection);
-
-            return game;
-        } catch (SQLException e) {
-            throw new RuntimeException("A problem occurred while getting game by ID.");
-        }
+        return cache.getGameByID(gameID);
     }
 
     @Override
     public List<Game> getLoadableGames() {
-        List<Game> games = new ArrayList<>();
-        String selectLoadableGamesSql = """
-                SELECT id, external_id, difficulty, genre, initial_lives, max_rounds, current_lives, score, created_at, finished_at
-                FROM game
-                WHERE finished_at IS NULL""";
-
-        try (Connection connection = getConnection();
-             Statement statement = connection.createStatement()) {
-            ResultSet gameResults = statement.executeQuery(selectLoadableGamesSql);
-
-            while (gameResults.next()) {
-                Game game = createBaseGameFromResultSet(gameResults);
-                int internalGameId = gameResults.getInt("id");
-                populateGameWithExistingRounds(game, internalGameId, connection);
-
-                games.add(game);
-            }
-
-            return games;
-        } catch (SQLException e) {
-            throw new RuntimeException("A problem occurred while getting loadable games.");
-        }
+        return cache.getLoadableGames();
     }
 
     @Override
     public LifetimeStatistics avgStats() {
-        String selectStatisticsSql = """
-            SELECT
-                (SELECT AVG(score) FROM game) AS average_score,
-                (SELECT AVG(initial_lives) FROM game) AS average_initial_lives,
-                (
-                    SELECT AVG(round_count)
-                    FROM (
-                        SELECT game_id, COUNT(id) AS round_count
-                        FROM round
-                        GROUP BY game_id
-                    ) AS round_counts
-                ) AS average_rounds_per_game,
-                (
-                    SELECT difficulty
-                    FROM game
-                    GROUP BY difficulty
-                    ORDER BY COUNT(difficulty) DESC, difficulty
-                    LIMIT 1
-                ) AS top_difficulty,
-                (
-                    SELECT genre
-                    FROM game
-                    GROUP BY genre
-                    ORDER BY COUNT(genre) DESC, genre
-                    LIMIT 1
-                ) AS top_genre;""";
-
-        try (Connection connection = getConnection();
-             Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(selectStatisticsSql);
-
-            if (!resultSet.next()) {
-                return null;
-            }
-
-            int averageScore = Math.round(resultSet.getFloat("average_score"));
-            int averageInitialLives = Math.round(resultSet.getFloat("average_initial_lives"));
-            int averageRoundsPerGame = Math.round(resultSet.getFloat("average_rounds_per_game"));
-            String topDifficulty = resultSet.getString("top_difficulty");
-            String topGenre = resultSet.getString("top_genre");
-
-            if (topDifficulty == null && topGenre == null) {
-                return null;
-            }
-
-            return new CommonLifetimeStatistics(averageScore, averageInitialLives, averageRoundsPerGame, topDifficulty, topGenre);
-        } catch (SQLException e) {
-            throw new RuntimeException("A problem occurred while getting lifetime statistics.");
-        }
+        return cache.avgStats();
     }
 
     @Override
     public void save(Game game) {
         Connection connection = getConnection();
-
         try {
             connection.setAutoCommit(false);
             deleteGame(game, connection);
@@ -160,28 +74,19 @@ public class SQLiteDatabaseGameDataAccessObject implements SubmitAnswerGameDataA
                 connection.close();
             } catch (SQLException ignored) {}
         }
+
+        cache.save(game);
     }
 
-    public boolean gameExists(Game game) {
-        String sql = "SELECT id FROM game WHERE external_id = ? LIMIT 1";
-
-        try (Connection connection = getConnection(); PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, game.getID());
-            ResultSet resultSet = statement.executeQuery();
-
-            return resultSet.next();
-        } catch (SQLException e) {
-            throw new RuntimeException("A problem occurred while checking if the game exists.");
-        }
-    }
-
-    public void reset() {
+    public void clear() {
         try {
             destroyDatabase();
             setupDatabase();
         } catch (SQLException e) {
-            throw new RuntimeException("A problem occurred while resetting the database.");
+            throw new RuntimeException("A problem occurred while clearing the database.");
         }
+
+        cache.clear();
     }
 
     private Game createBaseGameFromResultSet(ResultSet resultSet) throws SQLException {
@@ -320,6 +225,25 @@ public class SQLiteDatabaseGameDataAccessObject implements SubmitAnswerGameDataA
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(getLastInsertedRowidSql);
             return resultSet.getInt(1);
+        }
+    }
+
+    private void populateCache() throws SQLException {
+        String selectLoadableGamesSql = """
+                SELECT id, external_id, difficulty, genre, initial_lives, max_rounds, current_lives, score, created_at, finished_at
+                FROM game""";
+
+        try (Connection connection = getConnection();
+             Statement statement = connection.createStatement()) {
+            ResultSet gameResults = statement.executeQuery(selectLoadableGamesSql);
+
+            while (gameResults.next()) {
+                Game game = createBaseGameFromResultSet(gameResults);
+                int internalGameId = gameResults.getInt("id");
+                populateGameWithExistingRounds(game, internalGameId, connection);
+
+                cache.save(game);
+            }
         }
     }
 
