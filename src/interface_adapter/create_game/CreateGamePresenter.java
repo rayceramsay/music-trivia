@@ -5,7 +5,6 @@ import interface_adapter.round.RoundState;
 import interface_adapter.round.RoundViewModel;
 import use_case.create_game.CreateGameOutputBoundary;
 import use_case.create_game.CreateGameOutputData;
-import view.RoundView;
 
 public class CreateGamePresenter implements CreateGameOutputBoundary {
 

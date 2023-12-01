@@ -20,22 +20,14 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
 
 public class RoundView extends JPanel implements ActionListener, PropertyChangeListener {
 
     public final static String VIEW_NAME = "round";
 
-    private final ViewManagerModel viewManagerModel;
     private final RoundViewModel roundViewModel;
-    private final SubmitAnswerViewModel submitAnswerViewModel;
     private final SubmitAnswerController submitAnswerController;
-    private final ToggleAudioViewModel toggleAudioViewModel;
-    private final ToggleAudioController toggleAudioController;
     private final FinishRoundController finishRoundController;
-    private final FinishRoundViewModel finishRoundViewModel;
-    private final CreateGameViewModel createGameViewModel;
-    private final LoadGameViewModel loadGameViewModel;
     private final JButton playSong;
     private final JButton submit;
     private final JLabel roundInfo;
@@ -57,23 +49,16 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
                      FinishRoundViewModel finishRoundViewModel,
                      CreateGameViewModel createGameViewModel,
                      LoadGameViewModel loadGameViewModel) {
-        this.viewManagerModel = viewManagerModel;
         this.roundViewModel = roundViewModel;
-        this.submitAnswerViewModel = submitAnswerViewModel;
         this.submitAnswerController = submitAnswerController;
         this.finishRoundController = finishRoundController;
-        this.toggleAudioViewModel = toggleAudioViewModel;
-        this.toggleAudioController = toggleAudioController;
-        this.finishRoundViewModel = finishRoundViewModel;
-        this.createGameViewModel = createGameViewModel;
-        this.loadGameViewModel = loadGameViewModel;
 
         this.roundViewModel.addPropertyChangeListener(this);
-        this.submitAnswerViewModel.addPropertyChangeListener(this);
-        this.toggleAudioViewModel.addPropertyChangeListener(this);
-        this.finishRoundViewModel.addPropertyChangeListener(this);
-        this.createGameViewModel.addPropertyChangeListener(this);
-        this.loadGameViewModel.addPropertyChangeListener(this);
+        submitAnswerViewModel.addPropertyChangeListener(this);
+        toggleAudioViewModel.addPropertyChangeListener(this);
+        finishRoundViewModel.addPropertyChangeListener(this);
+        createGameViewModel.addPropertyChangeListener(this);
+        loadGameViewModel.addPropertyChangeListener(this);
 
 
         // Prompt
@@ -192,44 +177,36 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
     public void propertyChange(PropertyChangeEvent evt) {
         String propertyName = evt.getPropertyName();
 
-        if (propertyName.equals(ToggleAudioViewModel.STATE_PROPERTY)) {
-            ToggleAudioState toggleAudioState = (ToggleAudioState) evt.getNewValue();
-            playSong.setIcon(setProperties(new ImageIcon(toggleAudioState.getImgPath())));
-        }
-        else if (propertyName.equals(SubmitAnswerViewModel.STATE_PROPERTY)) {
-            answerSection.setVisible(false);
+        switch (propertyName) {
+            case ToggleAudioViewModel.STATE_PROPERTY -> {
+                ToggleAudioState toggleAudioState = (ToggleAudioState) evt.getNewValue();
+                playSong.setIcon(setProperties(new ImageIcon(toggleAudioState.getImgPath())));
+            }
+            case SubmitAnswerViewModel.STATE_PROPERTY -> {
+                answerSection.setVisible(false);
+                SubmitAnswerState submitAnswerState = (SubmitAnswerState) evt.getNewValue();
 
-            SubmitAnswerState submitAnswerState = (SubmitAnswerState) evt.getNewValue();
-
-            // Create dialog displaying the correctness of the user's answer
-            JOptionPane optionPane = new JOptionPane(submitAnswerState.getCorrectnessMessage(),
-                    JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{"Next"});
-            JDialog dialog = optionPane.createDialog(this, submitAnswerState.getCorrectnessTitle());
-
-            loadingLabel.setVisible(true); // showing loading label
-            submit.setEnabled(false); // disable submit button while loading next round
-            playSong.setEnabled(false); // disable play button while loading next round
-
-
-            optionPane.addPropertyChangeListener(e -> {
-                if (JOptionPane.VALUE_PROPERTY.equals(e.getPropertyName())) {
-                    // Call finish round controller
-                    RoundState roundState = roundViewModel.getState();
-                    finishRoundController.execute(roundState.getGameId());
-                    answerInputField.setText("");
-                }
-            });
-            dialog.setVisible(true);
-
-
-        }
-        else if (propertyName.equals(CreateGameViewModel.STATE_PROPERTY)
-                || propertyName.equals(LoadGameViewModel.STATE_PROPERTY)
-                || propertyName.equals(FinishRoundViewModel.STATE_PROPERTY)) {
-            RoundState roundState = roundViewModel.getState();
-
-            updateAnswerSection();
-            answerSection.setVisible(true);
+                // Create dialog displaying the correctness of the user's answer
+                JOptionPane optionPane = new JOptionPane(submitAnswerState.getCorrectnessMessage(),
+                        JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{"Next"});
+                JDialog dialog = optionPane.createDialog(this, submitAnswerState.getCorrectnessTitle());
+                loadingLabel.setVisible(true); // showing loading label
+                submit.setEnabled(false); // disable submit button while loading next round
+                playSong.setEnabled(false); // disable play button while loading next round
+                optionPane.addPropertyChangeListener(e -> {
+                    if (JOptionPane.VALUE_PROPERTY.equals(e.getPropertyName())) {
+                        // Call finish round controller
+                        RoundState roundState = roundViewModel.getState();
+                        finishRoundController.execute(roundState.getGameId());
+                        answerInputField.setText("");
+                    }
+                });
+                dialog.setVisible(true);
+            }
+            case CreateGameViewModel.STATE_PROPERTY, LoadGameViewModel.STATE_PROPERTY, FinishRoundViewModel.STATE_PROPERTY -> {
+                updateAnswerSection();
+                answerSection.setVisible(true);
+            }
         }
         this.updateViewComponents();
     }
