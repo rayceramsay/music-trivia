@@ -6,7 +6,15 @@ public class CreateGameInputData {
     private final int lives;
     private final int rounds;
 
-    public CreateGameInputData (String genre, String difficulty, int lives, int rounds) {
+    /**
+     * Constructor to initialize objects of CreateGameInputData
+     *
+     * @param genre      genre of songs used
+     * @param difficulty difficulty level of Game
+     * @param lives      amount of lives in Game
+     * @param rounds     number of rounds in game
+     */
+    public CreateGameInputData(String genre, String difficulty, int lives, int rounds) {
         this.genre = genre;
         this.difficulty = difficulty;
         this.lives = lives;

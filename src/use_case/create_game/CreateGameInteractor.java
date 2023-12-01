@@ -2,11 +2,20 @@ package use_case.create_game;
 
 import entity.*;
 
-public class CreateGameInteractor implements CreateGameInputBoundary{
+/**
+ * Implementation of CreateGameInputBoundary
+ */
+public class CreateGameInteractor implements CreateGameInputBoundary {
     final CreateGameDataAccessInterface gameAccessObject;
     final CreateGameOutputBoundary createGamePresenter;
 
-    public CreateGameInteractor (CreateGameDataAccessInterface gameAccessObject, CreateGameOutputBoundary createGamePresenter) {
+    /**
+     * Constructor to initialize objects of CreateGameInteractor
+     *
+     * @param gameAccessObject    data access interface for CreateGame use case
+     * @param createGamePresenter output boundary for CreateGame use case
+     */
+    public CreateGameInteractor(CreateGameDataAccessInterface gameAccessObject, CreateGameOutputBoundary createGamePresenter) {
         this.gameAccessObject = gameAccessObject;
         this.createGamePresenter = createGamePresenter;
     }
