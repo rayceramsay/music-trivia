@@ -1,13 +1,14 @@
 package use_case.submit_answer;
 
+import data_access.game_data.GameDataAccessInterface;
 import entity.Game;
 import entity.Round;
 
 public class SubmitAnswerInteractor implements SubmitAnswerInputBoundary {
-    private final SubmitAnswerGameDataAccessInterface gameDataAccessObject;
+    private final GameDataAccessInterface gameDataAccessObject;
     private final SubmitAnswerOutputBoundary submitAnswerPresenter;
 
-    public SubmitAnswerInteractor(SubmitAnswerGameDataAccessInterface gameDataAccessObject,
+    public SubmitAnswerInteractor(GameDataAccessInterface gameDataAccessObject,
                                   SubmitAnswerOutputBoundary submitAnswerPresenter) {
         this.gameDataAccessObject = gameDataAccessObject;
         this.submitAnswerPresenter = submitAnswerPresenter;

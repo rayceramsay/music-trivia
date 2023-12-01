@@ -1,6 +1,7 @@
 package app;
 
-import data_access.InMemoryGameDataAccessObject;
+import data_access.game_data.GameDataAccessInterface;
+import data_access.game_data.InMemoryGameDataAccessObject;
 
 import data_access.api.SpotifyAPI;
 import interface_adapter.ViewManagerModel;
@@ -53,10 +54,10 @@ public class Main {
         LoadGameViewModel loadGameViewModel = new LoadGameViewModel();
 
         // Create data access objects
-        InMemoryGameDataAccessObject gameDataAccessObject = new InMemoryGameDataAccessObject();
+        GameDataAccessInterface gameDataAccessObject = new InMemoryGameDataAccessObject();
 
         // Create views
-        MenuView menuView = MenuViewFactory.create(viewManagerModel, gameSettingsViewModel, getLoadableGamesViewModel, statisticsViewModel, gameDataAccessObject, gameDataAccessObject);
+        MenuView menuView = MenuViewFactory.create(viewManagerModel, gameSettingsViewModel, getLoadableGamesViewModel, statisticsViewModel, gameDataAccessObject);
         GameSettingsView gameSettingsView = GameSettingsViewFactory.create(viewManagerModel, roundViewModel, createGameViewModel, gameSettingsViewModel, gameDataAccessObject, roundFactory);
         GameOverView gameOverView = new GameOverView(gameOverViewModel, viewManagerModel);
         RoundView roundView = RoundViewFactory.create(viewManagerModel, roundViewModel, submitAnswerViewModel, finishRoundViewModel, createGameViewModel, loadGameViewModel, toggleAudioViewModel, gameOverViewModel, gameDataAccessObject, roundFactory);

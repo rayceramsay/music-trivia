@@ -1,15 +1,16 @@
 package use_case.finish_round;
+import data_access.game_data.GameDataAccessInterface;
 import entity.*;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class FinishRoundInteractor implements FinishRoundInputBoundary{
-    private final FinishRoundGameDataAccessInterface gameDataAccessObject;
+    private final GameDataAccessInterface gameDataAccessObject;
     private final FinishRoundOutputBoundary finishRoundPresenter;
     private final RoundFactory roundFactory;
     public FinishRoundInteractor(FinishRoundOutputBoundary finishRoundPresenter,
-                                 FinishRoundGameDataAccessInterface gameDataAccessObject,
+                                 GameDataAccessInterface gameDataAccessObject,
                                  RoundFactory roundFactory){
         this.gameDataAccessObject = gameDataAccessObject;
         this.finishRoundPresenter = finishRoundPresenter;

@@ -1,7 +1,8 @@
 package use_case.load_game;
 
-import data_access.InMemoryGameDataAccessObject;
 import data_access.api.MockAPI;
+import data_access.game_data.GameDataAccessInterface;
+import data_access.game_data.InMemoryGameDataAccessObject;
 import data_access.api.SongAPI;
 import entity.*;
 import data_access.api.MockAPI;
@@ -14,7 +15,7 @@ import static org.junit.Assert.*;
 
 public class LoadGameInteractorTest {
 
-    private LoadGameGameDataAccessInterface gameRepository;
+    private GameDataAccessInterface gameRepository;
     private Game expectedGame;
     private boolean isPresenterCalled = false;
 

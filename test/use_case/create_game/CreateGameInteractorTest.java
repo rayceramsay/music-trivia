@@ -1,6 +1,7 @@
 package use_case.create_game;
 
-import data_access.InMemoryGameDataAccessObject;
+import data_access.game_data.GameDataAccessInterface;
+import data_access.game_data.InMemoryGameDataAccessObject;
 import data_access.api.MockAPI;
 import data_access.api.SongAPI;
 import entity.*;
@@ -17,7 +18,7 @@ import static org.junit.Assert.*;
 
 public class CreateGameInteractorTest {
 
-    private InMemoryGameDataAccessObject gameDataAccessObject;
+    private GameDataAccessInterface gameDataAccessObject;
     private RoundFactory roundFactory;
 
     @Before

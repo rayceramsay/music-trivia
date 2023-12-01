@@ -1,7 +1,9 @@
 package use_case.get_loadable_games;
 
-import data_access.InMemoryGameDataAccessObject;
+
 import data_access.api.MockAPI;
+import data_access.game_data.GameDataAccessInterface;
+import data_access.game_data.InMemoryGameDataAccessObject;
 import data_access.api.SongAPI;
 import entity.*;
 
@@ -9,13 +11,12 @@ import org.junit.Test;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.*;
 
 public class GetLoadableGamesInteractorTest {
 
-    private GetLoadableGamesGameDataAccessInterface gameRepository;
+    private GameDataAccessInterface gameRepository;
     private List<Game> loadableGames;
 
     /**
