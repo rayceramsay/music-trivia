@@ -9,13 +9,15 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.Random;
 
-public class SpotifyAPI implements SongAPI{
+public class SpotifyAPI implements SongAPI {
+
+    private final static int POPULARITY_THRESHOLD = 83;
 
     private final String clientId;
     private final String clientSecret;
     private final OkHttpClient client;
     private final SongFactory songFactory;
-    private String authToken = null;
+    private String authToken;
 
     public SpotifyAPI(SongFactory songFactory, String clientId, String clientSecret) {
         this.clientId = clientId;
@@ -28,12 +30,14 @@ public class SpotifyAPI implements SongAPI{
     public Song getRandomSongFromGenre(String genre) {
         JSONObject responseBody = retrieveSongData(genre);
         JSONArray songsArray = responseBody.getJSONObject("tracks").getJSONArray("items");
+
         JSONObject item;
         Song song = null;
+
         int i = 0;
-        do{
+        do {
             item = (JSONObject) songsArray.get(i);
-            if (item.get("preview_url") instanceof String){
+            if (item.get("preview_url") instanceof String) {
                 JSONObject albumArtistInfo = (JSONObject) item.getJSONObject("album").getJSONArray("artists").get(0);
                 String songName = item.getString("name");
                 String audio = item.getString("preview_url");
@@ -41,37 +45,35 @@ public class SpotifyAPI implements SongAPI{
                 song = songFactory.create(songName, artistName, audio);
             }
             i++;
-        }while (!(item.get("preview_url") instanceof String)  || item.getInt("popularity") < 83);
+        } while (!(item.get("preview_url") instanceof String) || item.getInt("popularity") < POPULARITY_THRESHOLD);
 
-        if(song == null){
-            return getRandomSongFromGenre(genre);
-        }else {
-            return song;
-        }
+        return song == null ? getRandomSongFromGenre(genre) : song;
     }
-    private JSONObject retrieveSongData(String genre)  {
+
+    private JSONObject retrieveSongData(String genre) {
         String url = getRandomEndpoint(genre);
-        JSONObject response;
         Request request = new Request.Builder()
                 .url(url)
                 .addHeader("Authorization", "Bearer " + authToken)
                 .addHeader("Content-Type", "application/json")
                 .build();
-        try (Response responseRequest = client.newCall(request).execute()){
-            if(responseRequest.code() == 401){ // Code 401 - bad (expired or null) auth token
+
+        try (Response responseRequest = client.newCall(request).execute()) {
+            if (responseRequest.code() == 401) { // Code 401 - bad (expired or null) auth token
                 generateAuthToken();
                 return retrieveSongData(genre); // recall api with auth token
             }
-            if(responseRequest.body() == null) {throw new RuntimeException("Error - no response body");}
-            response = new JSONObject(responseRequest.body().string());
+            if (responseRequest.body() == null) {
+                throw new RuntimeException("Error - no response body");
+            }
 
+            return new JSONObject(responseRequest.body().string());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        return response;
     }
-    private void generateAuthToken(){
+
+    private void generateAuthToken() {
         String endpoint = "https://accounts.spotify.com/api/token";
         RequestBody body = new FormBody.Builder()
                 .add("client_id", clientId)
@@ -83,19 +85,26 @@ public class SpotifyAPI implements SongAPI{
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
                 .post(body)
                 .build();
-        try (Response response = client.newCall(request).execute()){
-            if(response.body() == null) {throw new RuntimeException("Error - no response body");}
+
+        try (Response response = client.newCall(request).execute()) {
+            if (response.body() == null) {
+                throw new RuntimeException("Error - no response body");
+            }
 
             JSONObject responseBody = new JSONObject(response.body().string());
             authToken = responseBody.getString("access_token");
-
-        } catch (IOException e){
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-    private String getRandomEndpoint(String genre){
-        String base_endpoint = "https://api.spotify.com/v1/search?q=";
-        char search = (char) ('a' + (new Random()).nextInt(26));
-        return String.format("%s%s&genre:%s&type=track&limit=50", base_endpoint, search, genre);
+
+    private String getRandomEndpoint(String genre) {
+        Random random = new Random();
+
+        String baseEndpoint = "https://api.spotify.com/v1/search?q=";
+        char search = (char) ('a' + random.nextInt(26));
+        int offset = random.nextInt(10);
+
+        return String.format("%s%s&genre:%s&type=track&limit=50&offset=%s", baseEndpoint, search, genre, offset);
     }
 }

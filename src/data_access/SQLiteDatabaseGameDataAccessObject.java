@@ -1,24 +1,16 @@
 package data_access;
 
+import data_access.game_data.GameDataAccessInterface;
+import data_access.game_data.InMemoryGameDataAccessObject;
 import entity.*;
 import org.sqlite.SQLiteConfig;
-import use_case.create_game.CreateGameDataAccessInterface;
-import use_case.finish_round.FinishRoundGameDataAccessInterface;
-import use_case.get_loadable_games.GetLoadableGamesGameDataAccessInterface;
-import use_case.load_game.LoadGameGameDataAccessInterface;
-import use_case.statistics.StatisticsDataAccessInterface;
-import use_case.submit_answer.SubmitAnswerGameDataAccessInterface;
-import use_case.toggle_audio.ToggleAudioGameDataAccessInterface;
 
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
-public class SQLiteDatabaseGameDataAccessObject implements SubmitAnswerGameDataAccessInterface, FinishRoundGameDataAccessInterface,
-        CreateGameDataAccessInterface, GetLoadableGamesGameDataAccessInterface, LoadGameGameDataAccessInterface,
-        StatisticsDataAccessInterface, ToggleAudioGameDataAccessInterface {
+public class SQLiteDatabaseGameDataAccessObject implements GameDataAccessInterface {
 
     private final static DateTimeFormatter sqliteDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
@@ -36,6 +28,7 @@ public class SQLiteDatabaseGameDataAccessObject implements SubmitAnswerGameDataA
         }
     }
 
+    @Override
     public boolean gameExists(Game game) {
         return cache.gameExists(game);
     }
@@ -78,6 +71,7 @@ public class SQLiteDatabaseGameDataAccessObject implements SubmitAnswerGameDataA
         cache.save(game);
     }
 
+    @Override
     public void clear() {
         try {
             destroyDatabase();

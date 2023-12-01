@@ -1,25 +1,31 @@
 package use_case.load_game;
 
+import java.util.List;
+
 public class LoadGameOutputData {
 
     private final String gameId;
     private final String question;
     private final String genre;
+    private final String difficulty;
     private final int initialLives;
     private final int currentLives;
     private final int maxRounds;
     private final int currentRoundNumber;
+    private final List<String> multipleChoiceAnswers;
     private final int score;
 
-    public LoadGameOutputData(String gameId, String question, String genre, int initialLives, int currentLives,
-                              int maxRounds, int currentRoundNumber, int score) {
+    public LoadGameOutputData(String gameId, String question, String genre, String difficulty, int initialLives, int currentLives,
+                              int maxRounds, int currentRoundNumber, List<String> multipleChoiceAnswers, int score) {
         this.gameId = gameId;
         this.question = question;
         this.genre = genre;
+        this.difficulty = difficulty;
         this.initialLives = initialLives;
         this.currentLives = currentLives;
         this.maxRounds = maxRounds;
         this.currentRoundNumber = currentRoundNumber;
+        this.multipleChoiceAnswers = multipleChoiceAnswers;
         this.score = score;
     }
 
@@ -52,4 +58,12 @@ public class LoadGameOutputData {
     }
 
     public int getScore() {return score;}
+
+    public String getDifficulty() {
+        return difficulty;
+    }
+
+    public List<String> getMultipleChoiceAnswers() {
+        return multipleChoiceAnswers;
+    }
 }

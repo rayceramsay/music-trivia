@@ -1,5 +1,10 @@
 package entity;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class TextInputRound implements Round {
+
     private final Song song;
     private final String question;
     private final String correctAnswer;
@@ -32,7 +37,9 @@ public class TextInputRound implements Round {
     }
 
     @Override
-    public String getUserAnswer() { return userAnswer; }
+    public String getUserAnswer() {
+        return userAnswer;
+    }
 
     @Override
     public void setUserAnswer(String userAnswer) {
@@ -52,6 +59,11 @@ public class TextInputRound implements Round {
     @Override
     public boolean isFinished() {
         return userAnswer != null;
+    }
+
+    @Override
+    public List<String> getMultipleChoiceAnswers() {
+        return new ArrayList<>(); // return empty ArrayList
     }
 
     private String cleanString(String string) {

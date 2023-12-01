@@ -1,18 +1,19 @@
 package use_case.create_game;
 
+import data_access.game_data.GameDataAccessInterface;
 import entity.*;
 
 import java.util.Objects;
 
 public class CreateGameInteractor implements CreateGameInputBoundary {
 
-    final CreateGameDataAccessInterface gameAccessObject;
+    final GameDataAccessInterface gameAccessObject;
     final CreateGameOutputBoundary createGamePresenter;
     final RoundFactory roundFactory;
 
-    public CreateGameInteractor(CreateGameDataAccessInterface gameAccessObject,
-                                CreateGameOutputBoundary createGamePresenter,
-                                RoundFactory roundFactory) {
+    public CreateGameInteractor (GameDataAccessInterface gameAccessObject,
+                                 CreateGameOutputBoundary createGamePresenter,
+                                 RoundFactory roundFactory) {
         this.gameAccessObject = gameAccessObject;
         this.createGamePresenter = createGamePresenter;
         this.roundFactory = roundFactory;
@@ -43,6 +44,8 @@ public class CreateGameInteractor implements CreateGameInputBoundary {
         createGameOutputData.setDifficulty(game.getDifficulty());
         createGameOutputData.setRounds(game.getMaxRounds());
         createGameOutputData.setLives(game.getInitialLives());
+
+        createGameOutputData.setMultipleChoiceAnswers(firstRound.getMultipleChoiceAnswers());
 
         createGamePresenter.prepareFirstRoundView(createGameOutputData);
     }

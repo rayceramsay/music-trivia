@@ -1,9 +1,7 @@
 package use_case.finish_round;
 
-import data_access.InMemoryGameDataAccessObject;
-import data_access.api.MockAPI;
-import data_access.api.SongAPI;
-import data_access.api.SpotifyAPI;
+import data_access.game_data.GameDataAccessInterface;
+import data_access.game_data.InMemoryGameDataAccessObject;
 import entity.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,7 +9,8 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class FinishRoundInteractorTest {
-    private FinishRoundGameDataAccessInterface gameDataAccessObject;
+
+    private GameDataAccessInterface gameDataAccessObject;
     private Round round;
     private RoundFactory roundFactory;
 
@@ -21,8 +20,7 @@ public class FinishRoundInteractorTest {
     @Before
     public void init() {
         gameDataAccessObject = new InMemoryGameDataAccessObject();
-        SongAPI songAPI = new MockAPI(new CommonSongFactory());
-        roundFactory = new CommonRoundFactory(songAPI);
+        roundFactory = new MockRoundFactory();
         round = roundFactory.createHardRound("pop");
 
     }
@@ -225,7 +223,7 @@ public class FinishRoundInteractorTest {
                 assertNotEquals(game.getCurrentRound(), round);
                 assertEquals(game.getCurrentRound().getClass(), MultipleChoiceRound.class);
                 MultipleChoiceRound currRound =  (MultipleChoiceRound) game.getCurrentRound();
-                assertEquals(4, currRound.getRandomOrderOptions().size());
+                assertEquals(4, currRound.getMultipleChoiceAnswers().size());
 
                 // Verify output data
                 assertEquals(game.getGenre(), outputData.getGenre());
@@ -273,7 +271,7 @@ public class FinishRoundInteractorTest {
                 assertNotEquals(game.getCurrentRound(), round);
                 assertEquals(game.getCurrentRound().getClass(), MultipleChoiceRound.class);
                 MultipleChoiceRound currRound =  (MultipleChoiceRound) game.getCurrentRound();
-                assertEquals(2, currRound.getRandomOrderOptions().size());
+                assertEquals(2, currRound.getMultipleChoiceAnswers().size());
                 // Verify output data
                 assertEquals(game.getGenre(), outputData.getGenre());
                 assertEquals(outputData.getRoundNumber(), 2);

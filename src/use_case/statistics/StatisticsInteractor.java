@@ -1,12 +1,13 @@
 package use_case.statistics;
+import data_access.game_data.GameDataAccessInterface;
 import entity.LifetimeStatistics;
 
 import java.util.HashMap;
 public class StatisticsInteractor implements StatisticsInputBoundary {
 
-    private final StatisticsDataAccessInterface gameDataAccessObject;
+    private final GameDataAccessInterface gameDataAccessObject;
     private final StatisticsOutputBoundary statisticsPresenter;
-    public StatisticsInteractor(StatisticsDataAccessInterface statisticsDataAccessInterface,
+    public StatisticsInteractor(GameDataAccessInterface statisticsDataAccessInterface,
                                 StatisticsOutputBoundary statisticsOutputBoundary) {
         gameDataAccessObject = statisticsDataAccessInterface;
         statisticsPresenter = statisticsOutputBoundary;

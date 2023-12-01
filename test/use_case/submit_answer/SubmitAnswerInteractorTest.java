@@ -1,6 +1,7 @@
 package use_case.submit_answer;
 
-import data_access.InMemoryGameDataAccessObject;
+import data_access.game_data.GameDataAccessInterface;
+import data_access.game_data.InMemoryGameDataAccessObject;
 import entity.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,11 +9,12 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class SubmitAnswerInteractorTest {
+
     private final String CORRECT_ANSWER = "correct";
     private final String INCORRECT_ANSWER = "incorrect";
     private final int INITIAL_LIVES = 10;
     private final int INITIAL_SCORE = 0;
-    private SubmitAnswerGameDataAccessInterface gameDataAccessObject;
+    private GameDataAccessInterface gameDataAccessObject;
     private Game game;
 
     /**
@@ -21,7 +23,7 @@ public class SubmitAnswerInteractorTest {
     @Before
     public void init() {
         game = new CommonGame("pop", "hard", 15, INITIAL_LIVES);
-        Song song = new CommonSong(CORRECT_ANSWER, "me", new OnlineMP3PlayableAudio("path/song.mp3"));
+        Song song = new CommonSong(CORRECT_ANSWER, "me", new TestPlayableAudio("song.mp3"));
         Round round = new TextInputRound(song, "What song is this?", CORRECT_ANSWER);
         game.setCurrentRound(round);
 
