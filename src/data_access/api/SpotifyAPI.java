@@ -2,7 +2,6 @@ package data_access.api;
 
 import entity.Song;
 import entity.SongFactory;
-import io.github.cdimascio.dotenv.Dotenv;
 import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -11,16 +10,16 @@ import java.io.IOException;
 import java.util.Random;
 
 public class SpotifyAPI implements SongAPI{
-    private final String CLIENT_ID;
-    private final String CLIENT_SECRET;
-    private final OkHttpClient client;
-    private String authToken = null;
-    private final SongFactory songFactory;
 
-    public SpotifyAPI(SongFactory songFactory){
-        Dotenv dotenv = Dotenv.configure().filename("src/api.env").load();
-        this.CLIENT_ID = dotenv.get("CLIENT_ID");
-        this.CLIENT_SECRET = dotenv.get("CLIENT_SECRET");
+    private final String clientId;
+    private final String clientSecret;
+    private final OkHttpClient client;
+    private final SongFactory songFactory;
+    private String authToken = null;
+
+    public SpotifyAPI(SongFactory songFactory, String clientId, String clientSecret) {
+        this.clientId = clientId;
+        this.clientSecret = clientSecret;
         this.client = new OkHttpClient().newBuilder().build();
         this.songFactory = songFactory;
     }
@@ -75,8 +74,8 @@ public class SpotifyAPI implements SongAPI{
     private void generateAuthToken(){
         String endpoint = "https://accounts.spotify.com/api/token";
         RequestBody body = new FormBody.Builder()
-                .add("client_id", CLIENT_ID)
-                .add("client_secret", CLIENT_SECRET)
+                .add("client_id", clientId)
+                .add("client_secret", clientSecret)
                 .add("grant_type", "client_credentials")
                 .build();
         Request request = new Request.Builder()
