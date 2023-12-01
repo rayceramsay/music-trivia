@@ -6,7 +6,10 @@ public class FinishRoundOutputData {
     private String genre;
     private int roundNumber;
     private int lives;
-    public FinishRoundOutputData() {}
+
+    public FinishRoundOutputData() {
+    }
+
     public int getScore() {
         return score;
     }
