@@ -2,9 +2,12 @@ package view;
 
 import entity.RoundFactory;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.create_game.CreateGameViewModel;
 import interface_adapter.finish_round.FinishRoundController;
 import interface_adapter.finish_round.FinishRoundPresenter;
+import interface_adapter.finish_round.FinishRoundViewModel;
 import interface_adapter.game_over.GameOverViewModel;
+import interface_adapter.load_game.LoadGameViewModel;
 import interface_adapter.round.RoundViewModel;
 import interface_adapter.submit_answer.SubmitAnswerController;
 import interface_adapter.submit_answer.SubmitAnswerPresenter;
@@ -44,6 +47,9 @@ public class RoundViewFactory {
     public static RoundView create(ViewManagerModel viewManagerModel,
                                    RoundViewModel roundViewModel,
                                    SubmitAnswerViewModel submitAnswerViewModel,
+                                   FinishRoundViewModel finishRoundViewModel,
+                                   CreateGameViewModel createGameViewModel,
+                                   LoadGameViewModel loadGameViewModel,
                                    ToggleAudioViewModel toggleAudioViewModel,
                                    GameOverViewModel gameOverViewModel,
                                    SubmitAnswerGameDataAccessInterface submitAnswerGameDataAccessInterface,
@@ -54,9 +60,9 @@ public class RoundViewFactory {
         FinishRoundGameDataAccessInterface finishRoundGameDataAccessInterface = (FinishRoundGameDataAccessInterface) submitAnswerGameDataAccessInterface;
         ToggleAudioGameDataAccessInterface toggleAudioDataAccessInterface = (ToggleAudioGameDataAccessInterface) submitAnswerGameDataAccessInterface;
         SubmitAnswerController submitAnswerController = createSubmitAnswerUseCase(submitAnswerViewModel, submitAnswerGameDataAccessInterface);
-        FinishRoundController finishRoundController = createFinishRoundUseCase(viewManagerModel, gameOverViewModel, roundViewModel, finishRoundGameDataAccessInterface, roundFactory);
+        FinishRoundController finishRoundController = createFinishRoundUseCase(viewManagerModel, gameOverViewModel, finishRoundViewModel, roundViewModel, finishRoundGameDataAccessInterface, roundFactory);
         ToggleAudioController toggleAudioController = createToggleAudioUseCase(toggleAudioViewModel, toggleAudioDataAccessInterface, roundViewModel);
-        return new RoundView(viewManagerModel, roundViewModel, submitAnswerViewModel, submitAnswerController, finishRoundController, toggleAudioViewModel, toggleAudioController);
+        return new RoundView(viewManagerModel, roundViewModel, submitAnswerViewModel, submitAnswerController, finishRoundController, toggleAudioViewModel, toggleAudioController, finishRoundViewModel, createGameViewModel, loadGameViewModel);
     }
 
     /**
@@ -100,10 +106,11 @@ public class RoundViewFactory {
      */
     private static FinishRoundController createFinishRoundUseCase(ViewManagerModel viewManagerModel,
                                                                   GameOverViewModel gameOverViewModel,
+                                                                  FinishRoundViewModel finishRoundViewModel,
                                                                   RoundViewModel roundViewModel,
                                                                   FinishRoundGameDataAccessInterface gameDataAccessObject,
                                                                   RoundFactory roundFactory) {
-        FinishRoundOutputBoundary finishRoundPresenter = new FinishRoundPresenter(viewManagerModel, gameOverViewModel, roundViewModel);
+        FinishRoundOutputBoundary finishRoundPresenter = new FinishRoundPresenter(viewManagerModel, gameOverViewModel, roundViewModel, finishRoundViewModel);
         FinishRoundInputBoundary finishRoundInteractor = new FinishRoundInteractor(finishRoundPresenter, gameDataAccessObject, roundFactory);
         return new FinishRoundController(finishRoundInteractor);
 

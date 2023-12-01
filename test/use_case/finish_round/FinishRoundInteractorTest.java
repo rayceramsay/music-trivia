@@ -225,7 +225,7 @@ public class FinishRoundInteractorTest {
                 assertNotEquals(game.getCurrentRound(), round);
                 assertEquals(game.getCurrentRound().getClass(), MultipleChoiceRound.class);
                 MultipleChoiceRound currRound =  (MultipleChoiceRound) game.getCurrentRound();
-                assertEquals(4, currRound.getRandomOrderOptions().size());
+                assertEquals(4, currRound.getMultipleChoiceAnswers().size());
 
                 // Verify output data
                 assertEquals(game.getGenre(), outputData.getGenre());
@@ -273,7 +273,7 @@ public class FinishRoundInteractorTest {
                 assertNotEquals(game.getCurrentRound(), round);
                 assertEquals(game.getCurrentRound().getClass(), MultipleChoiceRound.class);
                 MultipleChoiceRound currRound =  (MultipleChoiceRound) game.getCurrentRound();
-                assertEquals(2, currRound.getRandomOrderOptions().size());
+                assertEquals(2, currRound.getMultipleChoiceAnswers().size());
                 // Verify output data
                 assertEquals(game.getGenre(), outputData.getGenre());
                 assertEquals(outputData.getRoundNumber(), 2);

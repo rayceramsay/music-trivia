@@ -1,5 +1,7 @@
 package entity;
 
+import java.util.ArrayList;
+
 /**
  * Interface for Round
  */
@@ -38,4 +40,9 @@ public interface Round {
      * @return if round is finished.
      */
     boolean isFinished();
+
+    /**
+     * @return List of all multiple choice answers
+     */
+    ArrayList<String> getMultipleChoiceAnswers();
 }

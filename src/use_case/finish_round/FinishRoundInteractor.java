@@ -1,8 +1,6 @@
 package use_case.finish_round;
 
-import entity.Game;
-import entity.Round;
-import entity.RoundFactory;
+import entity.*;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -63,6 +61,8 @@ public class FinishRoundInteractor implements FinishRoundInputBoundary {
             outputData.setLives(game.getCurrentLives());
             outputData.setRoundNumber(game.getRoundsPlayed());
             outputData.setScore(game.getScore());
+
+            outputData.setMultipleChoiceAnswers(nextRound.getMultipleChoiceAnswers());
 
             finishRoundPresenter.prepareNextRoundView(outputData);
         }

@@ -13,6 +13,7 @@ public class CreateGamePresenter implements CreateGameOutputBoundary {
 
     private final ViewManagerModel viewManagerModel;
     private final RoundViewModel roundViewModel;
+    private final CreateGameViewModel createGameViewModel;
 
     /**
      * Constructor to initialize objects of CreateGamePresenter
@@ -20,9 +21,10 @@ public class CreateGamePresenter implements CreateGameOutputBoundary {
      * @param viewManagerModel View Manager Model
      * @param roundViewModel   View Model for a round
      */
-    public CreateGamePresenter(ViewManagerModel viewManagerModel, RoundViewModel roundViewModel) {
+    public CreateGamePresenter(ViewManagerModel viewManagerModel, RoundViewModel roundViewModel, CreateGameViewModel createGameViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.roundViewModel = roundViewModel;
+        this.createGameViewModel = createGameViewModel;
     }
 
     /**
@@ -44,8 +46,11 @@ public class CreateGamePresenter implements CreateGameOutputBoundary {
         roundState.setInitialLives(createGameOutputData.getLives());
         roundState.setScore(0);
 
+        roundState.setMultipleChoiceOptions(createGameOutputData.getMultipleChoiceAnswers());
+
         viewManagerModel.setActiveView(roundViewModel.getViewName());
 
+        createGameViewModel.firePropertyChanged();
         roundViewModel.firePropertyChanged();
         viewManagerModel.firePropertyChanged();
     }

@@ -19,16 +19,19 @@ public class FinishRoundPresenter implements FinishRoundOutputBoundary {
     /**
      * Constructor to initialize objects of FinishRoundPresenter
      *
-     * @param viewManagerModel  View manager model
-     * @param gameOverViewModel View model for game over state
-     * @param roundViewModel    View model for a round
+     * @param viewManagerModel     View manager model
+     * @param gameOverViewModel    View model for game over state
+     * @param roundViewModel       View model for a round
+     * @param finishRoundViewModel View model for finish round
      */
     public FinishRoundPresenter(ViewManagerModel viewManagerModel,
                                 GameOverViewModel gameOverViewModel,
-                                RoundViewModel roundViewModel) {
+                                RoundViewModel roundViewModel,
+                                FinishRoundViewModel finishRoundViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.gameOverViewModel = gameOverViewModel;
         this.roundViewModel = roundViewModel;
+        this.finishRoundViewModel = finishRoundViewModel;
     }
 
     @Override
@@ -49,9 +52,14 @@ public class FinishRoundPresenter implements FinishRoundOutputBoundary {
         roundState.setGenre(outputData.getGenre());
         roundState.setCurrentLives(outputData.getLives());
         roundState.setUserAnswer("");
+
         roundState.setScore(outputData.getScore());
+
+        roundState.setMultipleChoiceOptions(outputData.getMultipleChoiceAnswers());
+
         this.roundViewModel.setState(roundState);
 
+        finishRoundViewModel.firePropertyChanged();
         roundViewModel.firePropertyChanged();
     }
 }
