@@ -5,6 +5,8 @@ import javafx.scene.media.MediaPlayer;
 import javafx.embed.swing.JFXPanel;
 import javafx.util.Duration;
 
+import java.util.function.Consumer;
+
 public class OnlineMP3PlayableAudio implements PlayableAudio {
 
     private final static JFXPanel JFX_PANEL = new JFXPanel(); // required for MediaPlayer to work
@@ -39,5 +41,13 @@ public class OnlineMP3PlayableAudio implements PlayableAudio {
     @Override
     public boolean isPlaying() {
         return mediaPlayer.getStatus().equals(MediaPlayer.Status.PLAYING);
+    }
+
+    @Override
+    public void setOnStopCallback(Consumer<Void> callback) {
+        mediaPlayer.setOnEndOfMedia(() -> {
+            mediaPlayer.stop();
+            callback.accept(null);
+        });
     }
 }
