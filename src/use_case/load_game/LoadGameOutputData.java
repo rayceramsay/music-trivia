@@ -9,9 +9,10 @@ public class LoadGameOutputData {
     private final int currentLives;
     private final int maxRounds;
     private final int currentRoundNumber;
+    private final int score;
 
     public LoadGameOutputData(String gameId, String question, String genre, int initialLives, int currentLives,
-                              int maxRounds, int currentRoundNumber) {
+                              int maxRounds, int currentRoundNumber, int score) {
         this.gameId = gameId;
         this.question = question;
         this.genre = genre;
@@ -19,6 +20,7 @@ public class LoadGameOutputData {
         this.currentLives = currentLives;
         this.maxRounds = maxRounds;
         this.currentRoundNumber = currentRoundNumber;
+        this.score = score;
     }
 
     public String getGameId() {
@@ -48,4 +50,6 @@ public class LoadGameOutputData {
     public int getCurrentRoundNumber() {
         return currentRoundNumber;
     }
+
+    public int getScore() {return score;}
 }
