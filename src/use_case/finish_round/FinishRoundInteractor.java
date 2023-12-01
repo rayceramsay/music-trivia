@@ -8,6 +8,9 @@ import entity.RoundFactory;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+/**
+ * Interactor which implements the Input Boundary for the FinishRound use case
+ */
 public class FinishRoundInteractor implements FinishRoundInputBoundary {
     private final FinishRoundGameDataAccessInterface gameDataAccessObject;
     private final FinishRoundOutputBoundary finishRoundPresenter;

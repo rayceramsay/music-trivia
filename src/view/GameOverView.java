@@ -21,6 +21,13 @@ public class GameOverView extends JPanel implements ActionListener, PropertyChan
     JLabel scoreInfo;
     final JButton mainMenu;
     final JButton playAgain;
+
+    /**
+     * Constructor to initialize objects of GameOverView
+     *
+     * @param gameOverViewModel View model for game over state
+     * @param viewManagerModel  View manager model
+     */
     public GameOverView(GameOverViewModel gameOverViewModel,
                         ViewManagerModel viewManagerModel) {
         this.viewManagerModel = viewManagerModel;

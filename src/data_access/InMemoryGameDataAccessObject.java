@@ -24,34 +24,16 @@ public class InMemoryGameDataAccessObject implements SubmitAnswerGameDataAccessI
 
     private final Map<String, Game> games = new HashMap<>();  // maps gameID to game object
 
-    /**
-     * Gets a specific game via its gameID.
-     *
-     * @param gameID
-     * @return Game
-     */
     @Override
     public Game getGameByID(String gameID) {
         return games.get(gameID);
     }
 
-    /**
-     * Saves a specific game within a HashMap of 'games'.
-     * Adds functionality of allowing a user to return to an incomplete game and continue where they left off.
-     *
-     * @param game
-     */
     @Override
     public void save(Game game) {
         games.put(game.getID(), game);
     }
 
-    /**
-     * Adds incomplete games to a list of possible loadable games
-     * Adds functionality of being able to load a previously played game which is still incomplete
-     *
-     * @return List of Games
-     */
     @Override
     public List<Game> getLoadableGames() {
         List<Game> loadableGames = new ArrayList<>();
@@ -66,15 +48,6 @@ public class InMemoryGameDataAccessObject implements SubmitAnswerGameDataAccessI
         return loadableGames;
     }
 
-    /**
-     * Creates game with set difficulty, genre, initial lives, and max rounds
-     *
-     * @param difficulty of game
-     * @param genre type of music selected by API
-     * @param initialLives total starting lives before game starts
-     * @param maxRounds total rounds until game over
-     * @return String
-     */
     @Override
     public String addGame(String difficulty, String genre, int initialLives, int maxRounds) {
         Game game = new CommonGame(genre, difficulty, maxRounds, initialLives);
@@ -83,16 +56,6 @@ public class InMemoryGameDataAccessObject implements SubmitAnswerGameDataAccessI
         return game.getID();
     }
 
-    /**
-     * Outputs statistics:
-     * Average score,
-     * Average initial lives,
-     * Average rounds played,
-     * Most common difficulty level,
-     * Most common genre,
-     *
-     * @return LifetimeStatistics
-     */
     @Override
     public LifetimeStatistics avgStats() {
         int gamesPlayed = 0;

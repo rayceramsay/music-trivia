@@ -3,7 +3,7 @@ package use_case.create_game;
 import entity.*;
 
 /**
- * Implementation of CreateGameInputBoundary
+ * Interactor which implements the Input Boundary for the CreateGame use case
  */
 public class CreateGameInteractor implements CreateGameInputBoundary {
     final CreateGameDataAccessInterface gameAccessObject;
