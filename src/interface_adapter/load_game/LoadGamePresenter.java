@@ -9,10 +9,12 @@ import use_case.load_game.LoadGameOutputData;
 public class LoadGamePresenter implements LoadGameOutputBoundary {
     private final ViewManagerModel viewManagerModel;
     private final RoundViewModel roundViewModel;
+    private final LoadGameViewModel loadGameViewModel;
 
-    public LoadGamePresenter(ViewManagerModel viewManagerModel, RoundViewModel roundViewModel) {
+    public LoadGamePresenter(ViewManagerModel viewManagerModel, RoundViewModel roundViewModel, LoadGameViewModel loadGameViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.roundViewModel = roundViewModel;
+        this.loadGameViewModel = loadGameViewModel;
     }
 
     @Override
@@ -26,9 +28,14 @@ public class LoadGamePresenter implements LoadGameOutputBoundary {
         roundState.setInitialLives(outputData.getInitialLives());
         roundState.setGenre(outputData.getGenre());
         roundState.setUserAnswer("");
+        roundState.setScore(outputData.getScore());
+
+
+        roundState.setMultipleChoiceOptions(outputData.getMultipleChoiceAnswers());
 
         roundViewModel.setState(roundState);
         viewManagerModel.setActiveView(roundViewModel.getViewName());
+        loadGameViewModel.firePropertyChanged();
         roundViewModel.firePropertyChanged();
         viewManagerModel.firePropertyChanged();
     }

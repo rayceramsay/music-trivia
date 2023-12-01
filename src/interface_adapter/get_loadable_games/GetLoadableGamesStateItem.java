@@ -10,9 +10,11 @@ public class GetLoadableGamesStateItem {
     private final String maxRounds;
     private final String currentRoundNumber;
     private final String createdAt;
+    private final String score;
 
     public GetLoadableGamesStateItem(String gameID, String genre, String difficulty, String initialLives,
-                                     String currentLives, String maxRounds, String currentRoundNumber, String createdAt) {
+                                     String currentLives, String maxRounds, String currentRoundNumber,
+                                     String createdAt, String score) {
         this.gameID = gameID;
         this.genre = genre;
         this.difficulty = difficulty;
@@ -21,6 +23,7 @@ public class GetLoadableGamesStateItem {
         this.maxRounds = maxRounds;
         this.currentRoundNumber = currentRoundNumber;
         this.createdAt = createdAt;
+        this.score = score;
     }
 
     public String getGameID() {
@@ -54,4 +57,6 @@ public class GetLoadableGamesStateItem {
     public String getCreatedAt() {
         return createdAt;
     }
+
+    public String getScore() {return score;}
 }

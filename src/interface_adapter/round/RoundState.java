@@ -1,5 +1,9 @@
 package interface_adapter.round;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class RoundState {
 
     private String gameId = "";
@@ -10,6 +14,8 @@ public class RoundState {
     private int currentLives;
     private int maxRounds;
     private int currentRoundNumber;
+    private int score;
+    private List<String> multipleChoiceOptions;
 
     public RoundState(RoundState copy) {
         gameId = copy.gameId;
@@ -20,6 +26,7 @@ public class RoundState {
         currentLives = copy.currentLives;
         maxRounds = copy.maxRounds;
         currentRoundNumber = copy.currentRoundNumber;
+        score = copy.score;
     }
 
     public RoundState() {}
@@ -86,5 +93,18 @@ public class RoundState {
 
     public void setCurrentRoundNumber(int currentRoundNumber) {
         this.currentRoundNumber = currentRoundNumber;
+    }
+    public int getScore() {return score;}
+    public void setScore(int score) {this.score = score;}
+
+    public void setMultipleChoiceOptions(ArrayList<String> options){
+        this.multipleChoiceOptions = options;
+    }
+    public List<String> getMultipleChoiceOptions(){
+        return this.multipleChoiceOptions;
+    }
+
+    public boolean isMultipleChoiceRound() {
+        return multipleChoiceOptions != null && !multipleChoiceOptions.isEmpty();
     }
 }

@@ -7,6 +7,7 @@ import data_access.api.SongAPI;
 import entity.*;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.create_game.CreateGamePresenter;
+import interface_adapter.create_game.CreateGameViewModel;
 import interface_adapter.round.RoundState;
 import interface_adapter.round.RoundViewModel;
 import org.junit.Before;
@@ -84,7 +85,9 @@ public class CreateGameInteractorTest {
         ViewManagerModel viewManagerModel = new ViewManagerModel();
         CreateGameInputData createGameInputData = new CreateGameInputData(genre, difficulty, lives, rounds);
         RoundViewModel roundViewModel = new RoundViewModel(RoundView.VIEW_NAME);
-        CreateGamePresenter createGamePresenter = new CreateGamePresenter(viewManagerModel, roundViewModel);
+        CreateGameViewModel createGameViewModel = new CreateGameViewModel();
+
+        CreateGamePresenter createGamePresenter = new CreateGamePresenter(viewManagerModel, roundViewModel, createGameViewModel);
         CreateGameInputBoundary interactor = new CreateGameInteractor(gameDataAccessObject, createGamePresenter, roundFactory);
 
         interactor.execute(createGameInputData);

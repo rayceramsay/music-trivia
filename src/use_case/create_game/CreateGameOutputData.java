@@ -1,12 +1,15 @@
 package use_case.create_game;
 
+import java.util.ArrayList;
+
 public class CreateGameOutputData {
     private String gameId;
     private String difficulty;
     private String genre;
     private int rounds;
     private int lives;
-    public CreateGameOutputData() {};
+    private ArrayList<String> multipleChoiceAnswers;
+    public CreateGameOutputData() {}
 
     public void setGameId(String gameId) {
         this.gameId = gameId;
@@ -46,5 +49,13 @@ public class CreateGameOutputData {
 
     public int getLives() {
         return lives;
+    }
+
+    public ArrayList<String> getMultipleChoiceAnswers() {
+        return multipleChoiceAnswers;
+    }
+
+    public void setMultipleChoiceAnswers(ArrayList<String> multipleChoiceAnswers) {
+        this.multipleChoiceAnswers = multipleChoiceAnswers;
     }
 }
