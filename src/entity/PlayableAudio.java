@@ -6,7 +6,7 @@ package entity;
 public interface PlayableAudio {
 
     /**
-     * @return Spotify preview_url.
+     * @return The source path/url of the audio file (i.e. Spotify preview_url).
      */
     String getPath();
 

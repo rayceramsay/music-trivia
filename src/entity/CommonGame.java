@@ -196,7 +196,7 @@ public class CommonGame implements Game {
     }
 
     /**
-     * Subtracts one from current score.
+     * Subtracts one from current lives.
      */
     @Override
     public void decrementLives() {

@@ -23,7 +23,7 @@ public class MenuViewFactory {
     }
 
     /**
-     * Creates instance of MenuView
+     * Creates an instance of MenuView
      *
      * @param viewManagerModel                     View manager model
      * @param gameSettingsViewModel                View model for GameSettings
@@ -46,7 +46,7 @@ public class MenuViewFactory {
     }
 
     /**
-     * Creates instance of GetLoadableGamesController
+     * Creates an instance of GetLoadableGamesController
      *
      * @param viewManagerModel          View manager model
      * @param getLoadableGamesViewModel View model for GetLoadableGames

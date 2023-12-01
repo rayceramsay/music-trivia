@@ -30,7 +30,7 @@ public class RoundViewFactory {
     }
 
     /**
-     * Creates instance of RoundView
+     * Creates an instance of RoundView
      *
      * @param viewManagerModel                    View manager model
      * @param roundViewModel                      View model for Round
@@ -57,7 +57,7 @@ public class RoundViewFactory {
     }
 
     /**
-     * Creates instance of Submit AnswerController
+     * Creates an instance of Submit AnswerController
      *
      * @param submitAnswerViewModel View model for SubmitAnswer
      * @param gameDataAccessObject  Data access object
@@ -72,7 +72,7 @@ public class RoundViewFactory {
     }
 
     /**
-     * Creates instance of ToggleAudioController
+     * Creates an instance of ToggleAudioController
      *
      * @param toggleAudioViewModel View model for ToggleAudio
      * @param gameDataAccessObject DataAccessObject
@@ -89,7 +89,7 @@ public class RoundViewFactory {
     }
 
     /**
-     * Creates instance of FinishRoundController
+     * Creates an instance of FinishRoundController
      *
      * @param viewManagerModel     View manager model
      * @param gameOverViewModel    View model for GameOver

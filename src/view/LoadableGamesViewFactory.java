@@ -16,7 +16,7 @@ public class LoadableGamesViewFactory {
     }
 
     /**
-     * Creates instance of LoadableGamesView
+     * Creates an instance of LoadableGamesView
      *
      * @param viewManagerModel             View manager model
      * @param getLoadableGamesViewModel    View model for GetLoadableGames
@@ -34,7 +34,7 @@ public class LoadableGamesViewFactory {
     }
 
     /**
-     * Creates instance pf LoadGameController
+     * Creates an instance of LoadGameController
      *
      * @param viewManagerModel     View manager model
      * @param roundViewModel       View model for Round
