@@ -19,20 +19,40 @@ import use_case.statistics.StatisticsOutputBoundary;
 
 public class MenuViewFactory {
 
-    private MenuViewFactory() {}
+    private MenuViewFactory() {
+    }
 
+    /**
+     * Creates instance of MenuView
+     *
+     * @param viewManagerModel                     View manager model
+     * @param gameSettingsViewModel                View model for GameSettings
+     * @param getLoadableGamesViewModel            View model for GetLoadableGames
+     * @param statisticsViewModel                  View model for statistics
+     * @param getLoadableGamesGameDataAccessObject Data access object for GetLoadableGames
+     * @param statisticsDataAccessObject           Data access object for Statistics
+     * @return MenuView
+     */
     public static MenuView create(ViewManagerModel viewManagerModel,
-                                   GameSettingsViewModel gameSettingsViewModel,
-                                   GetLoadableGamesViewModel getLoadableGamesViewModel,
-                                   StatisticsViewModel statisticsViewModel,
-                                   GetLoadableGamesGameDataAccessInterface getLoadableGamesGameDataAccessObject,
-                                   StatisticsDataAccessInterface statisticsDataAccessObject) {
+                                  GameSettingsViewModel gameSettingsViewModel,
+                                  GetLoadableGamesViewModel getLoadableGamesViewModel,
+                                  StatisticsViewModel statisticsViewModel,
+                                  GetLoadableGamesGameDataAccessInterface getLoadableGamesGameDataAccessObject,
+                                  StatisticsDataAccessInterface statisticsDataAccessObject) {
         GetLoadableGamesController getLoadableGamesController = createGetLoadableGamesUseCase(viewManagerModel, getLoadableGamesViewModel, getLoadableGamesGameDataAccessObject);
         StatisticsController statisticsController = createGetStatisticsUseCase(statisticsViewModel, statisticsDataAccessObject);
 
         return new MenuView(viewManagerModel, gameSettingsViewModel, statisticsViewModel, getLoadableGamesController, statisticsController);
     }
 
+    /**
+     * Creates instance of GetLoadableGamesController
+     *
+     * @param viewManagerModel          View manager model
+     * @param getLoadableGamesViewModel View model for GetLoadableGames
+     * @param gameDataAccessObject      Data access object
+     * @return GetLoadableGamesController
+     */
     private static GetLoadableGamesController createGetLoadableGamesUseCase(ViewManagerModel viewManagerModel,
                                                                             GetLoadableGamesViewModel getLoadableGamesViewModel,
                                                                             GetLoadableGamesGameDataAccessInterface gameDataAccessObject) {
@@ -42,6 +62,13 @@ public class MenuViewFactory {
         return new GetLoadableGamesController(interactor);
     }
 
+    /**
+     * Creates instance of StatisticsController
+     *
+     * @param statisticsViewModel           View model for statistics
+     * @param statisticsDataAccessInterface Data access interface for statistics
+     * @return StatisticsController
+     */
     private static StatisticsController createGetStatisticsUseCase(StatisticsViewModel statisticsViewModel,
                                                                    StatisticsDataAccessInterface statisticsDataAccessInterface) {
         StatisticsOutputBoundary statisticsOutputBoundary = new StatisticsPresenter(statisticsViewModel);

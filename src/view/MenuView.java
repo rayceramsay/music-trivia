@@ -1,8 +1,8 @@
 package view;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.get_loadable_games.GetLoadableGamesController;
 import interface_adapter.game_settings.GameSettingsViewModel;
+import interface_adapter.get_loadable_games.GetLoadableGamesController;
 import interface_adapter.statistics.StatisticsController;
 import interface_adapter.statistics.StatisticsState;
 import interface_adapter.statistics.StatisticsViewModel;
@@ -28,6 +28,15 @@ public class MenuView extends JPanel implements ActionListener, PropertyChangeLi
     private final JButton loadGame;
     private final JButton careerStats;
 
+    /**
+     * Constructor to initialize objects of MenuView
+     *
+     * @param viewManagerModel           View manager model
+     * @param gameSettingsViewModel      View model for GameSettings
+     * @param statisticsViewModel        view model for Statistics
+     * @param getLoadableGamesController Controller for GetLoadableGames
+     * @param statisticsController       Controller for Statistics
+     */
     public MenuView(ViewManagerModel viewManagerModel, GameSettingsViewModel gameSettingsViewModel,
                     StatisticsViewModel statisticsViewModel, GetLoadableGamesController getLoadableGamesController,
                     StatisticsController statisticsController) {

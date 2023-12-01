@@ -13,8 +13,10 @@ import interface_adapter.toggle_audio.ToggleAudioViewModel;
 
 import javax.swing.*;
 import java.awt.*;
-
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -38,6 +40,17 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
     private final JTextField answerInputField;
     private final int borderWidth = 2;
 
+    /**
+     * Constructor to initialize objects of RoundView
+     *
+     * @param viewManagerModel       View manager model
+     * @param roundViewModel         View model for Round
+     * @param submitAnswerViewModel  View model for SubmitAnswer
+     * @param submitAnswerController Controller for SubmitAnswer
+     * @param finishRoundController  Controller for FinishRound
+     * @param toggleAudioViewModel   ViewModel for ToggleAudio
+     * @param toggleAudioController  Controller for ToggleAudio
+     */
     public RoundView(ViewManagerModel viewManagerModel,
                      RoundViewModel roundViewModel,
                      SubmitAnswerViewModel submitAnswerViewModel,
@@ -73,8 +86,8 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
 
         // Answer Section
         JPanel answerSection = new JPanel();
-        answerSection.setLayout(new GridLayout(2,1));
-        answerSection.setMinimumSize(new Dimension(300,10));
+        answerSection.setLayout(new GridLayout(2, 1));
+        answerSection.setMinimumSize(new Dimension(300, 10));
         answerSection.setMaximumSize(new Dimension(getMaximumSize().width, 10));
 
         answerInputField = new JFormattedTextField();
@@ -87,10 +100,12 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
             }
 
             @Override
-            public void keyPressed(KeyEvent e) {}
+            public void keyPressed(KeyEvent e) {
+            }
 
             @Override
-            public void keyReleased(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+            }
         });
         answerSection.add(answerInputField);
 
@@ -103,10 +118,10 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
 
         // Round Info Section
         JPanel infoSection = new JPanel();
-        infoSection.setMinimumSize(new Dimension(300,10));
+        infoSection.setMinimumSize(new Dimension(300, 10));
         infoSection.setMaximumSize(new Dimension(getMaximumSize().width, 10));
         infoSection.setBackground(Color.darkGray);
-        infoSection.setBorder(BorderFactory.createEmptyBorder(2,0,0,0));
+        infoSection.setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
         infoSection.setLayout(new GridLayout(1, 3, borderWidth, borderWidth));
 
         roundInfo = new JLabel("Round: ");
@@ -151,7 +166,8 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {}
+    public void actionPerformed(ActionEvent e) {
+    }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
@@ -180,12 +196,12 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         this.updateRoundTextInfo();
     }
 
-    private void updateRoundTextInfo(){
+    private void updateRoundTextInfo() {
         roundInfo.setText("Round: " + roundViewModel.getState().getCurrentRoundNumber() + "/" + roundViewModel.getState().getMaxRounds());
         livesInfo.setText("Lives left:" + roundViewModel.getState().getCurrentLives());
-        genreInfo.setText("Genre: "  + roundViewModel.getState().getGenre());
+        genreInfo.setText("Genre: " + roundViewModel.getState().getGenre());
     }
-      
+
     private ImageIcon setProperties(ImageIcon buttonImage) {
         return new ImageIcon(buttonImage.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
     }

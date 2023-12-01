@@ -5,7 +5,6 @@ import interface_adapter.get_loadable_games.GetLoadableGamesState;
 import interface_adapter.get_loadable_games.GetLoadableGamesStateItem;
 import interface_adapter.get_loadable_games.GetLoadableGamesViewModel;
 import interface_adapter.load_game.LoadGameController;
-import interface_adapter.round.RoundViewModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +13,6 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
-import java.util.Map;
 
 public class LoadableGamesView extends JPanel implements ActionListener, PropertyChangeListener {
 
@@ -26,6 +24,13 @@ public class LoadableGamesView extends JPanel implements ActionListener, Propert
     private final JButton backButton;
     private final JPanel loadableGames;
 
+    /**
+     * Constructor to initialize objects of LoadableGamesView
+     *
+     * @param viewManagerModel          View manager model
+     * @param getLoadableGamesViewModel View model for GetLoadableGames
+     * @param loadGameController        Controller for LoadGame
+     */
     public LoadableGamesView(ViewManagerModel viewManagerModel,
                              GetLoadableGamesViewModel getLoadableGamesViewModel,
                              LoadGameController loadGameController) {
@@ -69,7 +74,7 @@ public class LoadableGamesView extends JPanel implements ActionListener, Propert
         loadableGames.removeAll();
         loadableGames.setLayout(new GridLayout(0, 1));
 
-        for (GetLoadableGamesStateItem gameData: gamesData) {
+        for (GetLoadableGamesStateItem gameData : gamesData) {
             String gameDescription = String.format("<html>%s<br>Difficulty: %s | Genre: %s | Round: %s/%s | Lives: %s/%s</html>",
                     gameData.getCreatedAt(),
                     gameData.getDifficulty(),

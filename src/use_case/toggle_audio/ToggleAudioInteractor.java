@@ -14,6 +14,8 @@ public class ToggleAudioInteractor implements ToggleAudioInputBoundary {
     private final ToggleAudioOutputBoundary toggleAudioPresenter;
 
     /**
+     * Constructor to initialize objects of ToggleAudioInteractor
+     *
      * @param toggleAudioDataAccessObject Data access interface for toggle audio use case
      * @param toggleAudioPresenter        Output boundary for toggle audio use case
      */

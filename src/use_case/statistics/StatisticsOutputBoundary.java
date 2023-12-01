@@ -1,5 +1,8 @@
 package use_case.statistics;
 
+/**
+ * Output boundary for statistics use case
+ */
 public interface StatisticsOutputBoundary {
     /**
      * If game stats exist in output data, and shows lifetime statistics in String format.
