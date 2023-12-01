@@ -1,9 +1,11 @@
 package use_case.create_game;
 
-import data_access.InMemoryGameDataAccessObject;
+import data_access.game_data.GameDataAccessInterface;
+import data_access.game_data.InMemoryGameDataAccessObject;
 import entity.*;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.create_game.CreateGamePresenter;
+import interface_adapter.create_game.CreateGameViewModel;
 import interface_adapter.round.RoundState;
 import interface_adapter.round.RoundViewModel;
 import org.junit.Before;
@@ -14,7 +16,7 @@ import static org.junit.Assert.*;
 
 public class CreateGameInteractorTest {
 
-    private InMemoryGameDataAccessObject gameDataAccessObject;
+    private GameDataAccessInterface gameDataAccessObject;
     private RoundFactory roundFactory;
 
     @Before
@@ -80,7 +82,9 @@ public class CreateGameInteractorTest {
         ViewManagerModel viewManagerModel = new ViewManagerModel();
         CreateGameInputData createGameInputData = new CreateGameInputData(genre, difficulty, lives, rounds);
         RoundViewModel roundViewModel = new RoundViewModel(RoundView.VIEW_NAME);
-        CreateGamePresenter createGamePresenter = new CreateGamePresenter(viewManagerModel, roundViewModel);
+        CreateGameViewModel createGameViewModel = new CreateGameViewModel(RoundView.VIEW_NAME);
+
+        CreateGamePresenter createGamePresenter = new CreateGamePresenter(viewManagerModel, roundViewModel, createGameViewModel);
         CreateGameInputBoundary interactor = new CreateGameInteractor(gameDataAccessObject, createGamePresenter, roundFactory);
 
         interactor.execute(createGameInputData);

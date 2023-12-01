@@ -1,21 +1,22 @@
 package use_case.exit_round;
 
+import data_access.game_data.GameDataAccessInterface;
 import entity.Game;
 import entity.PlayableAudio;
 
 public class ExitRoundInteractor implements ExitRoundInputBoundary {
 
     private final ExitRoundOutputBoundary exitRoundOutputBoundary;
-    private final ExitRoundGameDataAccessInterface exitRoundGameDataAccessInterface;
+    private final GameDataAccessInterface gameDataAccessInterface;
 
-    public ExitRoundInteractor(ExitRoundOutputBoundary exitRoundOutputBoundary, ExitRoundGameDataAccessInterface exitRoundGameDataAccessInterface) {
+    public ExitRoundInteractor(ExitRoundOutputBoundary exitRoundOutputBoundary, GameDataAccessInterface gameDataAccessInterface) {
         this.exitRoundOutputBoundary = exitRoundOutputBoundary;
-        this.exitRoundGameDataAccessInterface = exitRoundGameDataAccessInterface;
+        this.gameDataAccessInterface = gameDataAccessInterface;
     }
 
     @Override
     public void execute(ExitRoundInputData inputData) {
-        Game game = exitRoundGameDataAccessInterface.getGameByID(inputData.getGameID());
+        Game game = gameDataAccessInterface.getGameByID(inputData.getGameID());
         PlayableAudio roundAudio = game.getCurrentRound().getSong().getAudio();
         roundAudio.stop();
 

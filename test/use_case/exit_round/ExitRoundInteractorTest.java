@@ -1,6 +1,7 @@
 package use_case.exit_round;
 
-import data_access.InMemoryGameDataAccessObject;
+import data_access.game_data.GameDataAccessInterface;
+import data_access.game_data.InMemoryGameDataAccessObject;
 import entity.CommonGame;
 import entity.Game;
 import entity.MockRoundFactory;
@@ -13,7 +14,7 @@ import static org.junit.Assert.*;
 public class ExitRoundInteractorTest {
 
     private boolean presenterGetsCalled;
-    private ExitRoundGameDataAccessInterface gameRepository;
+    private GameDataAccessInterface gameRepository;
     private Game game;
 
     /**

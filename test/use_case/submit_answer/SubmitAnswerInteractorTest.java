@@ -1,6 +1,7 @@
 package use_case.submit_answer;
 
-import data_access.InMemoryGameDataAccessObject;
+import data_access.game_data.GameDataAccessInterface;
+import data_access.game_data.InMemoryGameDataAccessObject;
 import entity.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +14,7 @@ public class SubmitAnswerInteractorTest {
     private final String INCORRECT_ANSWER = "incorrect";
     private final int INITIAL_LIVES = 10;
     private final int INITIAL_SCORE = 0;
-    private SubmitAnswerGameDataAccessInterface gameDataAccessObject;
+    private GameDataAccessInterface gameDataAccessObject;
     private Game game;
 
     /**

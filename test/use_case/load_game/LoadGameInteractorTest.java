@@ -1,6 +1,7 @@
 package use_case.load_game;
 
-import data_access.InMemoryGameDataAccessObject;
+import data_access.game_data.GameDataAccessInterface;
+import data_access.game_data.InMemoryGameDataAccessObject;
 import entity.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,7 +10,7 @@ import static org.junit.Assert.*;
 
 public class LoadGameInteractorTest {
 
-    private LoadGameGameDataAccessInterface gameRepository;
+    private GameDataAccessInterface gameRepository;
     private Game expectedGame;
     private boolean isPresenterCalled = false;
 

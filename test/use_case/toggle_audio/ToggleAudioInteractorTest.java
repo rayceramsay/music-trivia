@@ -1,6 +1,7 @@
 package use_case.toggle_audio;
 
-import data_access.InMemoryGameDataAccessObject;
+import data_access.game_data.GameDataAccessInterface;
+import data_access.game_data.InMemoryGameDataAccessObject;
 import entity.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,7 +12,7 @@ public class ToggleAudioInteractorTest {
 
     private Song song;
     private Game game;
-    private ToggleAudioGameDataAccessInterface gameDataAccessObject;
+    private GameDataAccessInterface gameDataAccessObject;
 
     @Before
     public void init() {

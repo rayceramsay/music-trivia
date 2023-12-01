@@ -1,6 +1,8 @@
 package use_case.get_loadable_games;
 
-import data_access.InMemoryGameDataAccessObject;
+
+import data_access.game_data.GameDataAccessInterface;
+import data_access.game_data.InMemoryGameDataAccessObject;
 import entity.*;
 
 import org.junit.Test;
@@ -12,7 +14,7 @@ import static org.junit.Assert.*;
 
 public class GetLoadableGamesInteractorTest {
 
-    private GetLoadableGamesGameDataAccessInterface gameRepository;
+    private GameDataAccessInterface gameRepository;
     private List<Game> loadableGames;
 
     /**
@@ -98,6 +100,7 @@ public class GetLoadableGamesInteractorTest {
                 assertEquals(exampleGame.getRoundsPlayed(), exampleGameData.getCurrentRoundNumber());
                 assertEquals(exampleGame.getMaxRounds(), exampleGameData.getMaxRounds());
                 assertEquals(exampleGame.getCreatedAt(), exampleGameData.getCreatedAt());
+                assertEquals(exampleGame.getScore(), exampleGameData.getScore());
             }
 
             @Override

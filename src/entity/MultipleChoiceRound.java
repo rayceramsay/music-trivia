@@ -2,7 +2,7 @@ package entity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.Collections;
 
 public class MultipleChoiceRound implements Round {
 
@@ -58,16 +58,18 @@ public class MultipleChoiceRound implements Round {
         this.incorrectOptions.addAll(options);
     }
 
-    public List<String> getRandomOrderOptions(){
-        List<String> options = new ArrayList<>(this.incorrectOptions);
-        int rand = new Random().nextInt(0, this.incorrectOptions.size());
-        options.add(rand, this.correctAnswer);
-        return options;
-    }
-
     @Override
     public boolean isFinished() {
         return userAnswer != null;
+    }
+
+    @Override
+    public List<String> getMultipleChoiceAnswers() {
+        List<String> ret = new ArrayList<>();
+        ret.add(correctAnswer);
+        ret.addAll(incorrectOptions);
+        Collections.shuffle(ret);
+        return ret;
     }
 
     private String cleanString(String string) {

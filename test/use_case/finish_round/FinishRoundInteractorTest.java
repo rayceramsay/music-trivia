@@ -1,6 +1,7 @@
 package use_case.finish_round;
 
-import data_access.InMemoryGameDataAccessObject;
+import data_access.game_data.GameDataAccessInterface;
+import data_access.game_data.InMemoryGameDataAccessObject;
 import entity.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,7 +10,7 @@ import static org.junit.Assert.*;
 
 public class FinishRoundInteractorTest {
 
-    private FinishRoundGameDataAccessInterface gameDataAccessObject;
+    private GameDataAccessInterface gameDataAccessObject;
     private Round round;
     private RoundFactory roundFactory;
 
@@ -48,6 +49,7 @@ public class FinishRoundInteractorTest {
                 assertEquals(game.getRoundsPlayed(), game.getMaxRounds());
                 assertNotEquals(0, game.getCurrentLives());
                 assertNotNull(game.getFinishedAt());
+                assertEquals(game.getScore(), outputData.getScore());
 
                 // Verify output data
                 assertEquals(game.getScore(), outputData.getScore());
@@ -221,7 +223,7 @@ public class FinishRoundInteractorTest {
                 assertNotEquals(game.getCurrentRound(), round);
                 assertEquals(game.getCurrentRound().getClass(), MultipleChoiceRound.class);
                 MultipleChoiceRound currRound =  (MultipleChoiceRound) game.getCurrentRound();
-                assertEquals(4, currRound.getRandomOrderOptions().size());
+                assertEquals(4, currRound.getMultipleChoiceAnswers().size());
 
                 // Verify output data
                 assertEquals(game.getGenre(), outputData.getGenre());
@@ -269,7 +271,7 @@ public class FinishRoundInteractorTest {
                 assertNotEquals(game.getCurrentRound(), round);
                 assertEquals(game.getCurrentRound().getClass(), MultipleChoiceRound.class);
                 MultipleChoiceRound currRound =  (MultipleChoiceRound) game.getCurrentRound();
-                assertEquals(2, currRound.getRandomOrderOptions().size());
+                assertEquals(2, currRound.getMultipleChoiceAnswers().size());
                 // Verify output data
                 assertEquals(game.getGenre(), outputData.getGenre());
                 assertEquals(outputData.getRoundNumber(), 2);
