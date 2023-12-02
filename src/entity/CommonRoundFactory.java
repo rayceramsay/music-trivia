@@ -3,6 +3,7 @@ package entity;
 import data_access.api.SongAPI;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class CommonRoundFactory implements RoundFactory{
@@ -14,22 +15,23 @@ public class CommonRoundFactory implements RoundFactory{
     @Override
     public Round createHardRound(String songGenre) {
         Song song = songAPI.getRandomSongFromGenre(songGenre);
-        return new TextInputRound(song, "What is the title of this song?", song.getTitle());
+
+        return new BasicRound(song, "What is the title of this song?", song.getTitle());
     }
 
     @Override
     public Round createMediumRound (String songGenre) {
         Song song = songAPI.getRandomSongFromGenre(songGenre);
-        MultipleChoiceRound round = new MultipleChoiceRound(song, "What is the title of this song?", song.getTitle());
-        round.addIncorrectOptions(createIncorrectOptions(song, songGenre, 3));
-        return round;
+        List<String> incorrectOptions = createIncorrectOptions(song, songGenre, 3);
+
+        return new MultipleChoiceRound(song, "What is the title of this song?", song.getTitle(), incorrectOptions);
     }
     @Override
     public Round createEasyRound (String songGenre) {
         Song song = songAPI.getRandomSongFromGenre(songGenre);
-        MultipleChoiceRound round = new MultipleChoiceRound(song, "What is the title of this song?", song.getTitle());
-        round.addIncorrectOptions(createIncorrectOptions(song, songGenre, 1));
-        return round;
+        List<String> incorrectOptions = createIncorrectOptions(song, songGenre, 1);
+
+        return new MultipleChoiceRound(song, "What is the title of this song?", song.getTitle(), incorrectOptions);
     }
 
     /*

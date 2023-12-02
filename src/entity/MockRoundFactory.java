@@ -6,23 +6,21 @@ public class MockRoundFactory implements RoundFactory {
 
     @Override
     public Round createHardRound(String songGenre) {
-        return new TextInputRound(createMockSong(), "Question", "answer");
+        return new BasicRound(createMockSong(), "Question", "answer");
     }
 
     @Override
     public Round createMediumRound(String songGenre) {
-        MultipleChoiceRound multipleChoiceRound = new MultipleChoiceRound(createMockSong(), "Question", "answer");
-        multipleChoiceRound.addIncorrectOptions(List.of(new String[]{"option1", "option2", "option3"}));
+        List<String> incorrectOptions = List.of(new String[]{"option1", "option2", "option3"});
 
-        return multipleChoiceRound;
+        return new MultipleChoiceRound(createMockSong(), "Question", "answer", incorrectOptions);
     }
 
     @Override
     public Round createEasyRound(String songGenre) {
-        MultipleChoiceRound multipleChoiceRound = new MultipleChoiceRound(createMockSong(), "Question", "answer");
-        multipleChoiceRound.addIncorrectOptions(List.of(new String[]{"option1"}));
+        List<String> incorrectOptions = List.of(new String[]{"option1"});
 
-        return multipleChoiceRound;
+        return new MultipleChoiceRound(createMockSong(), "Question", "answer", incorrectOptions);
     }
 
     private Song createMockSong() {

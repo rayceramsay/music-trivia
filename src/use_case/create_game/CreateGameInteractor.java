@@ -27,6 +27,7 @@ public class CreateGameInteractor implements CreateGameInputBoundary{
 
         String genre = inputData.getGenre();
         String difficulty = inputData.getDifficulty().toLowerCase().trim();
+
         Round firstRound;
 
         if (Objects.equals(difficulty, "hard")) {
@@ -48,8 +49,9 @@ public class CreateGameInteractor implements CreateGameInputBoundary{
         createGameOutputData.setDifficulty(inputData.getDifficulty());
         createGameOutputData.setRounds(inputData.getRounds());
         createGameOutputData.setLives(inputData.getLives());
-
-        createGameOutputData.setMultipleChoiceAnswers(firstRound.getMultipleChoiceAnswers());
+        if (firstRound instanceof OptionRound firstOptionRound) {
+            createGameOutputData.setMultipleChoiceAnswers(firstOptionRound.getOptions());
+        }
 
         createGamePresenter.prepareFirstRoundView(createGameOutputData);
     }

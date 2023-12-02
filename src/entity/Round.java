@@ -10,5 +10,4 @@ public interface Round {
     void setUserAnswer(String userAnswer);
     boolean isUserAnswerCorrect();
     boolean isFinished();
-    List<String> getMultipleChoiceAnswers();
 }

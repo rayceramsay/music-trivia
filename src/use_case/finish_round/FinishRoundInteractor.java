@@ -51,7 +51,9 @@ public class FinishRoundInteractor implements FinishRoundInputBoundary{
             outputData.setRoundNumber(game.getRoundsPlayed());
             outputData.setScore(game.getScore());
 
-            outputData.setMultipleChoiceAnswers(nextRound.getMultipleChoiceAnswers());
+            if (nextRound instanceof OptionRound nextOptionRound) {
+                outputData.setMultipleChoiceAnswers(nextOptionRound.getOptions());
+            }
 
             finishRoundPresenter.prepareNextRoundView(outputData);
         }
