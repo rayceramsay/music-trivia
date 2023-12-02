@@ -27,6 +27,7 @@ public class SQLiteDatabaseGameDataAccessObjectTest {
     public void init() {
         roundFactory = new MockRoundFactory();
         songFactory = new CommonSongFactory();
+        playableAudioFactory = new MockPlayableAudioFactory();
         gameRepository = new SQLiteDatabaseGameDataAccessObject(TEST_DATABASE_PATH, roundFactory, songFactory, playableAudioFactory);
         gameRepository.clear();
     }
@@ -229,13 +230,13 @@ public class SQLiteDatabaseGameDataAccessObjectTest {
     }
 
     private void addRoundToGame(Game game, int userAnswerState, int suffix) {
-        PlayableAudio mockedPlayableAudio = new TestPlayableAudio("audio" + suffix + ".mp3");
-        Song mockedSong = new CommonSong("song" + suffix, "artist" + suffix, mockedPlayableAudio);
+        PlayableAudio mockedPlayableAudio = playableAudioFactory.create("audio" + suffix);
+        Song mockedSong = songFactory.create("song" + suffix, "artist" + suffix, mockedPlayableAudio);
         String correctAnswer = "answer" + suffix;
 
         String userAnswer;
         if (userAnswerState == 0) {
-            userAnswer = "incorrectAnswer" + suffix;
+            userAnswer = "option1" + suffix;
         } else if (userAnswerState == 1) {
             userAnswer = correctAnswer;
         } else {
@@ -244,11 +245,14 @@ public class SQLiteDatabaseGameDataAccessObjectTest {
 
         String difficulty = game.getDifficulty().toLowerCase();
         Round mockedRound;
-        if (difficulty.equals("easy") || difficulty.equals("medium")) {
-            mockedRound = new MultipleChoiceRound(mockedSong, "question" + suffix, correctAnswer, userAnswer, new ArrayList<>());
-            // TODO: add multiple choice options
+        if (difficulty.equals("easy")) {
+            List<String> incorrectOptions = List.of(new String[]{"option1" + suffix});
+            mockedRound = roundFactory.createOptionRound(mockedSong, "question" + suffix, correctAnswer, userAnswer, incorrectOptions);
+        } else if (difficulty.equals("medium")) {
+            List<String> incorrectOptions = List.of(new String[]{"option1" + suffix, "option2" + suffix, "option3" + suffix});
+            mockedRound = roundFactory.createOptionRound(mockedSong, "question" + suffix, correctAnswer, userAnswer, incorrectOptions);
         } else {
-            mockedRound = new BasicRound(mockedSong, "question" + suffix, correctAnswer, userAnswer);
+            mockedRound = roundFactory.createBasicRound(mockedSong, "question" + suffix, correctAnswer, userAnswer);
         }
 
         game.setCurrentRound(mockedRound);

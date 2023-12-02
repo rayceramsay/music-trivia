@@ -31,6 +31,6 @@ public class MockRoundFactory implements RoundFactory {
     }
 
     private Song createMockSong() {
-        return new CommonSong("title", "artist", new TestPlayableAudio("path.mp3"));
+        return new CommonSong("title", "artist", new MockPlayableAudio("path.mp3"));
     }
 }
