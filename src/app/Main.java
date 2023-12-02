@@ -1,6 +1,6 @@
 package app;
 
-import data_access.SQLiteDatabaseGameDataAccessObject;
+import data_access.game_data.SQLiteDatabaseGameDataAccessObject;
 import data_access.api.SongAPI;
 import data_access.game_data.GameDataAccessInterface;
 import data_access.api.SpotifyAPI;

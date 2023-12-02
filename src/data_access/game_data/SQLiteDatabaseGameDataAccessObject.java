@@ -1,4 +1,4 @@
-package data_access;
+package data_access.game_data;
 
 import data_access.game_data.GameDataAccessInterface;
 import data_access.game_data.InMemoryGameDataAccessObject;
