@@ -1,6 +1,6 @@
 package use_case.finish_round;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class FinishRoundOutputData {
 
@@ -8,8 +8,7 @@ public class FinishRoundOutputData {
     private String genre;
     private int roundNumber;
     private int lives;
-
-    private ArrayList<String> multipleChoiceAnswers;
+    private List<String> multipleChoiceAnswers;
 
     public FinishRoundOutputData() {
     }
@@ -46,11 +45,11 @@ public class FinishRoundOutputData {
         this.lives = lives;
     }
 
-    public ArrayList<String> getMultipleChoiceAnswers() {
+    public List<String> getMultipleChoiceAnswers() {
         return multipleChoiceAnswers;
     }
 
-    public void setMultipleChoiceAnswers(ArrayList<String> multipleChoiceAnswers) {
+    public void setMultipleChoiceAnswers(List<String> multipleChoiceAnswers) {
         this.multipleChoiceAnswers = multipleChoiceAnswers;
     }
 }

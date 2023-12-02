@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class CommonGame implements Game {
+
     private final String ID;
     private int score;
     private final String difficulty;
@@ -13,7 +14,7 @@ public class CommonGame implements Game {
     private final int initialLives;
     private final int maxRounds;
     private int currentLives;
-    private ArrayList<Round> allRounds;
+    private final List<Round> allRounds;
     private final LocalDateTime createdAt;
     private LocalDateTime finishedAt;
 
@@ -25,8 +26,7 @@ public class CommonGame implements Game {
      * @param maxRounds    total rounds until game over
      * @param initialLives preset amount of lives before start of game
      */
-    public CommonGame(String genre, String difficulty, int maxRounds,
-                      int initialLives) {
+    public CommonGame(String genre, String difficulty, int maxRounds, int initialLives) {
         this.ID = UUID.randomUUID().toString();
         this.genre = genre;
         this.difficulty = difficulty;

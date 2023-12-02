@@ -1,6 +1,9 @@
 package use_case.finish_round;
 
-import entity.*;
+import data_access.game_data.GameDataAccessInterface;
+import entity.Game;
+import entity.Round;
+import entity.RoundFactory;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -9,7 +12,7 @@ import java.util.Objects;
  * Interactor which implements the Input Boundary for the FinishRound use case
  */
 public class FinishRoundInteractor implements FinishRoundInputBoundary {
-    private final FinishRoundGameDataAccessInterface gameDataAccessObject;
+    private final GameDataAccessInterface gameDataAccessObject;
     private final FinishRoundOutputBoundary finishRoundPresenter;
     private final RoundFactory roundFactory;
 
@@ -21,7 +24,8 @@ public class FinishRoundInteractor implements FinishRoundInputBoundary {
      * @param roundFactory         RoundFactory
      */
     public FinishRoundInteractor(FinishRoundOutputBoundary finishRoundPresenter,
-                                 FinishRoundGameDataAccessInterface gameDataAccessObject,
+
+                                 GameDataAccessInterface gameDataAccessObject,
                                  RoundFactory roundFactory) {
         this.gameDataAccessObject = gameDataAccessObject;
         this.finishRoundPresenter = finishRoundPresenter;

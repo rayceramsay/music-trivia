@@ -6,7 +6,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 /**
- * Extension of ViewModel for GetLoadableGames
+ * Extension of ViewModel for GetLoadableGames interface adapter
  */
 public class GetLoadableGamesViewModel extends ViewModel {
 

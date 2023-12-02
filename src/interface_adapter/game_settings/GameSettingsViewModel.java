@@ -5,6 +5,9 @@ import interface_adapter.ViewModel;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+/**
+ * Extension of ViewModel for GameSettings interface adapter
+ */
 public class GameSettingsViewModel extends ViewModel {
 
     public final String DIFFICULTY_SELECTOR_LABEL = "Difficulty: ";

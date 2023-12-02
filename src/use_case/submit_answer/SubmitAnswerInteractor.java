@@ -1,10 +1,11 @@
 package use_case.submit_answer;
 
+import data_access.game_data.GameDataAccessInterface;
 import entity.Game;
 import entity.Round;
 
 public class SubmitAnswerInteractor implements SubmitAnswerInputBoundary {
-    private final SubmitAnswerGameDataAccessInterface gameDataAccessObject;
+    private final GameDataAccessInterface gameDataAccessObject;
     private final SubmitAnswerOutputBoundary submitAnswerPresenter;
 
     /**
@@ -13,7 +14,7 @@ public class SubmitAnswerInteractor implements SubmitAnswerInputBoundary {
      * @param gameDataAccessObject  Data access interface for submit answer use case
      * @param submitAnswerPresenter Output boundary for submit answer use case
      */
-    public SubmitAnswerInteractor(SubmitAnswerGameDataAccessInterface gameDataAccessObject,
+    public SubmitAnswerInteractor(GameDataAccessInterface gameDataAccessObject,
                                   SubmitAnswerOutputBoundary submitAnswerPresenter) {
         this.gameDataAccessObject = gameDataAccessObject;
         this.submitAnswerPresenter = submitAnswerPresenter;
@@ -26,6 +27,7 @@ public class SubmitAnswerInteractor implements SubmitAnswerInputBoundary {
         Game game = gameDataAccessObject.getGameByID(gameId);
         Round currentRound = game.getCurrentRound();
 
+        currentRound.getSong().getAudio().stop();
         currentRound.setUserAnswer(userAnswer);
 
         boolean isUserAnswerCorrect = currentRound.isUserAnswerCorrect();

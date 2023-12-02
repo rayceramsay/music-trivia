@@ -1,25 +1,24 @@
 package use_case.statistics;
 
-import data_access.InMemoryGameDataAccessObject;
+import data_access.game_data.GameDataAccessInterface;
+import data_access.game_data.InMemoryGameDataAccessObject;
 import entity.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashMap;
-
 import static org.junit.Assert.*;
+
 public class StatisticsTest {
-    /**
-     * Initialize each test to have an existing game with the current round already set and a data access object.
-     */
+
     private final int INITIAL_LIVES = 10;
-    private StatisticsDataAccessInterface gameDataAccessObject;
+    private GameDataAccessInterface gameDataAccessObject;
     private Game game;
 
     @Before
     public void init() {
         gameDataAccessObject = new InMemoryGameDataAccessObject();
     }
+
     @Test
     public void failTest() {
         StatisticsOutputBoundary statsPresenter = new StatisticsOutputBoundary() {
@@ -31,9 +30,11 @@ public class StatisticsTest {
         StatisticsInputBoundary interactor = new StatisticsInteractor(gameDataAccessObject, statsPresenter);
         interactor.execute();
     }
+
     /**
      * Basic functionality tests.
      */
+
     @Test
     public void averageInitialLivesTest() {
         game = new CommonGame("Hip-Hop", "hard", 15, INITIAL_LIVES);
@@ -48,6 +49,7 @@ public class StatisticsTest {
         gameDataAccessObject.save(game);
         assertEquals(10, gameDataAccessObject.avgStats().getAverageScore());
     }
+
     @Test
     public void averageRoundPlayedTest(){
         game = new CommonGame("Hip-Hop", "hard", 15, INITIAL_LIVES);
@@ -58,6 +60,7 @@ public class StatisticsTest {
         game.setCurrentRound(round);
         assertEquals(2, gameDataAccessObject.avgStats().getAverageRoundsPlayed());
     }
+
     @Test
     public void commonDifficultyTest() {
         game = new CommonGame("Hip-Hop", "hard", 15, INITIAL_LIVES);
@@ -76,6 +79,7 @@ public class StatisticsTest {
         gameDataAccessObject.save(game);
         assertEquals("Pop", gameDataAccessObject.avgStats().getTopGenre());
     }
+
     /**
      * Output data/presenter/interactor test to assure coverage of use_case.statistics
      */

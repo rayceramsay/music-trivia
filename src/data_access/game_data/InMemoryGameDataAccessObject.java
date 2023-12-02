@@ -1,9 +1,10 @@
-package data_access;
+package data_access.game_data;
 
 import entity.CommonGame;
 import entity.CommonLifetimeStatistics;
 import entity.Game;
 import entity.LifetimeStatistics;
+<<<<<<< HEAD:src/data_access/InMemoryGameDataAccessObject.java
 import use_case.create_game.CreateGameDataAccessInterface;
 import use_case.finish_round.FinishRoundGameDataAccessInterface;
 import use_case.get_loadable_games.GetLoadableGamesGameDataAccessInterface;
@@ -21,6 +22,13 @@ import java.util.*;
 public class InMemoryGameDataAccessObject implements SubmitAnswerGameDataAccessInterface, FinishRoundGameDataAccessInterface,
         CreateGameDataAccessInterface, GetLoadableGamesGameDataAccessInterface, LoadGameGameDataAccessInterface,
         StatisticsDataAccessInterface, ToggleAudioGameDataAccessInterface {
+=======
+import entity.CommonGame;
+
+import java.util.*;
+
+public class InMemoryGameDataAccessObject implements GameDataAccessInterface {
+>>>>>>> 63634c3a0a60374b0d75936c837bf2431fd912d3:src/data_access/game_data/InMemoryGameDataAccessObject.java
 
     private final Map<String, Game> games = new HashMap<>();  // maps gameID to game object
 

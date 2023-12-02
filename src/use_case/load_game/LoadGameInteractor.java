@@ -1,5 +1,6 @@
 package use_case.load_game;
 
+import data_access.game_data.GameDataAccessInterface;
 import entity.Game;
 import entity.Round;
 
@@ -9,7 +10,7 @@ import entity.Round;
 public class LoadGameInteractor implements LoadGameInputBoundary {
 
     private final LoadGameOutputBoundary presenter;
-    private final LoadGameGameDataAccessInterface gameRepository;
+    private final GameDataAccessInterface gameRepository;
 
     /**
      * Constructor to initialize objects of LoadGameInteractor
@@ -17,7 +18,7 @@ public class LoadGameInteractor implements LoadGameInputBoundary {
      * @param presenter      Output boundary for load game use case
      * @param gameRepository Data access interface for load game use case
      */
-    public LoadGameInteractor(LoadGameOutputBoundary presenter, LoadGameGameDataAccessInterface gameRepository) {
+    public LoadGameInteractor(LoadGameOutputBoundary presenter, GameDataAccessInterface gameRepository) {
         this.presenter = presenter;
         this.gameRepository = gameRepository;
     }

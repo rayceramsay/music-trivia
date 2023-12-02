@@ -18,6 +18,11 @@ public class LoadGameController {
         this.loadGameInteractor = loadGameInteractor;
     }
 
+    /**
+     * Method to execute the interactor using the given input data
+     *
+     * @param gameID ID of current game
+     */
     public void execute(String gameID) {
         LoadGameInputData inputData = new LoadGameInputData(gameID);
         loadGameInteractor.execute(inputData);

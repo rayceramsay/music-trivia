@@ -2,6 +2,7 @@ package entity;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Implementation of Round for 4 possible multiple choice answers
@@ -63,7 +64,7 @@ public class MultipleChoiceRound implements Round {
         return cleanedUserAnswer.equalsIgnoreCase(correctAnswer);
     }
 
-    public void addIncorrectOptions(ArrayList<String> options) {
+    public void addIncorrectOptions(List<String> options) {
         this.incorrectOptions.addAll(options);
     }
 
@@ -73,8 +74,8 @@ public class MultipleChoiceRound implements Round {
     }
 
     @Override
-    public ArrayList<String> getMultipleChoiceAnswers() {
-        ArrayList<String> ret = new ArrayList<>();
+    public List<String> getMultipleChoiceAnswers() {
+        List<String> ret = new ArrayList<>();
         ret.add(correctAnswer);
         ret.addAll(incorrectOptions);
         Collections.shuffle(ret);

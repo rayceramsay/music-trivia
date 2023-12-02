@@ -6,7 +6,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 /**
- * Implementation of ViewModel for GameOver interface adapter
+ * Extension of ViewModel for GameOver interface adapter
  */
 public class GameOverViewModel extends ViewModel {
 

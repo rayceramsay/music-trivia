@@ -10,8 +10,8 @@ public class FinishRoundViewModel extends ViewModel {
     public static final String STATE_PROPERTY = "finishRound";
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
-    public FinishRoundViewModel() {
-        super("round");
+    public FinishRoundViewModel(String viewName) {
+        super(viewName);
     }
 
     @Override

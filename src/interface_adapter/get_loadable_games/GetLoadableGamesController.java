@@ -18,6 +18,9 @@ public class GetLoadableGamesController {
         this.getLoadableGamesInteractor = getLoadableGamesInteractor;
     }
 
+    /**
+     * Method to execute the interactor
+     */
     public void execute() {
         getLoadableGamesInteractor.execute();
     }

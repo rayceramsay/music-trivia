@@ -1,6 +1,6 @@
 package entity;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Interface for Round
@@ -44,5 +44,5 @@ public interface Round {
     /**
      * @return List of all multiple choice answers
      */
-    ArrayList<String> getMultipleChoiceAnswers();
+    List<String> getMultipleChoiceAnswers();
 }

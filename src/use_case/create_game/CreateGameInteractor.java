@@ -1,6 +1,9 @@
 package use_case.create_game;
 
-import entity.*;
+import data_access.game_data.GameDataAccessInterface;
+import entity.Game;
+import entity.Round;
+import entity.RoundFactory;
 
 import java.util.Objects;
 
@@ -8,7 +11,7 @@ import java.util.Objects;
  * Interactor which implements the Input Boundary for the CreateGame use case
  */
 public class CreateGameInteractor implements CreateGameInputBoundary {
-    final CreateGameDataAccessInterface gameAccessObject;
+    final GameDataAccessInterface gameAccessObject;
     final CreateGameOutputBoundary createGamePresenter;
     final RoundFactory roundFactory;
 
@@ -19,10 +22,9 @@ public class CreateGameInteractor implements CreateGameInputBoundary {
      * @param createGamePresenter output boundary for CreateGame use case
      * @param roundFactory        RoundFactory
      */
-    public CreateGameInteractor(CreateGameDataAccessInterface gameAccessObject,
+    public CreateGameInteractor(GameDataAccessInterface gameAccessObject,
                                 CreateGameOutputBoundary createGamePresenter,
                                 RoundFactory roundFactory) {
-
         this.gameAccessObject = gameAccessObject;
         this.createGamePresenter = createGamePresenter;
         this.roundFactory = roundFactory;
@@ -41,11 +43,9 @@ public class CreateGameInteractor implements CreateGameInputBoundary {
 
         if (Objects.equals(difficulty, "hard")) {
             firstRound = roundFactory.createHardRound(genre);
-        }
-        else if (Objects.equals(difficulty, "medium")){
+        } else if (Objects.equals(difficulty, "medium")) {
             firstRound = roundFactory.createMediumRound(genre);
-        }
-        else {
+        } else {
             firstRound = roundFactory.createEasyRound(genre);
         }
         Game game = gameAccessObject.getGameByID(ID);
