@@ -1,16 +1,16 @@
 package entity;
 
-import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.embed.swing.JFXPanel;
 import javafx.util.Duration;
 
 import java.util.function.Consumer;
 
 /**
- * Implementation of PlayableSong from online source (i.e. Spotify API)
+ * Implementation of PlayableSong from source (i.e. Spotify API)
  */
-public class OnlineMP3PlayableAudio implements PlayableAudio {
+public class CommonPlayableAudio implements PlayableAudio {
 
     private final static JFXPanel JFX_PANEL = new JFXPanel(); // required for MediaPlayer to work
 
@@ -22,7 +22,7 @@ public class OnlineMP3PlayableAudio implements PlayableAudio {
      *
      * @param audioUrl URL of audio source
      */
-    public OnlineMP3PlayableAudio(String audioUrl) {
+    public CommonPlayableAudio(String audioUrl) {
         this.audioUrl = audioUrl;
 
         Media audioMedia = new Media(audioUrl);

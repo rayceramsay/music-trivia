@@ -8,33 +8,45 @@ import java.util.UUID;
 public class CommonGame implements Game {
 
     private final String ID;
-    private int score;
-    private final String difficulty;
     private final String genre;
-    private final int initialLives;
+    private final String difficulty;
     private final int maxRounds;
+    private final int initialLives;
     private int currentLives;
-    private final List<Round> allRounds;
+    private int score;
     private final LocalDateTime createdAt;
     private LocalDateTime finishedAt;
+    private final List<Round> allRounds = new ArrayList<>();
 
     /**
      * Constructor to initialize objects of CommonGame
      *
+     * @param ID           ID of game
      * @param genre        type of songs chosen by API
      * @param difficulty   level of gameplay
      * @param maxRounds    total rounds until game over
      * @param initialLives preset amount of lives before start of game
+     * @param currentLives current amount of lives left
+     * @param score        score of the game
+     * @param createdAt    time of game creation
+     * @param finishedAt   time of game completion
      */
-    public CommonGame(String genre, String difficulty, int maxRounds, int initialLives) {
-        this.ID = UUID.randomUUID().toString();
+    public CommonGame(String ID, String genre, String difficulty, int maxRounds, int initialLives, int currentLives,
+                      int score, LocalDateTime createdAt, LocalDateTime finishedAt) {
+        this.ID = ID;
         this.genre = genre;
         this.difficulty = difficulty;
         this.maxRounds = maxRounds;
         this.initialLives = initialLives;
-        this.currentLives = initialLives;
-        this.createdAt = LocalDateTime.now();
-        this.allRounds = new ArrayList<>();
+        this.currentLives = currentLives;
+        this.score = score;
+        this.createdAt = createdAt;
+        this.finishedAt = finishedAt;
+    }
+
+    public CommonGame(String genre, String difficulty, int maxRounds, int initialLives) {
+        this(UUID.randomUUID().toString(), genre, difficulty, maxRounds, initialLives, initialLives,
+                0, LocalDateTime.now(), null);
     }
 
     /**

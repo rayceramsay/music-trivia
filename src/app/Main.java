@@ -1,16 +1,15 @@
 package app;
 
-import data_access.api.SpotifyAPI;
+import data_access.game_data.SQLiteDatabaseGameDataAccessObject;
+import data_access.api.SongAPI;
 import data_access.game_data.GameDataAccessInterface;
-import data_access.game_data.InMemoryGameDataAccessObject;
-import entity.CommonRoundFactory;
-import entity.CommonSongFactory;
-import entity.RoundFactory;
+import data_access.api.SpotifyAPI;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.create_game.CreateGameViewModel;
 import interface_adapter.exit_round.ExitRoundViewModel;
+import interface_adapter.create_game.CreateGameViewModel;
 import interface_adapter.finish_round.FinishRoundViewModel;
 import interface_adapter.game_over.GameOverViewModel;
+import entity.*;
 import interface_adapter.game_settings.GameSettingsViewModel;
 import interface_adapter.get_loadable_games.GetLoadableGamesViewModel;
 import interface_adapter.load_game.LoadGameViewModel;
@@ -18,6 +17,7 @@ import interface_adapter.round.RoundViewModel;
 import interface_adapter.statistics.StatisticsViewModel;
 import interface_adapter.submit_answer.SubmitAnswerViewModel;
 import interface_adapter.toggle_audio.ToggleAudioViewModel;
+import io.github.cdimascio.dotenv.Dotenv;
 import view.*;
 
 import javax.swing.*;
@@ -27,6 +27,8 @@ import java.awt.*;
  * Main class to run the game
  */
 public class Main {
+
+    private static final Dotenv dotenv = Dotenv.load();  // load environment variables
 
     /**
      * Main method to run game
@@ -38,14 +40,13 @@ public class Main {
         JFrame application = new JFrame("Spotify Bandits");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         CardLayout cardLayout = new CardLayout();
-        application.setMinimumSize(new Dimension(500, 300));
+        application.setMinimumSize(new Dimension(600, 300));
         JPanel views = new JPanel(cardLayout);
         application.add(views);
 
-        // Setup view manager and api
+        // Setup view manager
         ViewManagerModel viewManagerModel = new ViewManagerModel();
         new ViewManager(views, cardLayout, viewManagerModel);
-        RoundFactory roundFactory = new CommonRoundFactory(new SpotifyAPI(new CommonSongFactory()));
 
         // Create view models
         GameSettingsViewModel gameSettingsViewModel = new GameSettingsViewModel(GameSettingsView.VIEW_NAME);
@@ -60,8 +61,12 @@ public class Main {
         CreateGameViewModel createGameViewModel = new CreateGameViewModel(RoundView.VIEW_NAME);
         LoadGameViewModel loadGameViewModel = new LoadGameViewModel(RoundView.VIEW_NAME);
 
-        // Create data access objects
-        GameDataAccessInterface gameDataAccessObject = new InMemoryGameDataAccessObject();
+        // Create factories and data access objects
+        PlayableAudioFactory playableAudioFactory = new CommonPlayableAudioFactory();
+        SongFactory songFactory = new CommonSongFactory();
+        SongAPI songAPI = new SpotifyAPI(songFactory, playableAudioFactory, dotenv.get("SPOTIFY_CLIENT_ID"), dotenv.get("SPOTIFY_CLIENT_SECRET"));
+        RoundFactory roundFactory = new CommonRoundFactory(songAPI);
+        GameDataAccessInterface gameDataAccessObject = new SQLiteDatabaseGameDataAccessObject(dotenv.get("SQLITE_DB_PATH_PRODUCTION"), roundFactory, songFactory, playableAudioFactory);
 
         // Create views
         MenuView menuView = MenuViewFactory.create(viewManagerModel, gameSettingsViewModel, getLoadableGamesViewModel, statisticsViewModel, gameDataAccessObject);

@@ -7,8 +7,9 @@ import java.util.List;
 
 public interface GameDataAccessInterface {
     Game getGameByID(String gameID);
-    String addGame(String difficulty, String genre, int lives, int rounds);
     void save(Game game);
     List<Game> getLoadableGames();
     LifetimeStatistics avgStats();
+    boolean gameExists(Game game);
+    void clear();
 }

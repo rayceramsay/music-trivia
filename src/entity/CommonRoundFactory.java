@@ -3,9 +3,8 @@ package entity;
 import data_access.api.SongAPI;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-
-// TODO - update this with creating a proper round
 
 /**
  * Implementation of interface RoundFactory
@@ -18,37 +17,48 @@ public class CommonRoundFactory implements RoundFactory {
     }
 
     /**
-     * @param songGenre genre of songs to be played
+     * @param song A song
+     * @param question the prompt of the round
+     * @param correctAnswer correct answer of the round
+     * @param userAnswer answer given by user
      * @return A round
      */
     @Override
-    public Round createHardRound(String songGenre) {
+    public Round createBasicRound(Song song, String question, String correctAnswer, String userAnswer) {
+        return new BasicRound(song, question, correctAnswer, userAnswer);
+    }
+
+    /**
+     * @param song A song
+     * @param question the prompt of the round
+     * @param correctAnswer correct amswer of the round
+     * @param userAnswer answer given by user
+     * @param incorrectOptions displayed incorrect options
+     * @return A round
+     */
+    @Override
+    public OptionRound createOptionRound(Song song, String question, String correctAnswer, String userAnswer, List<String> incorrectOptions) {
+        return new MultipleChoiceRound(song, question, correctAnswer, userAnswer, incorrectOptions);
+    }
+
+    @Override
+    public Round generateBasicRoundFromGenre(String songGenre) {
         Song song = songAPI.getRandomSongFromGenre(songGenre);
-        return new TextInputRound(song, "What is the title of this song?", song.getTitle());
+
+        return new BasicRound(song, "What is the title of this song?", song.getTitle());
     }
 
     /**
      * @param songGenre genre of songs to be played
-     * @return A round
+     * @param incorrectOptionsCount amount of incorrect options
+     * @return An OptionRound
      */
     @Override
-    public Round createMediumRound(String songGenre) {
+    public OptionRound generateOptionRoundFromGenre(String songGenre, int incorrectOptionsCount) {
         Song song = songAPI.getRandomSongFromGenre(songGenre);
-        MultipleChoiceRound round = new MultipleChoiceRound(song, "What is the title of this song?", song.getTitle());
-        round.addIncorrectOptions(createIncorrectOptions(song, songGenre, 3));
-        return round;
-    }
+        List<String> incorrectOptions = createIncorrectOptions(song, songGenre, incorrectOptionsCount);
 
-    /**
-     * @param songGenre genre of songs to be played
-     * @return A round
-     */
-    @Override
-    public Round createEasyRound(String songGenre) {
-        Song song = songAPI.getRandomSongFromGenre(songGenre);
-        MultipleChoiceRound round = new MultipleChoiceRound(song, "What is the title of this song?", song.getTitle());
-        round.addIncorrectOptions(createIncorrectOptions(song, songGenre, 1));
-        return round;
+        return new MultipleChoiceRound(song, "What is the title of this song?", song.getTitle(), incorrectOptions);
     }
 
     /*

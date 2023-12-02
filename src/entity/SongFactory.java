@@ -10,5 +10,5 @@ public interface SongFactory {
      * @param audio  Audio of song
      * @return A song
      */
-    Song create(String title, String artist, String audio);
+    Song create(String title, String artist, PlayableAudio audio);
 }

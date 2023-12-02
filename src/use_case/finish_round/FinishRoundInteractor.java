@@ -1,9 +1,7 @@
 package use_case.finish_round;
 
 import data_access.game_data.GameDataAccessInterface;
-import entity.Game;
-import entity.Round;
-import entity.RoundFactory;
+import entity.*;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -24,7 +22,6 @@ public class FinishRoundInteractor implements FinishRoundInputBoundary {
      * @param roundFactory         RoundFactory
      */
     public FinishRoundInteractor(FinishRoundOutputBoundary finishRoundPresenter,
-
                                  GameDataAccessInterface gameDataAccessObject,
                                  RoundFactory roundFactory) {
         this.gameDataAccessObject = gameDataAccessObject;
@@ -50,12 +47,12 @@ public class FinishRoundInteractor implements FinishRoundInputBoundary {
             String gameDifficulty = game.getDifficulty().toLowerCase().trim();
             Round nextRound;
 
-            if (Objects.equals(gameDifficulty, "hard")) {
-                nextRound = roundFactory.createHardRound(gameGenre);
-            } else if (Objects.equals(gameDifficulty, "medium")) {
-                nextRound = roundFactory.createMediumRound(gameGenre);
+            if(Objects.equals(gameDifficulty, "hard")) {
+                nextRound = roundFactory.generateBasicRoundFromGenre(gameGenre);
+            } else if(Objects.equals(gameDifficulty, "medium")){
+                nextRound = roundFactory.generateOptionRoundFromGenre(gameGenre, 3);
             } else {
-                nextRound = roundFactory.createEasyRound(gameGenre);
+                nextRound = roundFactory.generateOptionRoundFromGenre(gameGenre, 1);
             }
             game.setCurrentRound(nextRound);
             gameDataAccessObject.save(game);
@@ -66,7 +63,9 @@ public class FinishRoundInteractor implements FinishRoundInputBoundary {
             outputData.setRoundNumber(game.getRoundsPlayed());
             outputData.setScore(game.getScore());
 
-            outputData.setMultipleChoiceAnswers(nextRound.getMultipleChoiceAnswers());
+            if (nextRound instanceof OptionRound nextOptionRound) {
+                outputData.setMultipleChoiceAnswers(nextOptionRound.getOptions());
+            }
 
             finishRoundPresenter.prepareNextRoundView(outputData);
         }
