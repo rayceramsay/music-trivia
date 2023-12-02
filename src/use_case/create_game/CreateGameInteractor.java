@@ -23,16 +23,18 @@ public class CreateGameInteractor implements CreateGameInputBoundary {
     public void execute(CreateGameInputData inputData) {
         Game game = new CommonGame(inputData.getGenre(), inputData.getDifficulty(), inputData.getRounds(), inputData.getLives());
 
-        String genre = inputData.getGenre();
         String difficulty = inputData.getDifficulty().toLowerCase().trim();
-
+        String genre = inputData.getGenre();
         Round firstRound;
-        if (Objects.equals(difficulty, "easy")) {
-            firstRound = roundFactory.createEasyRound(genre);
-        } else if (Objects.equals(difficulty, "medium")) {
-            firstRound = roundFactory.createMediumRound(genre);
-        } else {
-            firstRound = roundFactory.createHardRound(genre);
+
+        if (difficulty.equals("easy")) {
+            firstRound = roundFactory.generateOptionRoundFromGenre(genre, 1);
+        }
+        else if (difficulty.equals("medium")){
+            firstRound = roundFactory.generateOptionRoundFromGenre(genre, 3);
+        }
+        else {
+            firstRound = roundFactory.generateBasicRoundFromGenre(genre);
         }
 
         game.setCurrentRound(firstRound);
@@ -45,7 +47,9 @@ public class CreateGameInteractor implements CreateGameInputBoundary {
         createGameOutputData.setRounds(game.getMaxRounds());
         createGameOutputData.setLives(game.getInitialLives());
 
-        createGameOutputData.setMultipleChoiceAnswers(firstRound.getMultipleChoiceAnswers());
+        if (firstRound instanceof OptionRound firstOptionRound) {
+            createGameOutputData.setMultipleChoiceAnswers(firstOptionRound.getOptions());
+        }
 
         createGamePresenter.prepareFirstRoundView(createGameOutputData);
     }

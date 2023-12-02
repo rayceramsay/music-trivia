@@ -8,6 +8,7 @@ import org.sqlite.SQLiteConfig;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SQLiteDatabaseGameDataAccessObject implements GameDataAccessInterface {
@@ -60,8 +61,8 @@ public class SQLiteDatabaseGameDataAccessObject implements GameDataAccessInterfa
             try {
                 connection.rollback();
             } catch (SQLException ignored) {}
-
-            throw new RuntimeException("A problem occurred while saving the game.");
+            throw new RuntimeException(e);
+//            throw new RuntimeException("A problem occurred while saving the game.");
         } finally {
             try {
                 connection.close();
@@ -124,9 +125,9 @@ public class SQLiteDatabaseGameDataAccessObject implements GameDataAccessInterfa
 
                 Round round;
                 if (game.getDifficulty().equalsIgnoreCase("easy") || game.getDifficulty().equalsIgnoreCase("medium")) {
-                   round = new MultipleChoiceRound(song, question, correctAnswer, userAnswer);
+                   round = new MultipleChoiceRound(song, question, correctAnswer, userAnswer, new ArrayList<>());
                 } else {
-                    round = new TextInputRound(song, question, correctAnswer, userAnswer);
+                    round = new BasicRound(song, question, correctAnswer, userAnswer);
                 }
 
                 // TODO: populate round with multiple choice options - requires changes to DB schema

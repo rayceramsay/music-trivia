@@ -3,6 +3,7 @@ package entity;
 import data_access.api.SongAPI;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class CommonRoundFactory implements RoundFactory{
@@ -12,24 +13,28 @@ public class CommonRoundFactory implements RoundFactory{
     }
 
     @Override
-    public Round createHardRound(String songGenre) {
-        Song song = songAPI.getRandomSongFromGenre(songGenre);
-        return new TextInputRound(song, "What is the title of this song?", song.getTitle());
+    public Round createBasicRound(Song song, String question, String correctAnswer, String userAnswer) {
+        return new BasicRound(song, question, correctAnswer, userAnswer);
     }
 
     @Override
-    public Round createMediumRound (String songGenre) {
-        Song song = songAPI.getRandomSongFromGenre(songGenre);
-        MultipleChoiceRound round = new MultipleChoiceRound(song, "What is the title of this song?", song.getTitle());
-        round.addIncorrectOptions(createIncorrectOptions(song, songGenre, 3));
-        return round;
+    public OptionRound createOptionRound(Song song, String question, String correctAnswer, String userAnswer, List<String> incorrectOptions) {
+        return new MultipleChoiceRound(song, question, correctAnswer, userAnswer, incorrectOptions);
     }
+
     @Override
-    public Round createEasyRound (String songGenre) {
+    public Round generateBasicRoundFromGenre(String songGenre) {
         Song song = songAPI.getRandomSongFromGenre(songGenre);
-        MultipleChoiceRound round = new MultipleChoiceRound(song, "What is the title of this song?", song.getTitle());
-        round.addIncorrectOptions(createIncorrectOptions(song, songGenre, 1));
-        return round;
+
+        return new BasicRound(song, "What is the title of this song?", song.getTitle());
+    }
+
+    @Override
+    public OptionRound generateOptionRoundFromGenre(String songGenre, int incorrectOptionsCount) {
+        Song song = songAPI.getRandomSongFromGenre(songGenre);
+        List<String> incorrectOptions = createIncorrectOptions(song, songGenre, incorrectOptionsCount);
+
+        return new MultipleChoiceRound(song, "What is the title of this song?", song.getTitle(), incorrectOptions);
     }
 
     /*

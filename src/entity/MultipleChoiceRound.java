@@ -4,79 +4,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
 
-public class MultipleChoiceRound implements Round {
+public class MultipleChoiceRound extends BasicRound implements OptionRound {
 
-    private final Song song;
-    private final String question;
-    private final String correctAnswer;
-    private String userAnswer;
-    private final List<String> incorrectOptions = new ArrayList<>();
+    private final List<String> incorrectOptions;
 
-    public MultipleChoiceRound(Song song, String question, String correctAnswer, String userAnswer) {
-        this.song = song;
-        this.question = question;
-        this.correctAnswer = correctAnswer;
-        this.userAnswer = userAnswer;
+    public MultipleChoiceRound(Song song, String question, String correctAnswer, String userAnswer, List<String> incorrectOptions) {
+        super(song, question, correctAnswer, userAnswer);
+        this.incorrectOptions = incorrectOptions;
     }
 
-    public MultipleChoiceRound(Song song, String question, String correctAnswer){
-        this(song, question, correctAnswer, null);
+    public MultipleChoiceRound(Song song, String question, String correctAnswer, List<String> incorrectOptions) {
+        this(song, question, correctAnswer, null, incorrectOptions);
     }
 
     @Override
-    public String getQuestion() {
-        return this.question;
-    }
+    public List<String> getOptions() {
+        List<String> shuffledOptions = new ArrayList<>();
+        shuffledOptions.add(getCorrectAnswer());
+        shuffledOptions.addAll(incorrectOptions);
+        Collections.shuffle(shuffledOptions);
 
-    @Override
-    public Song getSong() {
-        return this.song;
-    }
-
-    @Override
-    public String getCorrectAnswer() {
-        return this.correctAnswer;
-    }
-
-    @Override
-    public String getUserAnswer() {
-        return this.userAnswer;
-    }
-
-    @Override
-    public void setUserAnswer(String userAnswer) {
-        this.userAnswer = userAnswer;
-    }
-
-    @Override
-    public boolean isUserAnswerCorrect() {
-        if (userAnswer == null) {
-            return false;
-        }
-
-        String cleanedUserAnswer = cleanString(userAnswer);
-        return cleanedUserAnswer.equalsIgnoreCase(correctAnswer);
-    }
-
-    @Override
-    public boolean isFinished() {
-        return userAnswer != null;
-    }
-
-    @Override
-    public List<String> getMultipleChoiceAnswers() {
-        List<String> ret = new ArrayList<>();
-        ret.add(correctAnswer);
-        ret.addAll(incorrectOptions);
-        Collections.shuffle(ret);
-        return ret;
-    }
-
-    public void addIncorrectOptions(List<String> options){
-        this.incorrectOptions.addAll(options);
-    }
-
-    private String cleanString(String string) {
-        return string.replaceAll("\\p{C}", "").trim();
+        return shuffledOptions;
     }
 }

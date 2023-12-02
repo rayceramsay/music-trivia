@@ -28,7 +28,7 @@ public class ExitRoundInteractorTest {
         String genre = "country";
         game = new CommonGame(genre, "hard", 10, 10);
         RoundFactory roundFactory = new MockRoundFactory();
-        game.setCurrentRound(roundFactory.createHardRound(genre));
+        game.setCurrentRound(roundFactory.generateBasicRoundFromGenre(genre));
         gameRepository.save(game);
     }
 

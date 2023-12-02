@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -239,10 +240,10 @@ public class SQLiteDatabaseGameDataAccessObjectTest {
         String difficulty = game.getDifficulty().toLowerCase();
         Round mockedRound;
         if (difficulty.equals("easy") || difficulty.equals("medium")) {
-            mockedRound = new MultipleChoiceRound(mockedSong, "question" + suffix, correctAnswer, userAnswer);
+            mockedRound = new MultipleChoiceRound(mockedSong, "question" + suffix, correctAnswer, userAnswer, new ArrayList<>());
             // TODO: add multiple choice options
         } else {
-            mockedRound = new TextInputRound(mockedSong, "question" + suffix, correctAnswer, userAnswer);
+            mockedRound = new BasicRound(mockedSong, "question" + suffix, correctAnswer, userAnswer);
         }
 
         game.setCurrentRound(mockedRound);
