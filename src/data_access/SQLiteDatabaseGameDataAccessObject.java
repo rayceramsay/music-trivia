@@ -17,9 +17,13 @@ public class SQLiteDatabaseGameDataAccessObject implements GameDataAccessInterfa
 
     private final String databasePath;
     private final InMemoryGameDataAccessObject cache = new InMemoryGameDataAccessObject();
+    private final RoundFactory roundFactory;
+    private final SongFactory songFactory;
 
-    public SQLiteDatabaseGameDataAccessObject(String databasePath) {
+    public SQLiteDatabaseGameDataAccessObject(String databasePath, RoundFactory roundFactory, SongFactory songFactory) {
         this.databasePath = databasePath;
+        this.roundFactory = roundFactory;
+        this.songFactory = songFactory;
 
         try {
             setupDatabase();
@@ -61,8 +65,7 @@ public class SQLiteDatabaseGameDataAccessObject implements GameDataAccessInterfa
             try {
                 connection.rollback();
             } catch (SQLException ignored) {}
-            throw new RuntimeException(e);
-//            throw new RuntimeException("A problem occurred while saving the game.");
+            throw new RuntimeException("A problem occurred while saving the game.");
         } finally {
             try {
                 connection.close();
@@ -101,19 +104,21 @@ public class SQLiteDatabaseGameDataAccessObject implements GameDataAccessInterfa
 
     private void populateGameWithExistingRounds(Game game, int internalGameId, Connection connection) throws SQLException {
         String selectRoundDataSql = """
-                SELECT r.question, r.correct_answer, r.user_answer, s.title, s.artist, s.audio_path
+                SELECT r.id, r.question, r.correct_answer, r.user_answer, s.title, s.artist, s.audio_path
                 FROM game_round AS gr
                 INNER JOIN round AS r ON r.id = gr.id
                 INNER JOIN song AS s ON s.round_id = r.id
                 WHERE gr.game_id = ?
                 ORDER BY r.created_at
                 """;
+        String selectOptionsSql = "SELECT label FROM option WHERE round_id = ?";
 
-        try (PreparedStatement statement = connection.prepareStatement(selectRoundDataSql)) {
-            statement.setInt(1, internalGameId);
-            ResultSet roundDataResults = statement.executeQuery();
+        try (PreparedStatement selectRoundDataStatement = connection.prepareStatement(selectRoundDataSql)) {
+            selectRoundDataStatement.setInt(1, internalGameId);
+            ResultSet roundDataResults = selectRoundDataStatement.executeQuery();
 
             while (roundDataResults.next()) {
+                int internalRoundId = roundDataResults.getInt("id");
                 String question = roundDataResults.getString("question");
                 String correctAnswer = roundDataResults.getString("correct_answer");
                 String userAnswer = roundDataResults.getString("user_answer");
@@ -121,16 +126,26 @@ public class SQLiteDatabaseGameDataAccessObject implements GameDataAccessInterfa
                 String songArtist = roundDataResults.getString("artist");
                 String songAudioPath = roundDataResults.getString("audio_path");
 
-                Song song = new CommonSong(songTitle, songArtist, new OnlineMP3PlayableAudio(songAudioPath));
+                // PlayableAudio songAudio = playableAudioFactory.create(songAudioPath);
+                Song song = songFactory.create(songTitle, songArtist, songAudioPath);  // TODO: update with playable audio from factory
 
-                Round round;
-                if (game.getDifficulty().equalsIgnoreCase("easy") || game.getDifficulty().equalsIgnoreCase("medium")) {
-                   round = new MultipleChoiceRound(song, question, correctAnswer, userAnswer, new ArrayList<>());
-                } else {
-                    round = new BasicRound(song, question, correctAnswer, userAnswer);
+                List<String> incorrectOptions = new ArrayList<>();
+                try (PreparedStatement selectOptionsStatement = connection.prepareStatement(selectOptionsSql)) {
+                    selectOptionsStatement.setInt(1, internalRoundId);
+                    ResultSet optionsResults = selectOptionsStatement.executeQuery();
+
+                    while (optionsResults.next()) {
+                        String incorrectOption = optionsResults.getString("label");
+                        incorrectOptions.add(incorrectOption);
+                    }
                 }
 
-                // TODO: populate round with multiple choice options - requires changes to DB schema
+                Round round;
+                if (incorrectOptions.isEmpty()) {
+                    round = roundFactory.createBasicRound(song, question, correctAnswer, userAnswer);
+                } else {
+                    round = roundFactory.createOptionRound(song, question, correctAnswer, userAnswer, incorrectOptions);
+                }
 
                 game.setCurrentRound(round);
             }
@@ -154,6 +169,7 @@ public class SQLiteDatabaseGameDataAccessObject implements GameDataAccessInterfa
         String insertRoundSql = "INSERT INTO round (game_id, question, correct_answer, user_answer) VALUES (?, ?, ?, ?)";
         String insertSongSql = "INSERT INTO song (round_id, title, artist, audio_path) VALUES (?, ?, ?, ?)";
         String insertGameRoundSql = "INSERT INTO game_round (game_id, round_id) VALUES (?, ?)";
+        String insertOptionSql = "INSERT INTO option (round_id, label) VALUES (?, ?)";
 
         try {
             if (useTransaction) {
@@ -200,6 +216,21 @@ public class SQLiteDatabaseGameDataAccessObject implements GameDataAccessInterfa
                     insertGameRoundStatement.setInt(1, internalGameId);
                     insertGameRoundStatement.setInt(2, internalRoundId);
                     insertGameRoundStatement.executeUpdate();
+                }
+
+                if (round instanceof OptionRound) {
+                    List<String> allOptions = ((OptionRound) round).getOptions();
+                    for (String option : allOptions) {
+                        if (option.equalsIgnoreCase(round.getCorrectAnswer())) {
+                            continue;
+                        }
+
+                        try (PreparedStatement insertOptionStatement = connection.prepareStatement(insertOptionSql)) {
+                            insertOptionStatement.setInt(1, internalRoundId);
+                            insertOptionStatement.setString(2, option);
+                            insertOptionStatement.executeUpdate();
+                        }
+                    }
                 }
             }
 
@@ -288,12 +319,22 @@ public class SQLiteDatabaseGameDataAccessObject implements GameDataAccessInterfa
                     UNIQUE(game_id, round_id)
                 );
                 """;
+        String createRoundOptionTableSql = """
+                CREATE TABLE IF NOT EXISTS option (
+                    id INTEGER PRIMARY KEY,
+                    round_id INTEGER NOT NULL,
+                    label STRING NOT NULL,
+                    FOREIGN KEY (round_id) REFERENCES round (id) ON DELETE CASCADE,
+                    UNIQUE(round_id, label)
+                );
+                """;
 
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement()) {
             statement.execute(createGameTableSql);
             statement.execute(createRoundTableSql);
             statement.execute(createSongTableSql);
+            statement.execute(createRoundOptionTableSql);
             statement.execute(createGameRoundTableSql);
         }
     }

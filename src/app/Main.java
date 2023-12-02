@@ -1,6 +1,7 @@
 package app;
 
 import data_access.SQLiteDatabaseGameDataAccessObject;
+import data_access.api.SongAPI;
 import data_access.game_data.GameDataAccessInterface;
 import data_access.api.SpotifyAPI;
 import interface_adapter.ViewManagerModel;
@@ -53,14 +54,10 @@ public class Main {
         LoadGameViewModel loadGameViewModel = new LoadGameViewModel(RoundView.VIEW_NAME);
 
         // Create data access objects and factories
-        GameDataAccessInterface gameDataAccessObject = new SQLiteDatabaseGameDataAccessObject(dotenv.get("SQLITE_DB_PATH_PRODUCTION"));
-        RoundFactory roundFactory = new CommonRoundFactory(
-                new SpotifyAPI(
-                        new CommonSongFactory(),
-                        dotenv.get("SPOTIFY_CLIENT_ID"),
-                        dotenv.get("SPOTIFY_CLIENT_SECRET")
-                )
-        );
+        SongFactory songFactory = new CommonSongFactory();
+        SongAPI songAPI = new SpotifyAPI(songFactory, dotenv.get("SPOTIFY_CLIENT_ID"), dotenv.get("SPOTIFY_CLIENT_SECRET"));
+        RoundFactory roundFactory = new CommonRoundFactory(songAPI);
+        GameDataAccessInterface gameDataAccessObject = new SQLiteDatabaseGameDataAccessObject(dotenv.get("SQLITE_DB_PATH_PRODUCTION"), roundFactory, songFactory);
 
         // Create views
         MenuView menuView = MenuViewFactory.create(viewManagerModel, gameSettingsViewModel, getLoadableGamesViewModel, statisticsViewModel, gameDataAccessObject);

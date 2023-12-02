@@ -15,6 +15,8 @@ public class SQLiteDatabaseGameDataAccessObjectTest {
 
     private final static String TEST_DATABASE_PATH = Dotenv.load().get("SQLITE_DB_PATH_TEST");
 
+    private RoundFactory roundFactory;
+    private SongFactory songFactory;
     private SQLiteDatabaseGameDataAccessObject gameRepository;
 
     /**
@@ -22,7 +24,9 @@ public class SQLiteDatabaseGameDataAccessObjectTest {
      */
     @Before
     public void init() {
-        gameRepository = new SQLiteDatabaseGameDataAccessObject(TEST_DATABASE_PATH);
+        roundFactory = new MockRoundFactory();
+        songFactory = new CommonSongFactory();
+        gameRepository = new SQLiteDatabaseGameDataAccessObject(TEST_DATABASE_PATH, roundFactory, songFactory);
         gameRepository.clear();
     }
 
@@ -33,7 +37,7 @@ public class SQLiteDatabaseGameDataAccessObjectTest {
     public void persistenceTest() {
         Game mockedGame = createMockGame();
         gameRepository.save(mockedGame);
-        SQLiteDatabaseGameDataAccessObject differentGameRepository = new SQLiteDatabaseGameDataAccessObject(TEST_DATABASE_PATH);
+        SQLiteDatabaseGameDataAccessObject differentGameRepository = new SQLiteDatabaseGameDataAccessObject(TEST_DATABASE_PATH, roundFactory, songFactory);
         assertTrue(differentGameRepository.gameExists(mockedGame));
     }
 
