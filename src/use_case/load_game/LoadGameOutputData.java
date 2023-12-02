@@ -1,6 +1,6 @@
 package use_case.load_game;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class LoadGameOutputData {
 
@@ -12,11 +12,11 @@ public class LoadGameOutputData {
     private final int currentLives;
     private final int maxRounds;
     private final int currentRoundNumber;
-    private final ArrayList<String> multipleChoiceAnswers;
+    private final List<String> multipleChoiceAnswers;
     private final int score;
 
     public LoadGameOutputData(String gameId, String question, String genre, String difficulty, int initialLives, int currentLives,
-                              int maxRounds, int currentRoundNumber, ArrayList<String> multipleChoiceAnswers, int score) {
+                              int maxRounds, int currentRoundNumber, List<String> multipleChoiceAnswers, int score) {
         this.gameId = gameId;
         this.question = question;
         this.genre = genre;
@@ -63,7 +63,7 @@ public class LoadGameOutputData {
         return difficulty;
     }
 
-    public ArrayList<String> getMultipleChoiceAnswers() {
+    public List<String> getMultipleChoiceAnswers() {
         return multipleChoiceAnswers;
     }
 }

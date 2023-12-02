@@ -10,8 +10,8 @@ public class CreateGameViewModel extends ViewModel {
     public static final String STATE_PROPERTY = "createGame";
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
-    public CreateGameViewModel() {
-        super("round");
+    public CreateGameViewModel(String viewName) {
+        super(viewName);
     }
 
     @Override

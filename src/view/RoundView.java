@@ -1,6 +1,7 @@
 package view;
 
 import interface_adapter.ViewManagerModel;
+import interface_adapter.exit_round.ExitRoundController;
 import interface_adapter.create_game.CreateGameViewModel;
 import interface_adapter.finish_round.FinishRoundController;
 import interface_adapter.finish_round.FinishRoundViewModel;
@@ -42,13 +43,14 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
     public RoundView(ViewManagerModel viewManagerModel,
                      RoundViewModel roundViewModel,
                      SubmitAnswerViewModel submitAnswerViewModel,
-                     SubmitAnswerController submitAnswerController,
-                     FinishRoundController finishRoundController,
                      ToggleAudioViewModel toggleAudioViewModel,
-                     ToggleAudioController toggleAudioController,
                      FinishRoundViewModel finishRoundViewModel,
                      CreateGameViewModel createGameViewModel,
-                     LoadGameViewModel loadGameViewModel) {
+                     LoadGameViewModel loadGameViewModel,
+                     SubmitAnswerController submitAnswerController,
+                     ToggleAudioController toggleAudioController,
+                     FinishRoundController finishRoundController,
+                     ExitRoundController exitRoundController) {
         this.roundViewModel = roundViewModel;
         this.submitAnswerController = submitAnswerController;
         this.finishRoundController = finishRoundController;
@@ -56,10 +58,9 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         this.roundViewModel.addPropertyChangeListener(this);
         submitAnswerViewModel.addPropertyChangeListener(this);
         toggleAudioViewModel.addPropertyChangeListener(this);
-        finishRoundViewModel.addPropertyChangeListener(this);
         createGameViewModel.addPropertyChangeListener(this);
         loadGameViewModel.addPropertyChangeListener(this);
-
+        finishRoundViewModel.addPropertyChangeListener(this);
 
         // Prompt
         JLabel prompt = new JLabel(roundViewModel.TITLE_LABEL);
@@ -145,12 +146,10 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         // Menu button
         JButton menuButton = new JButton("Go to main menu");
         menuButton.addActionListener(e -> {
-            RoundState roundState = roundViewModel.getState();
-            roundState.setUserAnswer("");
             answerInputField.setText("");
 
-            viewManagerModel.setActiveView(MenuView.VIEW_NAME);
-            viewManagerModel.firePropertyChanged();
+            RoundState roundState = roundViewModel.getState();
+            exitRoundController.execute(roundState.getGameId());
         });
         JPanel menuButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         menuButtonPanel.add(menuButton);

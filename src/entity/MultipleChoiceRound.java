@@ -1,21 +1,24 @@
 package entity;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Collections;
-import java.util.Random;
 
-public class MultipleChoiceRound implements Round{
+public class MultipleChoiceRound implements Round {
+
     private final Song song;
     private final String question;
     private final String correctAnswer;
     private String userAnswer;
-    private final ArrayList<String> incorrectOptions;
+    private final List<String> incorrectOptions;
+
     public MultipleChoiceRound(Song song, String question, String correctAnswer){
         this.song = song;
         this.question = question;
         this.correctAnswer = correctAnswer;
         this.incorrectOptions = new ArrayList<>();
     }
+
     @Override
     public String getQuestion() {
         return this.question;
@@ -51,7 +54,7 @@ public class MultipleChoiceRound implements Round{
         return cleanedUserAnswer.equalsIgnoreCase(correctAnswer);
     }
 
-    public void addIncorrectOptions(ArrayList<String> options){
+    public void addIncorrectOptions(List<String> options){
         this.incorrectOptions.addAll(options);
     }
 
@@ -61,8 +64,8 @@ public class MultipleChoiceRound implements Round{
     }
 
     @Override
-    public ArrayList<String> getMultipleChoiceAnswers() {
-        ArrayList<String> ret = new ArrayList<>();
+    public List<String> getMultipleChoiceAnswers() {
+        List<String> ret = new ArrayList<>();
         ret.add(correctAnswer);
         ret.addAll(incorrectOptions);
         Collections.shuffle(ret);

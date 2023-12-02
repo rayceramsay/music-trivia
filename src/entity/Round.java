@@ -1,6 +1,6 @@
 package entity;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface Round {
     String getQuestion();
@@ -10,5 +10,5 @@ public interface Round {
     void setUserAnswer(String userAnswer);
     boolean isUserAnswerCorrect();
     boolean isFinished();
-    ArrayList<String> getMultipleChoiceAnswers();
+    List<String> getMultipleChoiceAnswers();
 }

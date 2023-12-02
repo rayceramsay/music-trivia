@@ -27,6 +27,7 @@ public class SubmitAnswerInteractor implements SubmitAnswerInputBoundary {
         Game game = gameDataAccessObject.getGameByID(gameId);
         Round currentRound = game.getCurrentRound();
 
+        currentRound.getSong().getAudio().stop();
         currentRound.setUserAnswer(userAnswer);
 
         boolean isUserAnswerCorrect = currentRound.isUserAnswerCorrect();

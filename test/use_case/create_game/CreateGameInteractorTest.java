@@ -2,8 +2,6 @@ package use_case.create_game;
 
 import data_access.game_data.GameDataAccessInterface;
 import data_access.game_data.InMemoryGameDataAccessObject;
-import data_access.api.MockAPI;
-import data_access.api.SongAPI;
 import entity.*;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.create_game.CreateGamePresenter;
@@ -23,8 +21,7 @@ public class CreateGameInteractorTest {
 
     @Before
     public void init() {
-        SongAPI songAPI = new MockAPI(new CommonSongFactory());
-        roundFactory = new CommonRoundFactory(songAPI);
+        roundFactory = new MockRoundFactory();
         gameDataAccessObject = new InMemoryGameDataAccessObject();
     }
 
@@ -85,7 +82,7 @@ public class CreateGameInteractorTest {
         ViewManagerModel viewManagerModel = new ViewManagerModel();
         CreateGameInputData createGameInputData = new CreateGameInputData(genre, difficulty, lives, rounds);
         RoundViewModel roundViewModel = new RoundViewModel(RoundView.VIEW_NAME);
-        CreateGameViewModel createGameViewModel = new CreateGameViewModel();
+        CreateGameViewModel createGameViewModel = new CreateGameViewModel(RoundView.VIEW_NAME);
 
         CreateGamePresenter createGamePresenter = new CreateGamePresenter(viewManagerModel, roundViewModel, createGameViewModel);
         CreateGameInputBoundary interactor = new CreateGameInteractor(gameDataAccessObject, createGamePresenter, roundFactory);

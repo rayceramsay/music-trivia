@@ -5,8 +5,7 @@ import data_access.game_data.InMemoryGameDataAccessObject;
 
 import data_access.api.SpotifyAPI;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.create_game.CreateGameController;
-import interface_adapter.create_game.CreateGamePresenter;
+import interface_adapter.exit_round.ExitRoundViewModel;
 import interface_adapter.create_game.CreateGameViewModel;
 import interface_adapter.finish_round.FinishRoundViewModel;
 import interface_adapter.game_over.GameOverViewModel;
@@ -18,12 +17,9 @@ import interface_adapter.round.RoundViewModel;
 import interface_adapter.statistics.StatisticsViewModel;
 import interface_adapter.submit_answer.SubmitAnswerViewModel;
 import interface_adapter.toggle_audio.ToggleAudioViewModel;
-import use_case.create_game.CreateGameInteractor;
-import use_case.create_game.*;
 import view.*;
 import javax.swing.*;
 import java.awt.*;
-
 
 public class Main {
 
@@ -49,9 +45,10 @@ public class Main {
         GetLoadableGamesViewModel getLoadableGamesViewModel = new GetLoadableGamesViewModel(LoadableGamesView.VIEW_NAME);
         StatisticsViewModel statisticsViewModel = new StatisticsViewModel(MenuView.VIEW_NAME);
         ToggleAudioViewModel toggleAudioViewModel = new ToggleAudioViewModel(RoundView.VIEW_NAME);
-        FinishRoundViewModel finishRoundViewModel = new FinishRoundViewModel();
-        CreateGameViewModel createGameViewModel = new CreateGameViewModel();
-        LoadGameViewModel loadGameViewModel = new LoadGameViewModel();
+        ExitRoundViewModel exitRoundViewModel = new ExitRoundViewModel(MenuView.VIEW_NAME);
+        FinishRoundViewModel finishRoundViewModel = new FinishRoundViewModel(RoundView.VIEW_NAME);
+        CreateGameViewModel createGameViewModel = new CreateGameViewModel(RoundView.VIEW_NAME);
+        LoadGameViewModel loadGameViewModel = new LoadGameViewModel(RoundView.VIEW_NAME);
 
         // Create data access objects
         GameDataAccessInterface gameDataAccessObject = new InMemoryGameDataAccessObject();
@@ -60,7 +57,7 @@ public class Main {
         MenuView menuView = MenuViewFactory.create(viewManagerModel, gameSettingsViewModel, getLoadableGamesViewModel, statisticsViewModel, gameDataAccessObject);
         GameSettingsView gameSettingsView = GameSettingsViewFactory.create(viewManagerModel, roundViewModel, createGameViewModel, gameSettingsViewModel, gameDataAccessObject, roundFactory);
         GameOverView gameOverView = new GameOverView(gameOverViewModel, viewManagerModel);
-        RoundView roundView = RoundViewFactory.create(viewManagerModel, roundViewModel, submitAnswerViewModel, finishRoundViewModel, createGameViewModel, loadGameViewModel, toggleAudioViewModel, gameOverViewModel, gameDataAccessObject, roundFactory);
+        RoundView roundView = RoundViewFactory.create(viewManagerModel, roundViewModel, submitAnswerViewModel, finishRoundViewModel, createGameViewModel, loadGameViewModel, toggleAudioViewModel, gameOverViewModel, exitRoundViewModel, gameDataAccessObject, roundFactory);
         LoadableGamesView loadableGamesView = LoadableGamesViewFactory.create(viewManagerModel, getLoadableGamesViewModel, roundViewModel, loadGameViewModel, gameDataAccessObject);
 
         // Add views to app

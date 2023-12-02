@@ -10,8 +10,8 @@ public class LoadGameViewModel extends ViewModel {
     public static final String STATE_PROPERTY = "loadGame";
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
-    public LoadGameViewModel() {
-        super("round");
+    public LoadGameViewModel(String viewName) {
+        super(viewName);
     }
 
     @Override
