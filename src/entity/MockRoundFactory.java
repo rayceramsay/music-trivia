@@ -1,31 +1,36 @@
 package entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MockRoundFactory implements RoundFactory {
 
     @Override
-    public Round createHardRound(String songGenre) {
-        return new TextInputRound(createMockSong(), "Question", "answer");
+    public Round createBasicRound(Song song, String question, String correctAnswer, String userAnswer) {
+        return new BasicRound(song, question, correctAnswer, userAnswer);
     }
 
     @Override
-    public Round createMediumRound(String songGenre) {
-        MultipleChoiceRound multipleChoiceRound = new MultipleChoiceRound(createMockSong(), "Question", "answer");
-        multipleChoiceRound.addIncorrectOptions(List.of(new String[]{"option1", "option2", "option3"}));
-
-        return multipleChoiceRound;
+    public OptionRound createOptionRound(Song song, String question, String correctAnswer, String userAnswer, List<String> incorrectOptions) {
+        return new MultipleChoiceRound(song, question, correctAnswer, userAnswer, incorrectOptions);
     }
 
     @Override
-    public Round createEasyRound(String songGenre) {
-        MultipleChoiceRound multipleChoiceRound = new MultipleChoiceRound(createMockSong(), "Question", "answer");
-        multipleChoiceRound.addIncorrectOptions(List.of(new String[]{"option1"}));
+    public Round generateBasicRoundFromGenre(String songGenre) {
+        return new BasicRound(createMockSong(), "Question", "answer");
+    }
 
-        return multipleChoiceRound;
+    @Override
+    public OptionRound generateOptionRoundFromGenre(String songGenre, int incorrectOptionsCount) {
+        List<String> incorrectOptions = new ArrayList<>();
+        for (int i = 0; i < incorrectOptionsCount; i++) {
+            incorrectOptions.add("option" + i);
+        }
+
+        return new MultipleChoiceRound(createMockSong(), "Question", "answer", incorrectOptions);
     }
 
     private Song createMockSong() {
-        return new CommonSong("title", "artist", new TestPlayableAudio("path.mp3"));
+        return new CommonSong("title", "artist", new MockPlayableAudio("path.mp3"));
     }
 }

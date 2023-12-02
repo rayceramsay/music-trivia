@@ -37,14 +37,14 @@ public class StatisticsTest {
 
     @Test
     public void averageInitialLivesTest() {
-        game = new CommonGame("Hip-Hop", "hard", 15, INITIAL_LIVES);
+        game = new CommonGame("hip-hop", "hard", 15, INITIAL_LIVES);
         gameDataAccessObject.save(game);
         assertEquals(10, gameDataAccessObject.avgStats().getAverageInitialLives());
     }
 
     @Test
     public void averageScoreTest() {
-        game = new CommonGame("Hip-Hop", "hard", 15, INITIAL_LIVES);
+        game = new CommonGame("hip-hop", "hard", 15, INITIAL_LIVES);
         game.setScore(10);
         gameDataAccessObject.save(game);
         assertEquals(10, gameDataAccessObject.avgStats().getAverageScore());
@@ -52,7 +52,7 @@ public class StatisticsTest {
 
     @Test
     public void averageRoundPlayedTest(){
-        game = new CommonGame("Hip-Hop", "hard", 15, INITIAL_LIVES);
+        game = new CommonGame("hip-hop", "hard", 15, INITIAL_LIVES);
         gameDataAccessObject.save(game);
         assertEquals(0, gameDataAccessObject.avgStats().getAverageRoundsPlayed());
         Round round = null;
@@ -63,21 +63,21 @@ public class StatisticsTest {
 
     @Test
     public void commonDifficultyTest() {
-        game = new CommonGame("Hip-Hop", "hard", 15, INITIAL_LIVES);
+        game = new CommonGame("hip-hop", "hard", 15, INITIAL_LIVES);
         gameDataAccessObject.save(game);
-        assertEquals("Hard", gameDataAccessObject.avgStats().getTopDifficulty());
+        assertEquals("hard", gameDataAccessObject.avgStats().getTopDifficulty().toLowerCase());
     }
 
     @Test
     public void commonGenreTest() {
-        game = new CommonGame("Hip-Hop", "hard", 15, INITIAL_LIVES);
+        game = new CommonGame("hip-hop", "hard", 15, INITIAL_LIVES);
         gameDataAccessObject.save(game);
-        assertEquals("Hip-Hop", gameDataAccessObject.avgStats().getTopGenre());
-        game = new CommonGame("Pop", "hard", 15, INITIAL_LIVES);
+        assertEquals("hip-hop", gameDataAccessObject.avgStats().getTopGenre().toLowerCase());
+        game = new CommonGame("pop", "hard", 15, INITIAL_LIVES);
         gameDataAccessObject.save(game);
-        game = new CommonGame("Pop", "hard", 15, INITIAL_LIVES);
+        game = new CommonGame("pop", "hard", 15, INITIAL_LIVES);
         gameDataAccessObject.save(game);
-        assertEquals("Pop", gameDataAccessObject.avgStats().getTopGenre());
+        assertEquals("pop", gameDataAccessObject.avgStats().getTopGenre().toLowerCase());
     }
 
     /**
@@ -85,16 +85,16 @@ public class StatisticsTest {
      */
     @Test
     public void coverageTest() {
-        game = new CommonGame("Rock", "hard", 1, INITIAL_LIVES);
+        game = new CommonGame("rock", "hard", 1, INITIAL_LIVES);
         gameDataAccessObject.save(game);
         StatisticsOutputBoundary statsPresenter = new StatisticsOutputBoundary() {
             @Override
             public void prepareView(StatisticsOutputData outputData) {
-                assertEquals("Rock", outputData.getCommonGameGenre());
+                assertEquals("rock", outputData.getCommonGameGenre().toLowerCase());
                 assertEquals(10, outputData.getAverageLives());
                 outputData.setAverageScore(100);
                 assertEquals(100, outputData.getAverageScore());
-                assertEquals("Hard", outputData.getCommonGameDifficulty());
+                assertEquals("hard", outputData.getCommonGameDifficulty().toLowerCase());
                 assertEquals(0, outputData.getAverageRoundsPlayed());
             }
         };

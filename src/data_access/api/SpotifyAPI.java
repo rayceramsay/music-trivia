@@ -1,8 +1,9 @@
 package data_access.api;
 
+import entity.PlayableAudio;
+import entity.PlayableAudioFactory;
 import entity.Song;
 import entity.SongFactory;
-import io.github.cdimascio.dotenv.Dotenv;
 import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -14,18 +15,19 @@ public class SpotifyAPI implements SongAPI {
 
     private final static int POPULARITY_THRESHOLD = 83;
 
-    private final String CLIENT_ID;
-    private final String CLIENT_SECRET;
+    private final String clientId;
+    private final String clientSecret;
     private final OkHttpClient client;
     private final SongFactory songFactory;
+    private final PlayableAudioFactory playableAudioFactory;
     private String authToken;
 
-    public SpotifyAPI(SongFactory songFactory) {
-        Dotenv dotenv = Dotenv.configure().filename("src/api.env").load();
-        this.CLIENT_ID = dotenv.get("CLIENT_ID");
-        this.CLIENT_SECRET = dotenv.get("CLIENT_SECRET");
+    public SpotifyAPI(SongFactory songFactory, PlayableAudioFactory playableAudioFactory, String clientId, String clientSecret) {
+        this.clientId = clientId;
+        this.clientSecret = clientSecret;
         this.client = new OkHttpClient().newBuilder().build();
         this.songFactory = songFactory;
+        this.playableAudioFactory = playableAudioFactory;
     }
 
     @Override
@@ -42,9 +44,10 @@ public class SpotifyAPI implements SongAPI {
             if (item.get("preview_url") instanceof String) {
                 JSONObject albumArtistInfo = (JSONObject) item.getJSONObject("album").getJSONArray("artists").get(0);
                 String songName = item.getString("name");
-                String audio = item.getString("preview_url");
+                String audioUrl = item.getString("preview_url");
                 String artistName = albumArtistInfo.getString("name");
-                song = songFactory.create(songName, artistName, audio);
+                PlayableAudio songAudio = playableAudioFactory.create(audioUrl);
+                song = songFactory.create(songName, artistName, songAudio);
             }
             i++;
         } while (!(item.get("preview_url") instanceof String) || item.getInt("popularity") < POPULARITY_THRESHOLD);
@@ -78,8 +81,8 @@ public class SpotifyAPI implements SongAPI {
     private void generateAuthToken() {
         String endpoint = "https://accounts.spotify.com/api/token";
         RequestBody body = new FormBody.Builder()
-                .add("client_id", CLIENT_ID)
-                .add("client_secret", CLIENT_SECRET)
+                .add("client_id", clientId)
+                .add("client_secret", clientSecret)
                 .add("grant_type", "client_credentials")
                 .build();
         Request request = new Request.Builder()

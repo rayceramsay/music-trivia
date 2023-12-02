@@ -2,13 +2,13 @@ package entity;
 
 import java.util.function.Consumer;
 
-public class TestPlayableAudio implements PlayableAudio {
+public class MockPlayableAudio implements PlayableAudio {
 
     private final String audioUrl;
     private boolean isPlaying;
     private Consumer<Void> onStopCallback;
 
-    public TestPlayableAudio(String audioUrl) { this.audioUrl = audioUrl; }
+    public MockPlayableAudio(String audioUrl) { this.audioUrl = audioUrl; }
 
     @Override
     public String getPath() { return audioUrl; }

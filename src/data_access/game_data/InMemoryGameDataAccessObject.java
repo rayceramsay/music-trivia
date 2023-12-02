@@ -3,7 +3,6 @@ package data_access.game_data;
 import entity.CommonLifetimeStatistics;
 import entity.Game;
 import entity.LifetimeStatistics;
-import entity.CommonGame;
 
 import java.util.*;
 
@@ -36,68 +35,57 @@ public class InMemoryGameDataAccessObject implements GameDataAccessInterface {
     }
 
     @Override
-    public String addGame(String difficulty, String genre, int initialLives, int maxRounds) {
-        Game game = new CommonGame(genre, difficulty, maxRounds, initialLives);
-        save(game);
-
-        return game.getID();
-    }
-
-    @Override
     public LifetimeStatistics avgStats() {
-        int gamesPlayed = 0;
+        int gamesPlayed = games.size();
+
+        if (gamesPlayed == 0) {
+            return null;
+        }
+
+        Map<String, Integer> difficultyCountMap = new HashMap<>();
+        Map<String, Integer> genreCountMap = new HashMap<>();
         int scoreSum = 0;
         int sumInitialLives = 0;
         int roundsPlayed = 0;
-        int[] difficultiesCount = new int[3]; // To track Easy, Medium, Hard count: index 0 -> Easy, 1 -> Medium, 2 -> Hard
-        int[] genresCount = new int[3];
+
         for (Game game : games.values()) {
-            switch (game.getDifficulty()) {
-                case "Easy" -> difficultiesCount[0]++;
-                case "Medium" -> difficultiesCount[1]++;
-                default -> difficultiesCount[2]++;
+            String difficulty = game.getDifficulty().toLowerCase();
+            if (difficultyCountMap.containsKey(difficulty)) {
+                difficultyCountMap.put(difficulty, difficultyCountMap.get(difficulty) + 1);
+            } else {
+                difficultyCountMap.put(difficulty, 1);
             }
-            switch (game.getGenre()) {
-                case "Rock" -> genresCount[0]++;
-                case "Pop" -> genresCount[1]++;
-                default -> genresCount[2]++;
+
+            String genre = game.getGenre().toLowerCase();
+            if (genreCountMap.containsKey(genre)) {
+                genreCountMap.put(genre, genreCountMap.get(genre) + 1);
+            } else {
+                genreCountMap.put(genre, 1);
             }
-            gamesPlayed += 1;
+
             scoreSum += game.getScore();
             sumInitialLives += game.getInitialLives();
             roundsPlayed += game.getRoundsPlayed();
         }
 
-        String[] difficultyLevels = {"Easy", "Medium", "Hard"};
-        int maxCountIndex = 0;
+        String mostCommonDifficulty = Collections.max(difficultyCountMap.entrySet(), Map.Entry.comparingByValue()).getKey();
+        String mostCommonGenre = Collections.max(genreCountMap.entrySet(), Map.Entry.comparingByValue()).getKey();
 
-        for (int i = 1; i < difficultiesCount.length; i++) {
-            if (difficultiesCount[i] > difficultiesCount[maxCountIndex]) {
-                maxCountIndex = i;
-            }
-        }
+        return new CommonLifetimeStatistics(
+            Math.round((float) scoreSum / gamesPlayed),
+            Math.round((float) sumInitialLives / gamesPlayed),
+            Math.round((float) roundsPlayed / gamesPlayed),
+            mostCommonDifficulty,
+            mostCommonGenre);
+    }
 
-        String[] genres = {"Rock", "Pop", "Hip-Hop"};
-        int maxCountIndex2 = 0;
+    @Override
+    public boolean gameExists(Game game) {
+        return games.containsKey(game.getID());
+    }
 
-        for (int i = 1; i < genresCount.length; i++) {
-            if (genresCount[i] > genresCount[maxCountIndex2]) {
-                maxCountIndex2 = i;
-            }
-        }
-
-        String mostCommonDifficulty = difficultyLevels[maxCountIndex];
-        String mostCommonGenre = genres[maxCountIndex2];
-        if (gamesPlayed == 0) {
-            return null;
-        } else {
-            return new CommonLifetimeStatistics(
-                    scoreSum/gamesPlayed,
-                    sumInitialLives/gamesPlayed,
-                    roundsPlayed/gamesPlayed,
-                    mostCommonDifficulty,
-                    mostCommonGenre);
-        }
-
+    @Override
+    public void clear() {
+        games.clear();
     }
 }

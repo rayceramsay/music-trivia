@@ -8,25 +8,32 @@ import java.util.UUID;
 public class CommonGame implements Game {
 
     private final String ID;
-    private int score;
-    private final String difficulty;
     private final String genre;
-    private final int initialLives;
+    private final String difficulty;
     private final int maxRounds;
+    private final int initialLives;
     private int currentLives;
-    private final List<Round> allRounds;
+    private int score;
     private final LocalDateTime createdAt;
     private LocalDateTime finishedAt;
+    private final List<Round> allRounds = new ArrayList<>();
 
-    public CommonGame(String genre, String difficulty, int maxRounds, int initialLives) {
-        this.ID = UUID.randomUUID().toString();
+    public CommonGame(String ID, String genre, String difficulty, int maxRounds, int initialLives, int currentLives,
+                      int score, LocalDateTime createdAt, LocalDateTime finishedAt) {
+        this.ID = ID;
         this.genre = genre;
         this.difficulty = difficulty;
         this.maxRounds = maxRounds;
         this.initialLives = initialLives;
-        this.currentLives = initialLives;
-        this.createdAt = LocalDateTime.now();
-        this.allRounds = new ArrayList<>();
+        this.currentLives = currentLives;
+        this.score = score;
+        this.createdAt = createdAt;
+        this.finishedAt = finishedAt;
+    }
+
+    public CommonGame(String genre, String difficulty, int maxRounds, int initialLives) {
+        this(UUID.randomUUID().toString(), genre, difficulty, maxRounds, initialLives, initialLives,
+                0, LocalDateTime.now(), null);
     }
 
     @Override

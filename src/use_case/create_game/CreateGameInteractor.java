@@ -5,7 +5,8 @@ import entity.*;
 
 import java.util.Objects;
 
-public class CreateGameInteractor implements CreateGameInputBoundary{
+public class CreateGameInteractor implements CreateGameInputBoundary {
+
     final GameDataAccessInterface gameAccessObject;
     final CreateGameOutputBoundary createGamePresenter;
     final RoundFactory roundFactory;
@@ -20,36 +21,35 @@ public class CreateGameInteractor implements CreateGameInputBoundary{
 
     @Override
     public void execute(CreateGameInputData inputData) {
-        String ID = gameAccessObject.addGame(inputData.getDifficulty(),
-                inputData.getGenre(),
-                inputData.getLives(),
-                inputData.getRounds());
+        Game game = new CommonGame(inputData.getGenre(), inputData.getDifficulty(), inputData.getRounds(), inputData.getLives());
 
-        String genre = inputData.getGenre();
         String difficulty = inputData.getDifficulty().toLowerCase().trim();
+        String genre = inputData.getGenre();
         Round firstRound;
 
-        if (Objects.equals(difficulty, "hard")) {
-            firstRound = roundFactory.createHardRound(genre);
+        if (difficulty.equals("easy")) {
+            firstRound = roundFactory.generateOptionRoundFromGenre(genre, 1);
         }
-        else if (Objects.equals(difficulty, "medium")){
-            firstRound = roundFactory.createMediumRound(genre);
+        else if (difficulty.equals("medium")){
+            firstRound = roundFactory.generateOptionRoundFromGenre(genre, 3);
         }
         else {
-            firstRound = roundFactory.createEasyRound(genre);
+            firstRound = roundFactory.generateBasicRoundFromGenre(genre);
         }
-        Game game = gameAccessObject.getGameByID(ID);
+
         game.setCurrentRound(firstRound);
         gameAccessObject.save(game);
 
         CreateGameOutputData createGameOutputData = new CreateGameOutputData();
-        createGameOutputData.setGameId(ID);
-        createGameOutputData.setGenre(inputData.getGenre());
-        createGameOutputData.setDifficulty(inputData.getDifficulty());
-        createGameOutputData.setRounds(inputData.getRounds());
-        createGameOutputData.setLives(inputData.getLives());
+        createGameOutputData.setGameId(game.getID());
+        createGameOutputData.setGenre(game.getGenre());
+        createGameOutputData.setDifficulty(game.getDifficulty());
+        createGameOutputData.setRounds(game.getMaxRounds());
+        createGameOutputData.setLives(game.getInitialLives());
 
-        createGameOutputData.setMultipleChoiceAnswers(firstRound.getMultipleChoiceAnswers());
+        if (firstRound instanceof OptionRound firstOptionRound) {
+            createGameOutputData.setMultipleChoiceAnswers(firstOptionRound.getOptions());
+        }
 
         createGamePresenter.prepareFirstRoundView(createGameOutputData);
     }

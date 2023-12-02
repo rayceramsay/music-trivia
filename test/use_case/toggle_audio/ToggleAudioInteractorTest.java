@@ -16,9 +16,9 @@ public class ToggleAudioInteractorTest {
 
     @Before
     public void init() {
-        song = new CommonSong("Closer", "The Chainsmokers", new TestPlayableAudio("path/song.mp3"));
+        song = new CommonSong("Closer", "The Chainsmokers", new MockPlayableAudio("path/song.mp3"));
         game = new CommonGame("pop", "hard", 10, 3);
-        game.setCurrentRound(new TextInputRound(song, "What song is this?", "Closer"));
+        game.setCurrentRound(new BasicRound(song, "What song is this?", "Closer"));
         gameDataAccessObject = new InMemoryGameDataAccessObject();
         gameDataAccessObject.save(game);
     }
