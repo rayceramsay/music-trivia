@@ -7,10 +7,15 @@ public class BasicRound implements Round {
     private final String correctAnswer;
     private String userAnswer;
 
-    public BasicRound(Song song, String question, String correctAnswer) {
+    public BasicRound(Song song, String question, String correctAnswer, String userAnswer) {
         this.song = song;
         this.question = question;
         this.correctAnswer = correctAnswer;
+        this.userAnswer = userAnswer;
+    }
+
+    public BasicRound(Song song, String question, String correctAnswer) {
+        this(song, question, correctAnswer, null);
     }
 
     @Override
