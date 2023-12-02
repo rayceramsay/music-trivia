@@ -7,14 +7,14 @@ import javafx.util.Duration;
 
 import java.util.function.Consumer;
 
-public class OnlineMP3PlayableAudio implements PlayableAudio {
+public class CommonPlayableAudio implements PlayableAudio {
 
     private final static JFXPanel JFX_PANEL = new JFXPanel(); // required for MediaPlayer to work
 
     private final String audioUrl;
     private final MediaPlayer mediaPlayer;
 
-    public OnlineMP3PlayableAudio(String audioUrl) {
+    public CommonPlayableAudio(String audioUrl) {
         this.audioUrl = audioUrl;
 
         Media audioMedia = new Media(audioUrl);

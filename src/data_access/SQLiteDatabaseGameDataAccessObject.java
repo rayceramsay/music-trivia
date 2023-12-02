@@ -19,11 +19,13 @@ public class SQLiteDatabaseGameDataAccessObject implements GameDataAccessInterfa
     private final InMemoryGameDataAccessObject cache = new InMemoryGameDataAccessObject();
     private final RoundFactory roundFactory;
     private final SongFactory songFactory;
+    private final PlayableAudioFactory playableAudioFactory;
 
-    public SQLiteDatabaseGameDataAccessObject(String databasePath, RoundFactory roundFactory, SongFactory songFactory) {
+    public SQLiteDatabaseGameDataAccessObject(String databasePath, RoundFactory roundFactory, SongFactory songFactory, PlayableAudioFactory playableAudioFactory) {
         this.databasePath = databasePath;
         this.roundFactory = roundFactory;
         this.songFactory = songFactory;
+        this.playableAudioFactory = playableAudioFactory;
 
         try {
             setupDatabase();
@@ -126,8 +128,8 @@ public class SQLiteDatabaseGameDataAccessObject implements GameDataAccessInterfa
                 String songArtist = roundDataResults.getString("artist");
                 String songAudioPath = roundDataResults.getString("audio_path");
 
-                // PlayableAudio songAudio = playableAudioFactory.create(songAudioPath);
-                Song song = songFactory.create(songTitle, songArtist, songAudioPath);  // TODO: update with playable audio from factory
+                PlayableAudio songAudio = playableAudioFactory.create(songAudioPath);
+                Song song = songFactory.create(songTitle, songArtist, songAudio);
 
                 List<String> incorrectOptions = new ArrayList<>();
                 try (PreparedStatement selectOptionsStatement = connection.prepareStatement(selectOptionsSql)) {

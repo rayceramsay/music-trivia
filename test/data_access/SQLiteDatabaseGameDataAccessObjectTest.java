@@ -17,6 +17,7 @@ public class SQLiteDatabaseGameDataAccessObjectTest {
 
     private RoundFactory roundFactory;
     private SongFactory songFactory;
+    private PlayableAudioFactory playableAudioFactory;
     private SQLiteDatabaseGameDataAccessObject gameRepository;
 
     /**
@@ -26,7 +27,7 @@ public class SQLiteDatabaseGameDataAccessObjectTest {
     public void init() {
         roundFactory = new MockRoundFactory();
         songFactory = new CommonSongFactory();
-        gameRepository = new SQLiteDatabaseGameDataAccessObject(TEST_DATABASE_PATH, roundFactory, songFactory);
+        gameRepository = new SQLiteDatabaseGameDataAccessObject(TEST_DATABASE_PATH, roundFactory, songFactory, playableAudioFactory);
         gameRepository.clear();
     }
 
@@ -37,7 +38,7 @@ public class SQLiteDatabaseGameDataAccessObjectTest {
     public void persistenceTest() {
         Game mockedGame = createMockGame();
         gameRepository.save(mockedGame);
-        SQLiteDatabaseGameDataAccessObject differentGameRepository = new SQLiteDatabaseGameDataAccessObject(TEST_DATABASE_PATH, roundFactory, songFactory);
+        SQLiteDatabaseGameDataAccessObject differentGameRepository = new SQLiteDatabaseGameDataAccessObject(TEST_DATABASE_PATH, roundFactory, songFactory, playableAudioFactory);
         assertTrue(differentGameRepository.gameExists(mockedGame));
     }
 

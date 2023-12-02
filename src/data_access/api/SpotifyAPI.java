@@ -1,5 +1,7 @@
 package data_access.api;
 
+import entity.PlayableAudio;
+import entity.PlayableAudioFactory;
 import entity.Song;
 import entity.SongFactory;
 import okhttp3.*;
@@ -17,13 +19,15 @@ public class SpotifyAPI implements SongAPI {
     private final String clientSecret;
     private final OkHttpClient client;
     private final SongFactory songFactory;
+    private final PlayableAudioFactory playableAudioFactory;
     private String authToken;
 
-    public SpotifyAPI(SongFactory songFactory, String clientId, String clientSecret) {
+    public SpotifyAPI(SongFactory songFactory, PlayableAudioFactory playableAudioFactory, String clientId, String clientSecret) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.client = new OkHttpClient().newBuilder().build();
         this.songFactory = songFactory;
+        this.playableAudioFactory = playableAudioFactory;
     }
 
     @Override
@@ -40,9 +44,10 @@ public class SpotifyAPI implements SongAPI {
             if (item.get("preview_url") instanceof String) {
                 JSONObject albumArtistInfo = (JSONObject) item.getJSONObject("album").getJSONArray("artists").get(0);
                 String songName = item.getString("name");
-                String audio = item.getString("preview_url");
+                String audioUrl = item.getString("preview_url");
                 String artistName = albumArtistInfo.getString("name");
-                song = songFactory.create(songName, artistName, audio);
+                PlayableAudio songAudio = playableAudioFactory.create(audioUrl);
+                song = songFactory.create(songName, artistName, songAudio);
             }
             i++;
         } while (!(item.get("preview_url") instanceof String) || item.getInt("popularity") < POPULARITY_THRESHOLD);
