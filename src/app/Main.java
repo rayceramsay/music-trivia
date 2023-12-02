@@ -32,7 +32,7 @@ public class Main {
         JFrame application = new JFrame("Spotify Bandits");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         CardLayout cardLayout = new CardLayout();
-        application.setMinimumSize(new Dimension(500, 300));
+        application.setMinimumSize(new Dimension(600, 300));
         JPanel views = new JPanel(cardLayout);
         application.add(views);
 
