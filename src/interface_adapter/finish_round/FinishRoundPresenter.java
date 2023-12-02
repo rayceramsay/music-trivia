@@ -15,6 +15,7 @@ public class FinishRoundPresenter implements FinishRoundOutputBoundary {
     private final ViewManagerModel viewManagerModel;
     private final GameOverViewModel gameOverViewModel;
     private final RoundViewModel roundViewModel;
+    private final FinishRoundViewModel finishRoundViewModel;
 
     /**
      * Constructor to initialize objects of FinishRoundPresenter
