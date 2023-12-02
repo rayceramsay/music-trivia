@@ -21,7 +21,7 @@ public class FinishRoundInteractorTest {
     public void init() {
         gameDataAccessObject = new InMemoryGameDataAccessObject();
         roundFactory = new MockRoundFactory();
-        round = roundFactory.createHardRound("pop");
+        round = roundFactory.generateBasicRoundFromGenre("pop");
 
     }
 

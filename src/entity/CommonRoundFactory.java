@@ -13,23 +13,16 @@ public class CommonRoundFactory implements RoundFactory{
     }
 
     @Override
-    public Round createHardRound(String songGenre) {
+    public Round generateBasicRoundFromGenre(String songGenre) {
         Song song = songAPI.getRandomSongFromGenre(songGenre);
 
         return new BasicRound(song, "What is the title of this song?", song.getTitle());
     }
 
     @Override
-    public Round createMediumRound (String songGenre) {
+    public OptionRound generateOptionRoundFromGenre(String songGenre, int incorrectOptionsCount) {
         Song song = songAPI.getRandomSongFromGenre(songGenre);
-        List<String> incorrectOptions = createIncorrectOptions(song, songGenre, 3);
-
-        return new MultipleChoiceRound(song, "What is the title of this song?", song.getTitle(), incorrectOptions);
-    }
-    @Override
-    public Round createEasyRound (String songGenre) {
-        Song song = songAPI.getRandomSongFromGenre(songGenre);
-        List<String> incorrectOptions = createIncorrectOptions(song, songGenre, 1);
+        List<String> incorrectOptions = createIncorrectOptions(song, songGenre, incorrectOptionsCount);
 
         return new MultipleChoiceRound(song, "What is the title of this song?", song.getTitle(), incorrectOptions);
     }

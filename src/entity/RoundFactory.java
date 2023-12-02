@@ -1,6 +1,5 @@
 package entity;
 public interface RoundFactory {
-    Round createHardRound(String songGenre);
-    Round createMediumRound(String songGenre);
-    Round createEasyRound(String songGenre);
+    Round generateBasicRoundFromGenre(String genre);
+    OptionRound generateOptionRoundFromGenre(String genre, int incorrectOptionsCount);
 }

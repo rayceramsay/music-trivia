@@ -36,11 +36,11 @@ public class FinishRoundInteractor implements FinishRoundInputBoundary{
             Round nextRound;
 
             if(Objects.equals(gameDifficulty, "hard")){
-                nextRound = roundFactory.createHardRound(gameGenre);
+                nextRound = roundFactory.generateBasicRoundFromGenre(gameGenre);
             }else if(Objects.equals(gameDifficulty, "medium")){
-                nextRound = roundFactory.createMediumRound(gameGenre);
+                nextRound = roundFactory.generateOptionRoundFromGenre(gameGenre, 3);
             }else{
-                nextRound = roundFactory.createEasyRound(gameGenre);
+                nextRound = roundFactory.generateOptionRoundFromGenre(gameGenre, 1);
             }
             game.setCurrentRound(nextRound);
             gameDataAccessObject.save(game);

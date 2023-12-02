@@ -31,13 +31,13 @@ public class CreateGameInteractor implements CreateGameInputBoundary{
         Round firstRound;
 
         if (Objects.equals(difficulty, "hard")) {
-            firstRound = roundFactory.createHardRound(genre);
+            firstRound = roundFactory.generateBasicRoundFromGenre(genre);
         }
         else if (Objects.equals(difficulty, "medium")){
-            firstRound = roundFactory.createMediumRound(genre);
+            firstRound = roundFactory.generateOptionRoundFromGenre(genre, 3);
         }
         else {
-            firstRound = roundFactory.createEasyRound(genre);
+            firstRound = roundFactory.generateOptionRoundFromGenre(genre, 1);
         }
         Game game = gameAccessObject.getGameByID(ID);
         game.setCurrentRound(firstRound);
@@ -49,6 +49,7 @@ public class CreateGameInteractor implements CreateGameInputBoundary{
         createGameOutputData.setDifficulty(inputData.getDifficulty());
         createGameOutputData.setRounds(inputData.getRounds());
         createGameOutputData.setLives(inputData.getLives());
+
         if (firstRound instanceof OptionRound firstOptionRound) {
             createGameOutputData.setMultipleChoiceAnswers(firstOptionRound.getOptions());
         }
