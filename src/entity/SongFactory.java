@@ -4,6 +4,7 @@ package entity;
  * SongFactory Interface
  */
 public interface SongFactory {
+
     /**
      * @param title  Title of song
      * @param artist Artist of song
