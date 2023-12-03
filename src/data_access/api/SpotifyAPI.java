@@ -38,8 +38,9 @@ public class SpotifyAPI implements SongAPI {
         JSONObject item;
         Song song = null;
 
-        int i = 0;
+
         do {
+            int i = new Random().nextInt(75);
             item = (JSONObject) songsArray.get(i);
             if (item.get("preview_url") instanceof String) {
                 JSONObject albumArtistInfo = (JSONObject) item.getJSONObject("album").getJSONArray("artists").get(0);
