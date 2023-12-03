@@ -40,7 +40,7 @@ public class SpotifyAPI implements SongAPI {
 
 
         do {
-            int i = new Random().nextInt(75);
+            int i = new Random().nextInt(songsArray.length());
             item = (JSONObject) songsArray.get(i);
             if (item.get("preview_url") instanceof String) {
                 JSONObject albumArtistInfo = (JSONObject) item.getJSONObject("album").getJSONArray("artists").get(0);
@@ -50,7 +50,6 @@ public class SpotifyAPI implements SongAPI {
                 PlayableAudio songAudio = playableAudioFactory.create(audioUrl);
                 song = songFactory.create(songName, artistName, songAudio);
             }
-            i++;
         } while (!(item.get("preview_url") instanceof String) || item.getInt("popularity") < POPULARITY_THRESHOLD);
 
         return song == null ? getRandomSongFromGenre(genre) : song;

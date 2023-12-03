@@ -14,9 +14,6 @@ import java.util.Map;
 import java.util.Random;
 
 public class SpotifyPlaylistAPI implements SongAPI {
-
-    private final static int POPULARITY_THRESHOLD = 83;
-
     private final String clientId;
     private final String clientSecret;
     private final OkHttpClient client;
@@ -45,7 +42,7 @@ public class SpotifyPlaylistAPI implements SongAPI {
         Song song = null;
 
         do {
-            int i = new Random().nextInt(0, songsArray.length() - 5 );
+            int i = new Random().nextInt(0, songsArray.length());
             item = ((JSONObject) songsArray.get(i)).getJSONObject("track");
             if (item.get("preview_url") instanceof String) {
                 JSONObject albumArtistInfo = (JSONObject) item.getJSONObject("album").getJSONArray("artists").get(0);
