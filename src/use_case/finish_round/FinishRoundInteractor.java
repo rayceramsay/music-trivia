@@ -6,23 +6,35 @@ import entity.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class FinishRoundInteractor implements FinishRoundInputBoundary{
+/**
+ * Interactor which implements the Input Boundary for the FinishRound use case
+ */
+public class FinishRoundInteractor implements FinishRoundInputBoundary {
     private final GameDataAccessInterface gameDataAccessObject;
     private final FinishRoundOutputBoundary finishRoundPresenter;
     private final RoundFactory roundFactory;
+
+    /**
+     * Constructor to initialize objects of FinishRoundInteractor
+     *
+     * @param finishRoundPresenter Output boundary for finish round use case
+     * @param gameDataAccessObject Data access interface for finish round use case
+     * @param roundFactory         RoundFactory
+     */
     public FinishRoundInteractor(FinishRoundOutputBoundary finishRoundPresenter,
                                  GameDataAccessInterface gameDataAccessObject,
-                                 RoundFactory roundFactory){
+                                 RoundFactory roundFactory) {
         this.gameDataAccessObject = gameDataAccessObject;
         this.finishRoundPresenter = finishRoundPresenter;
         this.roundFactory = roundFactory;
-        }
+    }
+
     @Override
-    public void execute(FinishRoundInputData inputData){
+    public void execute(FinishRoundInputData inputData) {
         String gameId = inputData.getGameId();
         Game game = gameDataAccessObject.getGameByID(gameId);
 
-        if(game.isGameOver()){
+        if (game.isGameOver()) {
             game.setFinishedAt(LocalDateTime.now());
             gameDataAccessObject.save(game);
 
@@ -30,16 +42,16 @@ public class FinishRoundInteractor implements FinishRoundInputBoundary{
             outputData.setScore(game.getScore());
 
             finishRoundPresenter.prepareGameOverView(outputData);
-        }else{
+        } else {
             String gameGenre = game.getGenre();
             String gameDifficulty = game.getDifficulty().toLowerCase().trim();
             Round nextRound;
 
-            if(Objects.equals(gameDifficulty, "hard")){
+            if(Objects.equals(gameDifficulty, "hard")) {
                 nextRound = roundFactory.generateBasicRoundFromGenre(gameGenre);
-            }else if(Objects.equals(gameDifficulty, "medium")){
+            } else if(Objects.equals(gameDifficulty, "medium")){
                 nextRound = roundFactory.generateOptionRoundFromGenre(gameGenre, 3);
-            }else{
+            } else {
                 nextRound = roundFactory.generateOptionRoundFromGenre(gameGenre, 1);
             }
             game.setCurrentRound(nextRound);

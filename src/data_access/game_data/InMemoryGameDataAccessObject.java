@@ -6,6 +6,10 @@ import entity.LifetimeStatistics;
 
 import java.util.*;
 
+/**
+ * Implementation of the Game DAO using in memory storage.
+ * The Game DAO class includes all interfaces that define methods for accessing the required data for the game
+ */
 public class InMemoryGameDataAccessObject implements GameDataAccessInterface {
 
     private final Map<String, Game> games = new HashMap<>();  // maps gameID to game object

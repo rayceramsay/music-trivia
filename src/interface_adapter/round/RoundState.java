@@ -15,7 +15,8 @@ public class RoundState {
     private int score;
     private List<String> multipleChoiceOptions;
 
-    public RoundState() {}
+    public RoundState() {
+    }
 
     public String getGameId() {
         return gameId;
@@ -80,13 +81,20 @@ public class RoundState {
     public void setCurrentRoundNumber(int currentRoundNumber) {
         this.currentRoundNumber = currentRoundNumber;
     }
-    public int getScore() {return score;}
-    public void setScore(int score) {this.score = score;}
 
-    public void setMultipleChoiceOptions(List<String> options){
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public void setMultipleChoiceOptions(List<String> options) {
         this.multipleChoiceOptions = options;
     }
-    public List<String> getMultipleChoiceOptions(){
+
+    public List<String> getMultipleChoiceOptions() {
         return this.multipleChoiceOptions;
     }
 

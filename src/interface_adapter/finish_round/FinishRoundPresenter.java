@@ -8,11 +8,23 @@ import interface_adapter.round.RoundViewModel;
 import use_case.finish_round.FinishRoundOutputBoundary;
 import use_case.finish_round.FinishRoundOutputData;
 
+/**
+ * Presenter which implements the Output Boundary for the FinishRound interface adapter
+ */
 public class FinishRoundPresenter implements FinishRoundOutputBoundary {
     private final ViewManagerModel viewManagerModel;
     private final GameOverViewModel gameOverViewModel;
     private final RoundViewModel roundViewModel;
     private final FinishRoundViewModel finishRoundViewModel;
+
+    /**
+     * Constructor to initialize objects of FinishRoundPresenter
+     *
+     * @param viewManagerModel     View manager model
+     * @param gameOverViewModel    View model for game over state
+     * @param roundViewModel       View model for a round
+     * @param finishRoundViewModel View model for finish round
+     */
     public FinishRoundPresenter(ViewManagerModel viewManagerModel,
                                 GameOverViewModel gameOverViewModel,
                                 RoundViewModel roundViewModel,

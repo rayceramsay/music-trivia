@@ -1,5 +1,8 @@
 package entity;
 
+/**
+ * Implementation of interface SongFactory
+ */
 public class CommonSongFactory implements SongFactory {
 
     @Override

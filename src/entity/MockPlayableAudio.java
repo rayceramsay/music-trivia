@@ -2,6 +2,10 @@ package entity;
 
 import java.util.function.Consumer;
 
+/**
+ * Implementation to be used for testing purposes so that when OnlineMP3PlayableAudio is implemented, existing tests don't stop failing
+ * Would fail due to having a filler url in the test and not the real one
+ */
 public class MockPlayableAudio implements PlayableAudio {
 
     private final String audioUrl;

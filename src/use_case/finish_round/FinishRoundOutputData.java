@@ -10,7 +10,9 @@ public class FinishRoundOutputData {
     private int lives;
     private List<String> multipleChoiceAnswers;
 
-    public FinishRoundOutputData() {}
+    public FinishRoundOutputData() {
+    }
+
     public int getScore() {
         return score;
     }

@@ -2,7 +2,8 @@ package view;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.create_game.CreateGameController;
-import interface_adapter.game_settings.*;
+import interface_adapter.game_settings.GameSettingsState;
+import interface_adapter.game_settings.GameSettingsViewModel;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -15,7 +16,7 @@ import java.beans.PropertyChangeListener;
 
 public class GameSettingsView extends JPanel implements ActionListener, PropertyChangeListener {
 
-    public final static String VIEW_NAME =  "game settings";
+    public final static String VIEW_NAME = "game settings";
 
     private final GameSettingsViewModel gameSettingsViewModel;
 
@@ -39,9 +40,16 @@ public class GameSettingsView extends JPanel implements ActionListener, Property
     public final JLabel roundsLabel;
 
 
-    public GameSettingsView (GameSettingsViewModel gameSettingsViewModel,
-                             ViewManagerModel viewManagerModel,
-                             CreateGameController gameController) {
+    /**
+     * Constructor to initialize objects of GameSettingsView
+     *
+     * @param gameSettingsViewModel View model for game settings
+     * @param viewManagerModel      View manager model
+     * @param gameController        Controller for game
+     */
+    public GameSettingsView(GameSettingsViewModel gameSettingsViewModel,
+                            ViewManagerModel viewManagerModel,
+                            CreateGameController gameController) {
 
         this.setLayout(new GridBagLayout());
 
@@ -177,9 +185,9 @@ public class GameSettingsView extends JPanel implements ActionListener, Property
                     GameSettingsState state = gameSettingsViewModel.getState();
 
                     gameController.execute(state.getDifficulty(),
-                                                state.getGenre(),
-                                                state.getLives(),
-                                                state.getRounds());
+                            state.getGenre(),
+                            state.getLives(),
+                            state.getRounds());
 
                 }
             }

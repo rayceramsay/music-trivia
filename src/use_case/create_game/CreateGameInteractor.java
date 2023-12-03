@@ -5,15 +5,24 @@ import entity.*;
 
 import java.util.Objects;
 
+/**
+ * Interactor which implements the Input Boundary for the CreateGame use case
+ */
 public class CreateGameInteractor implements CreateGameInputBoundary {
-
     final GameDataAccessInterface gameAccessObject;
     final CreateGameOutputBoundary createGamePresenter;
     final RoundFactory roundFactory;
 
-    public CreateGameInteractor (GameDataAccessInterface gameAccessObject,
-                                 CreateGameOutputBoundary createGamePresenter,
-                                 RoundFactory roundFactory) {
+    /**
+     * Constructor to initialize objects of CreateGameInteractor
+     *
+     * @param gameAccessObject    data access interface for CreateGame use case
+     * @param createGamePresenter output boundary for CreateGame use case
+     * @param roundFactory        RoundFactory
+     */
+    public CreateGameInteractor(GameDataAccessInterface gameAccessObject,
+                                CreateGameOutputBoundary createGamePresenter,
+                                RoundFactory roundFactory) {
         this.gameAccessObject = gameAccessObject;
         this.createGamePresenter = createGamePresenter;
         this.roundFactory = roundFactory;

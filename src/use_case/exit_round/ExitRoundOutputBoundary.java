@@ -1,5 +1,8 @@
 package use_case.exit_round;
 
+/**
+ * Output boundary for CreateGame use case
+ */
 public interface ExitRoundOutputBoundary {
 
     /**
