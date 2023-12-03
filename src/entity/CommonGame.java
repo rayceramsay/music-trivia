@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Implementation of Game
+ */
 public class CommonGame implements Game {
 
     private final String ID;

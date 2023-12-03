@@ -13,6 +13,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+/**
+ * Implementation of SongAPI where we have playlists for each specific genre
+ */
 public class SpotifyPlaylistAPI implements SongAPI {
     private final String clientId;
     private final String clientSecret;
@@ -22,6 +25,14 @@ public class SpotifyPlaylistAPI implements SongAPI {
     private String authToken;
     private final Map<String, String> playlists = new HashMap<>();
 
+    /**
+     * Constructor to initialize objects of SpotifyPlaylistAPI
+     *
+     * @param songFactory          SongFactory
+     * @param playableAudioFactory PlayableAudioFactory
+     * @param clientId             ClientID for the api
+     * @param clientSecret         Client secret for the api
+     */
     public SpotifyPlaylistAPI(SongFactory songFactory, PlayableAudioFactory playableAudioFactory, String clientId, String clientSecret) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;

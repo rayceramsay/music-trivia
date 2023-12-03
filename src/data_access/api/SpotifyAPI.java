@@ -11,6 +11,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.Random;
 
+/**
+ * Implementation of SongAPI where the spotify api dictates the genre
+ */
 public class SpotifyAPI implements SongAPI {
 
     private final static int POPULARITY_THRESHOLD = 83;
@@ -22,6 +25,14 @@ public class SpotifyAPI implements SongAPI {
     private final PlayableAudioFactory playableAudioFactory;
     private String authToken;
 
+    /**
+     * Constructor to initialize objects of SpotifyAPI
+     *
+     * @param songFactory          SongFactory
+     * @param playableAudioFactory PlayableAudioFactory
+     * @param clientId             ClientID for API
+     * @param clientSecret         Client secret for API
+     */
     public SpotifyAPI(SongFactory songFactory, PlayableAudioFactory playableAudioFactory, String clientId, String clientSecret) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;

@@ -7,6 +7,8 @@ import java.util.List;
  */
 public interface RoundFactory {
     /**
+     * Create a text input round
+     *
      * @param song          The song
      * @param question      The prompt
      * @param correctAnswer correct answer
@@ -16,6 +18,8 @@ public interface RoundFactory {
     Round createBasicRound(Song song, String question, String correctAnswer, String userAnswer);
 
     /**
+     * create a multiple choice round
+     *
      * @param song             The song
      * @param question         The prompt
      * @param correctAnswer    correct answer
@@ -26,12 +30,16 @@ public interface RoundFactory {
     OptionRound createOptionRound(Song song, String question, String correctAnswer, String userAnswer, List<String> incorrectOptions);
 
     /**
+     * create a text input round with songs of the given genre
+     *
      * @param genre genre of the song
      * @return Round
      */
     Round generateBasicRoundFromGenre(String genre);
 
     /**
+     * create a multiple choice round with songs of the given genre and amount of incorrect choices
+     *
      * @param genre                 genre of the song
      * @param incorrectOptionsCount number of incorrect answers
      * @return OptionRound
