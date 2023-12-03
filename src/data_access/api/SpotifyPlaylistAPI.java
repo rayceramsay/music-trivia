@@ -53,8 +53,9 @@ public class SpotifyPlaylistAPI implements SongAPI {
                 String artistName = albumArtistInfo.getString("name");
                 PlayableAudio songAudio = playableAudioFactory.create(audioUrl);
                 song = songFactory.create(songName, artistName, songAudio);
+                System.out.println(songName);
             }
-        } while (!(item.get("preview_url") instanceof String) || item.getInt("popularity") < POPULARITY_THRESHOLD);
+        } while (!(item.get("preview_url") instanceof String));
 
         return song == null ? getRandomSongFromGenre(genre) : song;
     }
