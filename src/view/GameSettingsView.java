@@ -57,7 +57,7 @@ public class GameSettingsView extends JPanel implements ActionListener, Property
         this.viewManagerModel = viewManagerModel;
         gameSettingsViewModel.addPropertyChangeListener(this);
 
-        String[] genreOptions = {"Hip-Hop", "Rock", "Pop"};
+        String[] genreOptions = {"Pop", "Rock", "Rap"};
         String[] difficultyOptions = {"Easy", "Medium", "Hard"};
 
         GridBagConstraints gridBagContraints = new GridBagConstraints();

@@ -1,5 +1,6 @@
 package app;
 
+import data_access.api.SpotifyPlaylistAPI;
 import data_access.game_data.SQLiteDatabaseGameDataAccessObject;
 import data_access.api.SongAPI;
 import data_access.game_data.GameDataAccessInterface;
@@ -64,7 +65,7 @@ public class Main {
         // Create factories and data access objects
         PlayableAudioFactory playableAudioFactory = new CommonPlayableAudioFactory();
         SongFactory songFactory = new CommonSongFactory();
-        SongAPI songAPI = new SpotifyAPI(songFactory, playableAudioFactory, dotenv.get("SPOTIFY_CLIENT_ID"), dotenv.get("SPOTIFY_CLIENT_SECRET"));
+        SongAPI songAPI = new SpotifyPlaylistAPI(songFactory, playableAudioFactory, dotenv.get("SPOTIFY_CLIENT_ID"), dotenv.get("SPOTIFY_CLIENT_SECRET"));
         RoundFactory roundFactory = new CommonRoundFactory(songAPI);
         GameDataAccessInterface gameDataAccessObject = new SQLiteDatabaseGameDataAccessObject(dotenv.get("SQLITE_DB_PATH_PRODUCTION"), roundFactory, songFactory, playableAudioFactory);
 
