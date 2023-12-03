@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class SpotifyPlaylistAPI implements SongAPI {
@@ -22,7 +23,7 @@ public class SpotifyPlaylistAPI implements SongAPI {
     private final SongFactory songFactory;
     private final PlayableAudioFactory playableAudioFactory;
     private String authToken;
-    private final HashMap<String, String> playlists = new HashMap<>();
+    private final Map<String, String> playlists = new HashMap<>();
 
     public SpotifyPlaylistAPI(SongFactory songFactory, PlayableAudioFactory playableAudioFactory, String clientId, String clientSecret) {
         this.clientId = clientId;
@@ -44,7 +45,7 @@ public class SpotifyPlaylistAPI implements SongAPI {
         Song song = null;
 
         do {
-            int i = new Random().nextInt(0, 50);
+            int i = new Random().nextInt(0, songsArray.length() - 5);
             item = ((JSONObject) songsArray.get(i)).getJSONObject("track");
             if (item.get("preview_url") instanceof String) {
                 JSONObject albumArtistInfo = (JSONObject) item.getJSONObject("album").getJSONArray("artists").get(0);
@@ -53,7 +54,6 @@ public class SpotifyPlaylistAPI implements SongAPI {
                 String artistName = albumArtistInfo.getString("name");
                 PlayableAudio songAudio = playableAudioFactory.create(audioUrl);
                 song = songFactory.create(songName, artistName, songAudio);
-                System.out.println(songName);
             }
         } while (!(item.get("preview_url") instanceof String));
 
