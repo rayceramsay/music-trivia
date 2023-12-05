@@ -9,36 +9,39 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 /**
- * Implementation of SongAPI where the spotify api dictates the genre
+ * Implementation of SongAPI where we have playlists for each specific genre
  */
-public class SpotifyAPI implements SongAPI {
-
-    private final static int POPULARITY_THRESHOLD = 83;
-
+public class SpotifyPlaylistAPI implements SongAPI {
     private final String clientId;
     private final String clientSecret;
     private final OkHttpClient client;
     private final SongFactory songFactory;
     private final PlayableAudioFactory playableAudioFactory;
     private String authToken;
+    private final Map<String, String> playlists = new HashMap<>();
 
     /**
-     * Constructor to initialize objects of SpotifyAPI
+     * Constructor to initialize objects of SpotifyPlaylistAPI
      *
      * @param songFactory          SongFactory
      * @param playableAudioFactory PlayableAudioFactory
-     * @param clientId             ClientID for API
-     * @param clientSecret         Client secret for API
+     * @param clientId             ClientID for the api
+     * @param clientSecret         Client secret for the api
      */
-    public SpotifyAPI(SongFactory songFactory, PlayableAudioFactory playableAudioFactory, String clientId, String clientSecret) {
+    public SpotifyPlaylistAPI(SongFactory songFactory, PlayableAudioFactory playableAudioFactory, String clientId, String clientSecret) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.client = new OkHttpClient().newBuilder().build();
         this.songFactory = songFactory;
         this.playableAudioFactory = playableAudioFactory;
+        this.playlists.put("Pop", "357fWKFTiDhpt9C69CMG4q");
+        this.playlists.put("Rap", "4riovLwMCrY3q0Cd4e0Sqp");
+        this.playlists.put("Rock", "4MnDPgHgfuEPX43dw2gxDn");
     }
 
     @Override
@@ -49,10 +52,9 @@ public class SpotifyAPI implements SongAPI {
         JSONObject item;
         Song song = null;
 
-
         do {
-            int i = new Random().nextInt(songsArray.length());
-            item = (JSONObject) songsArray.get(i);
+            int i = new Random().nextInt(0, songsArray.length());
+            item = ((JSONObject) songsArray.get(i)).getJSONObject("track");
             if (item.get("preview_url") instanceof String) {
                 JSONObject albumArtistInfo = (JSONObject) item.getJSONObject("album").getJSONArray("artists").get(0);
                 String songName = item.getString("name");
@@ -61,13 +63,13 @@ public class SpotifyAPI implements SongAPI {
                 PlayableAudio songAudio = playableAudioFactory.create(audioUrl);
                 song = songFactory.create(songName, artistName, songAudio);
             }
-        } while (!(item.get("preview_url") instanceof String) || item.getInt("popularity") < POPULARITY_THRESHOLD);
+        } while (!(item.get("preview_url") instanceof String));
 
         return song == null ? getRandomSongFromGenre(genre) : song;
     }
 
     private JSONObject retrieveSongData(String genre) {
-        String url = getRandomEndpoint(genre);
+        String url = "https://api.spotify.com/v1/playlists/" + playlists.get(genre);
         Request request = new Request.Builder()
                 .url(url)
                 .addHeader("Authorization", "Bearer " + authToken)
@@ -113,14 +115,7 @@ public class SpotifyAPI implements SongAPI {
             throw new RuntimeException(e);
         }
     }
-
-    private String getRandomEndpoint(String genre) {
-        Random random = new Random();
-
-        String baseEndpoint = "https://api.spotify.com/v1/search?q=";
-        char search = (char) ('a' + random.nextInt(26));
-        int offset = random.nextInt(10);
-
-        return String.format("%s%s&genre:%s&type=track&limit=50&offset=%s", baseEndpoint, search, genre, offset);
-    }
 }
+
+
+

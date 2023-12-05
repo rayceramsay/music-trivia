@@ -17,8 +17,10 @@ import interface_adapter.toggle_audio.ToggleAudioViewModel;
 
 import javax.swing.*;
 import java.awt.*;
-
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -40,6 +42,17 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
     private final JPanel answerSection;
     private final int borderWidth = 2;
 
+    /**
+     * Constructor to initialize objects of RoundView
+     *
+     * @param viewManagerModel       View manager model
+     * @param roundViewModel         View model for Round
+     * @param submitAnswerViewModel  View model for SubmitAnswer
+     * @param submitAnswerController Controller for SubmitAnswer
+     * @param finishRoundController  Controller for FinishRound
+     * @param toggleAudioViewModel   ViewModel for ToggleAudio
+     * @param toggleAudioController  Controller for ToggleAudio
+     */
     public RoundView(ViewManagerModel viewManagerModel,
                      RoundViewModel roundViewModel,
                      SubmitAnswerViewModel submitAnswerViewModel,
@@ -83,7 +96,6 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         answerSection.setMaximumSize(new Dimension(getMaximumSize().width, 10));
 
         // Hard Text Answer
-
         answerInputField = new JFormattedTextField();
         answerInputField.addKeyListener(new KeyListener() {
             @Override
@@ -94,10 +106,12 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
             }
 
             @Override
-            public void keyPressed(KeyEvent e) {}
+            public void keyPressed(KeyEvent e) {
+            }
 
             @Override
-            public void keyReleased(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+            }
         });
 
         submit = new JButton("Submit");
@@ -113,10 +127,10 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
 
         // Round Info Section
         JPanel infoSection = new JPanel();
-        infoSection.setMinimumSize(new Dimension(300,10));
+        infoSection.setMinimumSize(new Dimension(300, 10));
         infoSection.setMaximumSize(new Dimension(getMaximumSize().width, 10));
         infoSection.setBackground(Color.darkGray);
-        infoSection.setBorder(BorderFactory.createEmptyBorder(2,0,0,0));
+        infoSection.setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
         infoSection.setLayout(new GridLayout(1, 3, borderWidth, borderWidth));
 
         roundInfo = new JLabel("Round: ");
@@ -170,7 +184,8 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {}
+    public void actionPerformed(ActionEvent e) {
+    }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
@@ -229,10 +244,10 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         answerSection.repaint();
     }
 
-    private void updateViewComponents(){
+    private void updateViewComponents() {
         roundInfo.setText("Round: " + roundViewModel.getState().getCurrentRoundNumber() + "/" + roundViewModel.getState().getMaxRounds());
         livesInfo.setText("Lives left:" + roundViewModel.getState().getCurrentLives());
-        genreInfo.setText("Genre: "  + roundViewModel.getState().getGenre());
+        genreInfo.setText("Genre: " + roundViewModel.getState().getGenre());
         scoreInfo.setText("Score: " + roundViewModel.getState().getScore());
 
         loadingLabel.setVisible(false);

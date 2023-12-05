@@ -5,6 +5,9 @@ import interface_adapter.ViewModel;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+/**
+ * Extension of ViewModel for GameSettings interface adapter
+ */
 public class GameSettingsViewModel extends ViewModel {
 
     public final String DIFFICULTY_SELECTOR_LABEL = "Difficulty: ";
@@ -18,6 +21,11 @@ public class GameSettingsViewModel extends ViewModel {
     private GameSettingsState state = new GameSettingsState();
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
+    /**
+     * Constructor to initialize objects of GameSettingsViewModel
+     *
+     * @param viewName name of View
+     */
     public GameSettingsViewModel(String viewName) {
         super(viewName);
     }
@@ -32,10 +40,16 @@ public class GameSettingsViewModel extends ViewModel {
         support.addPropertyChangeListener(listener);
     }
 
+    /**
+     * @return GameSettingsState
+     */
     public GameSettingsState getState() {
         return state;
     }
 
+    /**
+     * @param state GameSettingsState
+     */
     public void setState(GameSettingsState state) {
         this.state = state;
     }

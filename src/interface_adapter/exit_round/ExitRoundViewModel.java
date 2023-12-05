@@ -4,6 +4,9 @@ import interface_adapter.ViewModel;
 
 import java.beans.PropertyChangeListener;
 
+/**
+ * Extension of ViewModel for ExitRound interface adapter
+ */
 public class ExitRoundViewModel extends ViewModel {
 
     public ExitRoundViewModel(String viewName) {
@@ -11,8 +14,10 @@ public class ExitRoundViewModel extends ViewModel {
     }
 
     @Override
-    public void firePropertyChanged() {}
+    public void firePropertyChanged() {
+    }
 
     @Override
-    public void addPropertyChangeListener(PropertyChangeListener listener) {}
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+    }
 }

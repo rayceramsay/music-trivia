@@ -38,7 +38,7 @@ public class FinishRoundInteractorTest {
     public void init() {
         gameDataAccessObject = new InMemoryGameDataAccessObject();
         roundFactory = new MockRoundFactory();
-        round = roundFactory.createHardRound("pop");
+        round = roundFactory.generateBasicRoundFromGenre("pop");
     }
 
     /**
@@ -191,7 +191,8 @@ public class FinishRoundInteractorTest {
                 // Verify info about new current round
                 assertEquals(game.getRoundsPlayed(), 2);
                 assertNotEquals(game.getCurrentRound(), round);
-                assertEquals(game.getCurrentRound().getClass(), TextInputRound.class);
+                assertTrue(game.getCurrentRound() instanceof BasicRound);
+                assertFalse(game.getCurrentRound() instanceof OptionRound);
 
                 // Verify output data
                 assertEquals(game.getGenre(), outputData.getGenre());
@@ -237,9 +238,9 @@ public class FinishRoundInteractorTest {
                 // Verify info about new current round
                 assertEquals(2, game.getRoundsPlayed());
                 assertNotEquals(game.getCurrentRound(), round);
-                assertEquals(game.getCurrentRound().getClass(), MultipleChoiceRound.class);
-                MultipleChoiceRound currRound =  (MultipleChoiceRound) game.getCurrentRound();
-                assertEquals(4, currRound.getMultipleChoiceAnswers().size());
+                assertTrue(game.getCurrentRound() instanceof OptionRound);
+                OptionRound currRound = (OptionRound) game.getCurrentRound();
+                assertEquals(4, currRound.getOptions().size());
 
                 // Verify output data
                 assertEquals(game.getGenre(), outputData.getGenre());
@@ -286,14 +287,13 @@ public class FinishRoundInteractorTest {
                 // Verify info about new current round
                 assertEquals(game.getRoundsPlayed(), 2);
                 assertNotEquals(game.getCurrentRound(), round);
-                assertEquals(game.getCurrentRound().getClass(), MultipleChoiceRound.class);
-                MultipleChoiceRound currRound =  (MultipleChoiceRound) game.getCurrentRound();
-                assertEquals(2, currRound.getMultipleChoiceAnswers().size());
+                assertTrue(game.getCurrentRound() instanceof OptionRound);
+                OptionRound currRound = (OptionRound) game.getCurrentRound();
+                assertEquals(2, currRound.getOptions().size());
                 assertEquals("Question", currRound.getQuestion());
                 assertEquals("title", currRound.getSong().getTitle());
                 assertEquals(round.getCorrectAnswer(), currRound.getCorrectAnswer());
                 assertEquals(false, currRound.isUserAnswerCorrect());
-
 
                 // Verify output data
                 assertEquals(game.getGenre(), outputData.getGenre());

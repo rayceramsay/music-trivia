@@ -7,6 +7,9 @@ import interface_adapter.toggle_audio.ToggleAudioState;
 import interface_adapter.toggle_audio.ToggleAudioViewModel;
 import use_case.exit_round.ExitRoundOutputBoundary;
 
+/**
+ * Presenter which implements the Output Boundary for the ExitRound interface adapter
+ */
 public class ExitRoundPresenter implements ExitRoundOutputBoundary {
 
     private final ViewManagerModel viewManagerModel;
@@ -14,6 +17,14 @@ public class ExitRoundPresenter implements ExitRoundOutputBoundary {
     private final RoundViewModel roundViewModel;
     private final ToggleAudioViewModel toggleAudioViewModel;
 
+    /**
+     * Constructor to initialize objects of ExitRoundPresenter
+     *
+     * @param viewManagerModel     View manager model
+     * @param exitRoundViewModel   View model for ExitRound
+     * @param roundViewModel       View model for Round
+     * @param toggleAudioViewModel View model for ToggleAudio
+     */
     public ExitRoundPresenter(ViewManagerModel viewManagerModel, ExitRoundViewModel exitRoundViewModel,
                               RoundViewModel roundViewModel, ToggleAudioViewModel toggleAudioViewModel) {
         this.viewManagerModel = viewManagerModel;

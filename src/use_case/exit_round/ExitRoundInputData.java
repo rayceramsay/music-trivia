@@ -7,6 +7,11 @@ public class ExitRoundInputData {
 
     private final String gameID;
 
+    /**
+     * Constructor to initialize objects of ExitRoundInputData
+     *
+     * @param gameID ID of current game
+     */
     public ExitRoundInputData(String gameID) {
         this.gameID = gameID;
     }

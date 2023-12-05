@@ -12,6 +12,18 @@ public class GetLoadableGamesStateItem {
     private final String createdAt;
     private final String score;
 
+    /**
+     * Constructor to initialize objects of GetLoadableGamesStateItem
+     *
+     * @param gameID             gameID of loadable game
+     * @param genre              genre of loadable game
+     * @param difficulty         difficulty level of loadable game
+     * @param initialLives       initial lives of loadable game
+     * @param currentLives       current lives of loadable game
+     * @param maxRounds          amount of max rounds of loadable game
+     * @param currentRoundNumber current round of loadable game (so user can start where left off)
+     * @param createdAt          time when game was created
+     */
     public GetLoadableGamesStateItem(String gameID, String genre, String difficulty, String initialLives,
                                      String currentLives, String maxRounds, String currentRoundNumber,
                                      String createdAt, String score) {

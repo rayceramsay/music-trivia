@@ -1,19 +1,32 @@
 package entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class TextInputRound implements Round {
+/**
+ * Implementation of Round for text input version of user answer instead of multiple choice
+ */
+public class BasicRound implements Round {
 
     private final Song song;
     private final String question;
     private final String correctAnswer;
     private String userAnswer;
 
-    public TextInputRound(Song song, String question, String correctAnswer) {
+    /**
+     * Constructor to initialize objects of TextInputRound
+     *
+     * @param song          song of round
+     * @param question      prompt of round
+     * @param correctAnswer correct answer of round
+     * @param userAnswer    answer given by user
+     */
+    public BasicRound(Song song, String question, String correctAnswer, String userAnswer) {
         this.song = song;
         this.question = question;
         this.correctAnswer = correctAnswer;
+        this.userAnswer = userAnswer;
+    }
+
+    public BasicRound(Song song, String question, String correctAnswer) {
+        this(song, question, correctAnswer, null);
     }
 
     @Override
@@ -56,13 +69,11 @@ public class TextInputRound implements Round {
         return userAnswer != null;
     }
 
-    @Override
-    public List<String> getMultipleChoiceAnswers() {
-        return new ArrayList<>(); // return empty ArrayList
-    }
-
+    /**
+     * @param string input string
+     * @return String stripped of non-printable characters and bordering white space.
+     */
     private String cleanString(String string) {
-        // Strip non-printable characters and bordering white space
         return string.replaceAll("\\p{C}", "").trim();
     }
 }

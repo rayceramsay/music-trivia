@@ -1,11 +1,12 @@
 package view;
+
 import data_access.game_data.GameDataAccessInterface;
-import entity.*;
+import entity.RoundFactory;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.create_game.CreateGameViewModel;
 import interface_adapter.exit_round.ExitRoundController;
 import interface_adapter.exit_round.ExitRoundPresenter;
 import interface_adapter.exit_round.ExitRoundViewModel;
-import interface_adapter.create_game.CreateGameViewModel;
 import interface_adapter.finish_round.FinishRoundController;
 import interface_adapter.finish_round.FinishRoundPresenter;
 import interface_adapter.finish_round.FinishRoundViewModel;
@@ -27,12 +28,28 @@ import use_case.finish_round.FinishRoundOutputBoundary;
 import use_case.submit_answer.SubmitAnswerInputBoundary;
 import use_case.submit_answer.SubmitAnswerInteractor;
 import use_case.submit_answer.SubmitAnswerOutputBoundary;
-import use_case.toggle_audio.*;
+import use_case.toggle_audio.ToggleAudioInputBoundary;
+import use_case.toggle_audio.ToggleAudioInteractor;
+import use_case.toggle_audio.ToggleAudioOutputBoundary;
 
 public class RoundViewFactory {
 
-    private RoundViewFactory() {}
+    private RoundViewFactory() {
+    }
 
+    /**
+     * Creates an instance of RoundView
+     *
+     * @param viewManagerModel        View manager model
+     * @param roundViewModel          View model for Round
+     * @param submitAnswerViewModel   View model for SubmitAnswer
+     * @param toggleAudioViewModel    View model for ToggleAudio
+     * @param gameOverViewModel       View model for GameOver
+     * @param exitRoundViewModel      View model for ExitRound
+     * @param gameDataAccessInterface Data access interface
+     * @param roundFactory            RoundFactory
+     * @return RoundView
+     */
     public static RoundView create(ViewManagerModel viewManagerModel,
                                    RoundViewModel roundViewModel,
                                    SubmitAnswerViewModel submitAnswerViewModel,
@@ -53,6 +70,13 @@ public class RoundViewFactory {
         return new RoundView(viewManagerModel, roundViewModel, submitAnswerViewModel, toggleAudioViewModel, finishRoundViewModel, createGameViewModel, loadGameViewModel, submitAnswerController, toggleAudioController, finishRoundController, exitRoundController);
     }
 
+    /**
+     * Creates an instance of Submit AnswerController
+     *
+     * @param submitAnswerViewModel View model for SubmitAnswer
+     * @param gameDataAccessObject  Data access object
+     * @return SubmitAnswerController
+     */
     private static SubmitAnswerController createSubmitAnswerUseCase(SubmitAnswerViewModel submitAnswerViewModel,
                                                                     ToggleAudioViewModel toggleAudioViewModel,
                                                                     GameDataAccessInterface gameDataAccessObject) {
@@ -62,15 +86,32 @@ public class RoundViewFactory {
         return new SubmitAnswerController(submitAnswerInteractor);
     }
 
+    /**
+     * Creates an instance of ToggleAudioController
+     *
+     * @param toggleAudioViewModel View model for ToggleAudio
+     * @param gameDataAccessObject DataAccessObject
+     * @param roundViewModel       View model for Round
+     * @return ToggleAudioController
+     */
     private static ToggleAudioController createToggleAudioUseCase(ToggleAudioViewModel toggleAudioViewModel,
                                                                   GameDataAccessInterface gameDataAccessObject,
-                                                                  RoundViewModel roundViewModel){
-            ToggleAudioOutputBoundary toggleAudioPresenter = new ToggleAudioPresenter(toggleAudioViewModel, roundViewModel);
-            ToggleAudioInputBoundary toggleAudioInteractor = new ToggleAudioInteractor(gameDataAccessObject, toggleAudioPresenter);
+                                                                  RoundViewModel roundViewModel) {
+        ToggleAudioOutputBoundary toggleAudioPresenter = new ToggleAudioPresenter(toggleAudioViewModel, roundViewModel);
+        ToggleAudioInputBoundary toggleAudioInteractor = new ToggleAudioInteractor(gameDataAccessObject, toggleAudioPresenter);
 
-            return new ToggleAudioController(toggleAudioInteractor);
+        return new ToggleAudioController(toggleAudioInteractor);
     }
 
+    /**
+     * Creates an instance of FinishRoundController
+     *
+     * @param viewManagerModel     View manager model
+     * @param gameOverViewModel    View model for GameOver
+     * @param roundViewModel       View model for Round
+     * @param gameDataAccessObject Data access object
+     * @return FinishRoundController
+     */
     private static FinishRoundController createFinishRoundUseCase(ViewManagerModel viewManagerModel,
                                                                   GameOverViewModel gameOverViewModel,
                                                                   FinishRoundViewModel finishRoundViewModel,

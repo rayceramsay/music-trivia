@@ -34,7 +34,7 @@ public class LoadGameInteractorTest {
 
         for (int i = 0; i < 3; i++) {
             Game game = new CommonGame("hip hop " + i, "hard", 1, 3);
-            Round round = roundFactory.createHardRound("hip hop " + i);
+            Round round = roundFactory.generateBasicRoundFromGenre("hip hop " + i);
             game.setCurrentRound(round);
             gameRepository.save(game);
 

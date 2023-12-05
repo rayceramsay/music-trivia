@@ -6,10 +6,20 @@ import entity.PlayableAudio;
 import entity.Round;
 import entity.Song;
 
+/**
+ * Interactor which implements the Input Boundary for the ToggleAudio use case
+ */
 public class ToggleAudioInteractor implements ToggleAudioInputBoundary {
 
     private final GameDataAccessInterface gameDataAccessInterface;
     private final ToggleAudioOutputBoundary toggleAudioPresenter;
+
+    /**
+     * Constructor to initialize objects of ToggleAudioInteractor
+     *
+     * @param gameDataAccessInterface Data access interface
+     * @param toggleAudioPresenter    Output boundary for toggle audio use case
+     */
 
     public ToggleAudioInteractor(GameDataAccessInterface gameDataAccessInterface, ToggleAudioOutputBoundary toggleAudioPresenter) {
         this.gameDataAccessInterface = gameDataAccessInterface;
@@ -33,7 +43,7 @@ public class ToggleAudioInteractor implements ToggleAudioInputBoundary {
             songAudio.stop();
             toggleAudioPresenter.showPlayButton();
         }
-        else {
+        else{
             // playing audio and showing pause button
             songAudio.play();
             toggleAudioPresenter.showPauseButton();

@@ -46,7 +46,7 @@ public class GetLoadableGamesInteractorTest {
 
         for (int i = 0; i < 6; i++) {
             Game game = new CommonGame("hip hop", "hard", 1, 3);
-            Round round = roundFactory.createHardRound("hip hop");
+            Round round = roundFactory.generateBasicRoundFromGenre("hip hop");
             game.setCurrentRound(round);
 
             if (finishAllGames || i % 2 == 1) {
