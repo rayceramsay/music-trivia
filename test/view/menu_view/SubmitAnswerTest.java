@@ -22,7 +22,7 @@ public class SubmitAnswerTest {
      */
     public void createRound() {
         RoundFactory roundFactory = new MockRoundFactory();
-        Round round = roundFactory.createEasyRound("hip hop");
+        Round round = roundFactory.generateOptionRoundFromGenre("hip hop", 1);
         game = new CommonGame("hip hop", "easy", 3, 5);
         game.setCurrentRound(round);
         dao = new InMemoryGameDataAccessObject();

@@ -332,7 +332,7 @@ public class FinishRoundInteractorTest {
 
         //Game reaches max rounds so it will end
         roundFactory = new MockRoundFactory();
-        round = roundFactory.createHardRound("pop");
+        round = roundFactory.generateBasicRoundFromGenre("pop");
         game.setCurrentRound(round);
         gameDataAccessObject.save(game);
         interactor.execute(inputData);
