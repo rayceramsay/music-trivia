@@ -161,11 +161,11 @@ public class GetLoadableGamesInteractorTest {
 
         GetLoadableGamesState state = viewModel.getState();
 
-        assert state.getGamesData().size() == 0;
-        assert state.getErrorMessage() == "No games available to load!";
+        assert state.getGamesData().isEmpty();
+        assert state.getErrorMessage().equals("No games available to load!");
 
         Game game = new CommonGame("hip hop", "hard", 1, 3);
-        Round round = new MockRoundFactory().createHardRound("hip hop");
+        Round round = new MockRoundFactory().generateBasicRoundFromGenre("hip hop");
         game.setCurrentRound(round);
         dao.save(game);
 
