@@ -3,8 +3,25 @@ package use_case.finish_round;
 import data_access.game_data.GameDataAccessInterface;
 import data_access.game_data.InMemoryGameDataAccessObject;
 import entity.*;
+import interface_adapter.ViewManagerModel;
+import interface_adapter.create_game.CreateGamePresenter;
+import interface_adapter.create_game.CreateGameViewModel;
+import interface_adapter.finish_round.FinishRoundController;
+import interface_adapter.finish_round.FinishRoundPresenter;
+import interface_adapter.finish_round.FinishRoundViewModel;
+import interface_adapter.game_over.GameOverState;
+import interface_adapter.game_over.GameOverViewModel;
+import interface_adapter.round.RoundState;
+import interface_adapter.round.RoundViewModel;
 import org.junit.Before;
 import org.junit.Test;
+import use_case.create_game.CreateGameInputBoundary;
+import use_case.create_game.CreateGameInputData;
+import use_case.create_game.CreateGameInteractor;
+import view.GameOverView;
+import view.RoundView;
+
+import java.util.Objects;
 
 import static org.junit.Assert.*;
 
@@ -22,7 +39,6 @@ public class FinishRoundInteractorTest {
         gameDataAccessObject = new InMemoryGameDataAccessObject();
         roundFactory = new MockRoundFactory();
         round = roundFactory.generateBasicRoundFromGenre("pop");
-
     }
 
     /**
@@ -249,8 +265,9 @@ public class FinishRoundInteractorTest {
     public void nextEasyRoundGeneratedTest() {
         int initialLives = 3;
         int maxRounds = 10;
-        Game game = new CommonGame("pop", "easy", maxRounds, initialLives);
+        Game game = new CommonGame("pop", "easy", 4, initialLives);
         game.setCurrentRound(round);
+        round.setUserAnswer("wrong");
         gameDataAccessObject.save(game);
 
         FinishRoundInputData inputData = new FinishRoundInputData(game.getID());
@@ -273,6 +290,11 @@ public class FinishRoundInteractorTest {
                 assertTrue(game.getCurrentRound() instanceof OptionRound);
                 OptionRound currRound = (OptionRound) game.getCurrentRound();
                 assertEquals(2, currRound.getOptions().size());
+                assertEquals("Question", currRound.getQuestion());
+                assertEquals("title", currRound.getSong().getTitle());
+                assertEquals(round.getCorrectAnswer(), currRound.getCorrectAnswer());
+                assertEquals(false, currRound.isUserAnswerCorrect());
+
                 // Verify output data
                 assertEquals(game.getGenre(), outputData.getGenre());
                 assertEquals(outputData.getRoundNumber(), 2);
@@ -283,5 +305,42 @@ public class FinishRoundInteractorTest {
 
         FinishRoundInputBoundary interactor = new FinishRoundInteractor(gameOverPresenter, gameDataAccessObject, roundFactory);
         interactor.execute(inputData);
+    }
+    @Test
+    public void nextRoundandGameOverTest() {
+        // Game will create a next round
+        Game game = new CommonGame("pop", "easy", 2, 2);
+        game.setCurrentRound(round);
+        round.setUserAnswer("answer");
+        gameDataAccessObject.save(game);
+
+        FinishRoundInputData inputData = new FinishRoundInputData(game.getID());
+
+        ViewManagerModel viewManagerModel = new ViewManagerModel();
+        RoundViewModel roundViewModel = new RoundViewModel(RoundView.VIEW_NAME);
+        GameOverViewModel gameOverViewModel = new GameOverViewModel(GameOverView.VIEW_NAME);
+        FinishRoundViewModel finishRoundViewModel = new FinishRoundViewModel(FinishRoundViewModel.STATE_PROPERTY);
+
+        FinishRoundOutputBoundary gameOverPresenter = new FinishRoundPresenter(viewManagerModel, gameOverViewModel, roundViewModel, finishRoundViewModel);
+        FinishRoundInputBoundary interactor = new FinishRoundInteractor(gameOverPresenter, gameDataAccessObject, roundFactory);
+        interactor.execute(inputData);
+
+        RoundState state = roundViewModel.getState();
+        GameOverState gameOverState = gameOverViewModel.getState();
+
+        assert state.getScore() == game.getScore();
+
+        //Game reaches max rounds so it will end
+        roundFactory = new MockRoundFactory();
+        round = roundFactory.createHardRound("pop");
+        game.setCurrentRound(round);
+        gameDataAccessObject.save(game);
+        interactor.execute(inputData);
+
+        assert state.isMultipleChoiceRound();
+        assert state.getMultipleChoiceOptions().size() == 2;
+        assert gameOverState.getScore() == 0;
+        assert game.isGameOver();
+        assert viewManagerModel.getActiveView() == "game over";
     }
 }

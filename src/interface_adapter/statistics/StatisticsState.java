@@ -1,7 +1,8 @@
 package interface_adapter.statistics;
 
 public class StatisticsState {
-    public String message;
+
+    private String message;
 
     public StatisticsState() {
     }
