@@ -3,17 +3,10 @@ package interface_adapter.statistics;
 import use_case.statistics.StatisticsOutputBoundary;
 import use_case.statistics.StatisticsOutputData;
 
-/**
- * Implementation of StatisticsOutputBoundary
- */
 public class StatisticsPresenter implements StatisticsOutputBoundary {
+
     private final StatisticsViewModel statisticsViewModel;
 
-    /**
-     * Constructor to initialize objects of StatisticsPresenter
-     *
-     * @param statisticsViewModel View model for statistics interface adapter
-     */
     public StatisticsPresenter(StatisticsViewModel statisticsViewModel) {
         this.statisticsViewModel = statisticsViewModel;
     }

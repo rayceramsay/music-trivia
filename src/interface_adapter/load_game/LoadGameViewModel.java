@@ -8,6 +8,7 @@ import java.beans.PropertyChangeSupport;
 public class LoadGameViewModel extends ViewModel {
 
     public static final String STATE_PROPERTY = "loadGame";
+
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     public LoadGameViewModel(String viewName) {

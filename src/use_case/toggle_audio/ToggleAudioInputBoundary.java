@@ -1,8 +1,5 @@
 package use_case.toggle_audio;
 
-/**
- * Input boundary interface for ToggleAudio use case
- */
 public interface ToggleAudioInputBoundary {
     /**
      * If the song is already playing, stop the audio and show the play button.

@@ -5,15 +5,10 @@ import entity.Game;
 import entity.Round;
 
 public class SubmitAnswerInteractor implements SubmitAnswerInputBoundary {
+
     private final GameDataAccessInterface gameDataAccessObject;
     private final SubmitAnswerOutputBoundary submitAnswerPresenter;
 
-    /**
-     * Constructor to initialize objects of SubmitAnswerInteractor
-     *
-     * @param gameDataAccessObject  Data access interface for submit answer use case
-     * @param submitAnswerPresenter Output boundary for submit answer use case
-     */
     public SubmitAnswerInteractor(GameDataAccessInterface gameDataAccessObject,
                                   SubmitAnswerOutputBoundary submitAnswerPresenter) {
         this.gameDataAccessObject = gameDataAccessObject;

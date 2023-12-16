@@ -3,11 +3,8 @@ package entity;
 import java.util.List;
 
 /**
- * Extension of Round for multiple choice version of gameplay
+ * An extension of round where users can select their answer from predetermined options
  */
 public interface OptionRound extends Round {
-    /**
-     * @return list of options
-     */
     List<String> getOptions();
 }

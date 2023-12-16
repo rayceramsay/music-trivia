@@ -15,9 +15,6 @@ public class RoundState {
     private int score;
     private List<String> multipleChoiceOptions;
 
-    public RoundState() {
-    }
-
     public String getGameId() {
         return gameId;
     }

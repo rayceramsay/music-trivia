@@ -1,21 +1,10 @@
 package entity;
 
 /**
- * Interface for Song
+ * Represents a single song with a title, artist, and playable audio source
  */
 public interface Song {
-    /**
-     * @return Title of song.
-     */
     String getTitle();
-
-    /**
-     * @return Artist of song.
-     */
     String getArtist();
-
-    /**
-     * @return Song Audio.
-     */
     PlayableAudio getAudio();
 }

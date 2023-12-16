@@ -8,7 +8,7 @@ import javafx.util.Duration;
 import java.util.function.Consumer;
 
 /**
- * Implementation of PlayableSong from source (i.e. Spotify API)
+ * Core implementation of a playable audio source
  */
 public class CommonPlayableAudio implements PlayableAudio {
 
@@ -17,11 +17,6 @@ public class CommonPlayableAudio implements PlayableAudio {
     private final String audioUrl;
     private final MediaPlayer mediaPlayer;
 
-    /**
-     * Constructor to initialize objects of OnlineMP3PlayableAudio
-     *
-     * @param audioUrl URL of audio source
-     */
     public CommonPlayableAudio(String audioUrl) {
         this.audioUrl = audioUrl;
 
@@ -31,33 +26,21 @@ public class CommonPlayableAudio implements PlayableAudio {
         mediaPlayer.setOnEndOfMedia(mediaPlayer::stop);  // fixes bug where stopped audio after setStopTime duration still registers as playing
     }
 
-    /**
-     * @return URL of audio.
-     */
     @Override
     public String getPath() {
         return audioUrl;
     }
 
-    /**
-     * Start playing song audio.
-     */
     @Override
     public void play() {
         mediaPlayer.play();
     }
 
-    /**
-     * Stop playing song audio.
-     */
     @Override
     public void stop() {
         mediaPlayer.stop();
     }
 
-    /**
-     * @return check if song audio is currently playing and output boolean value.
-     */
     @Override
     public boolean isPlaying() {
         return mediaPlayer.getStatus().equals(MediaPlayer.Status.PLAYING);

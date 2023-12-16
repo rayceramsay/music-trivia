@@ -14,18 +14,6 @@ public class GetLoadableGamesOutputDataItem {
     private final LocalDateTime createdAt;
     private final int score;
 
-    /**
-     * Constructor to initialize objects of GetLoadableGamesOutputDataItem
-     *
-     * @param gameID             GameID
-     * @param genre              genre of music played in game
-     * @param difficulty         difficulty level of game
-     * @param initialLives       initial lives set for game
-     * @param currentLives       current amount of lives
-     * @param maxRounds          max amount of rounds that can be played
-     * @param currentRoundNumber number of current round
-     * @param createdAt          time of game creation
-     */
     public GetLoadableGamesOutputDataItem(String gameID, String genre, String difficulty, int initialLives,
                                           int currentLives, int maxRounds, int currentRoundNumber, LocalDateTime createdAt, int score) {
         this.gameID = gameID;

@@ -3,23 +3,12 @@ package use_case.create_game;
 import data_access.game_data.GameDataAccessInterface;
 import entity.*;
 
-import java.util.Objects;
-
-/**
- * Interactor which implements the Input Boundary for the CreateGame use case
- */
 public class CreateGameInteractor implements CreateGameInputBoundary {
-    final GameDataAccessInterface gameAccessObject;
-    final CreateGameOutputBoundary createGamePresenter;
-    final RoundFactory roundFactory;
 
-    /**
-     * Constructor to initialize objects of CreateGameInteractor
-     *
-     * @param gameAccessObject    data access interface for CreateGame use case
-     * @param createGamePresenter output boundary for CreateGame use case
-     * @param roundFactory        RoundFactory
-     */
+    private final GameDataAccessInterface gameAccessObject;
+    private final CreateGameOutputBoundary createGamePresenter;
+    private final RoundFactory roundFactory;
+
     public CreateGameInteractor(GameDataAccessInterface gameAccessObject,
                                 CreateGameOutputBoundary createGamePresenter,
                                 RoundFactory roundFactory) {

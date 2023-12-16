@@ -8,7 +8,7 @@ import java.util.*;
 
 /**
  * Implementation of the Game DAO using in memory storage.
- * The Game DAO class includes all interfaces that define methods for accessing the required data for the game
+ * Note: This has no persistence between program executions.
  */
 public class InMemoryGameDataAccessObject implements GameDataAccessInterface {
 

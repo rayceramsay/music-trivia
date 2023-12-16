@@ -3,9 +3,6 @@ package entity;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Implementation of RoundFactory for a mock round
- */
 public class MockRoundFactory implements RoundFactory {
 
     @Override

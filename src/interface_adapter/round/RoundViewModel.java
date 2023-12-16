@@ -5,10 +5,8 @@ import interface_adapter.ViewModel;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-/**
- * Extension of ViewModel for a Round
- */
 public class RoundViewModel extends ViewModel {
+
     public String TITLE_LABEL = "What song is this?";
 
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);

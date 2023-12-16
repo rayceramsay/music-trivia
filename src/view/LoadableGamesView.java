@@ -24,13 +24,6 @@ public class LoadableGamesView extends JPanel implements ActionListener, Propert
     private final JButton backButton;
     private final JPanel loadableGames;
 
-    /**
-     * Constructor to initialize objects of LoadableGamesView
-     *
-     * @param viewManagerModel          View manager model
-     * @param getLoadableGamesViewModel View model for GetLoadableGames
-     * @param loadGameController        Controller for LoadGame
-     */
     public LoadableGamesView(ViewManagerModel viewManagerModel,
                              GetLoadableGamesViewModel getLoadableGamesViewModel,
                              LoadGameController loadGameController) {

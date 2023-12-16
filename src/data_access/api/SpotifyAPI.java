@@ -25,14 +25,6 @@ public class SpotifyAPI implements SongAPI {
     private final PlayableAudioFactory playableAudioFactory;
     private String authToken;
 
-    /**
-     * Constructor to initialize objects of SpotifyAPI
-     *
-     * @param songFactory          SongFactory
-     * @param playableAudioFactory PlayableAudioFactory
-     * @param clientId             ClientID for API
-     * @param clientSecret         Client secret for API
-     */
     public SpotifyAPI(SongFactory songFactory, PlayableAudioFactory playableAudioFactory, String clientId, String clientSecret) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
@@ -48,7 +40,6 @@ public class SpotifyAPI implements SongAPI {
 
         JSONObject item;
         Song song = null;
-
 
         do {
             int i = new Random().nextInt(songsArray.length());

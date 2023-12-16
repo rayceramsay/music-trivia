@@ -5,9 +5,6 @@ import interface_adapter.ViewModel;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-/**
- * Extension of ViewModel for GetLoadableGames interface adapter
- */
 public class GetLoadableGamesViewModel extends ViewModel {
 
     public final static String STATE_PROPERTY = "getLoadableGamesState";
@@ -29,9 +26,6 @@ public class GetLoadableGamesViewModel extends ViewModel {
         support.addPropertyChangeListener(listener);
     }
 
-    /**
-     * @return state of GetLoadableGames
-     */
     public GetLoadableGamesState getState() {
         return state;
     }

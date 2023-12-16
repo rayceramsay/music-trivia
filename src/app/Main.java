@@ -25,17 +25,12 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Main class to run the game
+ * Main class to set up and run the program
  */
 public class Main {
 
     private static final Dotenv dotenv = Dotenv.load();  // load environment variables
 
-    /**
-     * Main method to run game
-     *
-     * @param args
-     */
     public static void main(String[] args) {
         // Setup JFrame app
         JFrame application = new JFrame("Spotify Bandits");

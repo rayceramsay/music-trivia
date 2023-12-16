@@ -1,66 +1,42 @@
 package entity;
 
 /**
- * Implementation of interface LifeTimeStatistics
+ * Core implementation of lifetime statistics object
  */
 public class CommonLifetimeStatistics implements LifetimeStatistics {
 
-    int getAverageScore;
-    int getAverageInitialLives;
-    int averageRoundsPlayed;
-    String getTopDifficulty;
-    String getTopGenre;
+    private final int averageScore;
+    private final int averageInitialLives;
+    private final int averageRoundsPlayed;
+    private final String topDifficulty;
+    private final String topGenre;
 
-    /**
-     * Constructor to initialize objects of CommonLifetimeStatistics
-     *
-     * @param getAverageScore        Average score statistic
-     * @param getAverageInitialLives Average initial lives statistic
-     * @param averageRoundsPlayed    Average rounds played statistic
-     * @param getTopDifficulty       Highest difficulty played
-     * @param getTopGenre            Most popular genre of songs
-     */
-    public CommonLifetimeStatistics(int getAverageScore, int getAverageInitialLives,
-                                    int averageRoundsPlayed, String getTopDifficulty, String getTopGenre) {
-        this.getAverageScore = getAverageScore;
-        this.getAverageInitialLives = getAverageInitialLives;
+    public CommonLifetimeStatistics(int averageScore, int averageInitialLives, int averageRoundsPlayed,
+                                    String topDifficulty, String topGenre) {
+        this.averageScore = averageScore;
+        this.averageInitialLives = averageInitialLives;
         this.averageRoundsPlayed = averageRoundsPlayed;
-        this.getTopDifficulty = getTopDifficulty;
-        this.getTopGenre = getTopGenre;
+        this.topDifficulty = topDifficulty;
+        this.topGenre = topGenre;
     }
 
-    /**
-     * @return Average score
-     */
     public int getAverageScore() {
-        return getAverageScore;
+        return averageScore;
     }
 
-    /**
-     * @return Average initial lives
-     */
     public int getAverageInitialLives() {
-        return getAverageInitialLives;
+        return averageInitialLives;
     }
 
-    /**
-     * @return Average amount of rounds played
-     */
     public int getAverageRoundsPlayed() {
         return averageRoundsPlayed;
     }
 
-    /**
-     * @return Top difficulty level played
-     */
     public String getTopDifficulty() {
-        return getTopDifficulty;
+        return topDifficulty;
     }
 
-    /**
-     * @return Top genre played
-     */
     public String getTopGenre() {
-        return getTopGenre;
+        return topGenre;
     }
 }

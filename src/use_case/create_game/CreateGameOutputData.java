@@ -1,6 +1,5 @@
 package use_case.create_game;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CreateGameOutputData {
@@ -11,7 +10,6 @@ public class CreateGameOutputData {
     private int rounds;
     private int lives;
     private List<String> multipleChoiceAnswers;
-    public CreateGameOutputData() {}
 
     public void setGameId(String gameId) {
         this.gameId = gameId;

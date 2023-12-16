@@ -15,23 +15,15 @@ public class GameOverView extends JPanel implements ActionListener, PropertyChan
 
     public final static String VIEW_NAME = "game over";
 
-    private final GameOverViewModel gameOverViewModel;
     private final ViewManagerModel viewManagerModel;
 
     JLabel scoreInfo;
     final JButton mainMenu;
 
-    /**
-     * Constructor to initialize objects of GameOverView
-     *
-     * @param gameOverViewModel View model for game over state
-     * @param viewManagerModel  View manager model
-     */
     public GameOverView(GameOverViewModel gameOverViewModel,
                         ViewManagerModel viewManagerModel) {
         this.viewManagerModel = viewManagerModel;
-        this.gameOverViewModel = gameOverViewModel;
-        this.gameOverViewModel.addPropertyChangeListener(this);
+        gameOverViewModel.addPropertyChangeListener(this);
 
         // Create title label and horizontally align in view
         JLabel title = new JLabel(GameOverViewModel.TITLE_LABEL);

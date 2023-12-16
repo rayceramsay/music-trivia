@@ -1,7 +1,7 @@
 package entity;
 
 /**
- * Implementation of Round for text input version of user answer instead of multiple choice
+ * Core implementation of a text based round
  */
 public class BasicRound implements Round {
 
@@ -10,14 +10,6 @@ public class BasicRound implements Round {
     private final String correctAnswer;
     private String userAnswer;
 
-    /**
-     * Constructor to initialize objects of TextInputRound
-     *
-     * @param song          song of round
-     * @param question      prompt of round
-     * @param correctAnswer correct answer of round
-     * @param userAnswer    answer given by user
-     */
     public BasicRound(Song song, String question, String correctAnswer, String userAnswer) {
         this.song = song;
         this.question = question;
@@ -70,8 +62,10 @@ public class BasicRound implements Round {
     }
 
     /**
-     * @param string input string
-     * @return String stripped of non-printable characters and bordering white space.
+     * Return the input string but stripped of non-printable characters and bordering white space.
+     *
+     * @param string the input string to clean
+     * @return the cleaned version of the input string
      */
     private String cleanString(String string) {
         return string.replaceAll("\\p{C}", "").trim();

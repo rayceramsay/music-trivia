@@ -1,7 +1,7 @@
 package entity;
 
 /**
- * LifeTime Statistics Interface
+ * Stores statistics aggregated from every game the user has ever played
  */
 public interface LifetimeStatistics {
     /**

@@ -18,42 +18,19 @@ public class GameSettingsView extends JPanel implements ActionListener, Property
 
     public final static String VIEW_NAME = "game settings";
 
-    private final GameSettingsViewModel gameSettingsViewModel;
-
     private final ViewManagerModel viewManagerModel;
+    private final JButton playGame;
+    private final JButton back;
+    private final JComboBox<String> genreSelector;
+    private final JComboBox<String> difficultySelector;
+    private final JSpinner livesSpinner;
+    private final JSpinner roundsSpinner;
 
-
-    public final JButton playGame;
-    public final JButton back;
-
-    public final JComboBox<String> genreSelector;
-    public final JComboBox<String> difficultySelector;
-
-    public final SpinnerNumberModel livesSpinnerNumberModel;
-    public final SpinnerNumberModel roundsSpinnerNumberModel;
-    public final JSpinner livesSpinner;
-    public final JSpinner roundsSpinner;
-
-    public final JLabel difficultyLabel;
-    public final JLabel genreLabel;
-    public final JLabel livesLabel;
-    public final JLabel roundsLabel;
-
-
-    /**
-     * Constructor to initialize objects of GameSettingsView
-     *
-     * @param gameSettingsViewModel View model for game settings
-     * @param viewManagerModel      View manager model
-     * @param gameController        Controller for game
-     */
     public GameSettingsView(GameSettingsViewModel gameSettingsViewModel,
                             ViewManagerModel viewManagerModel,
                             CreateGameController gameController) {
-
         this.setLayout(new GridBagLayout());
 
-        this.gameSettingsViewModel = gameSettingsViewModel;
         this.viewManagerModel = viewManagerModel;
         gameSettingsViewModel.addPropertyChangeListener(this);
 
@@ -69,7 +46,7 @@ public class GameSettingsView extends JPanel implements ActionListener, Property
 
         // DIFFICULTY
 
-        difficultyLabel = new JLabel(gameSettingsViewModel.DIFFICULTY_SELECTOR_LABEL);
+        JLabel difficultyLabel = new JLabel(gameSettingsViewModel.DIFFICULTY_SELECTOR_LABEL);
         gridBagContraints.gridx = 0;
         gridBagContraints.gridy = 0;
         gridBagContraints.anchor = GridBagConstraints.LINE_START;
@@ -92,7 +69,7 @@ public class GameSettingsView extends JPanel implements ActionListener, Property
 
         // GENRE
 
-        genreLabel = new JLabel(gameSettingsViewModel.GENRE_SELECTOR_LABEL);
+        JLabel genreLabel = new JLabel(gameSettingsViewModel.GENRE_SELECTOR_LABEL);
         gridBagContraints.gridx = 0;
         gridBagContraints.gridy = 1;
         gridBagContraints.anchor = GridBagConstraints.LINE_START;
@@ -115,9 +92,9 @@ public class GameSettingsView extends JPanel implements ActionListener, Property
 
         // LIVES SPINNER
 
-        livesSpinnerNumberModel = new SpinnerNumberModel(3, 1, 3, 1);
+        SpinnerNumberModel livesSpinnerNumberModel = new SpinnerNumberModel(3, 1, 3, 1);
 
-        livesLabel = new JLabel(gameSettingsViewModel.LIVES_SPINNER_LABEL);
+        JLabel livesLabel = new JLabel(gameSettingsViewModel.LIVES_SPINNER_LABEL);
         gridBagContraints.gridx = 0;
         gridBagContraints.gridy = 2;
         gridBagContraints.anchor = GridBagConstraints.LINE_START;
@@ -140,9 +117,9 @@ public class GameSettingsView extends JPanel implements ActionListener, Property
 
         // ROUNDS SPINNER
 
-        roundsSpinnerNumberModel = new SpinnerNumberModel(10, 5, 15, 1);
+        SpinnerNumberModel roundsSpinnerNumberModel = new SpinnerNumberModel(10, 5, 15, 1);
 
-        roundsLabel = new JLabel(gameSettingsViewModel.ROUNDS_SPINNER_LABEL);
+        JLabel roundsLabel = new JLabel(gameSettingsViewModel.ROUNDS_SPINNER_LABEL);
         gridBagContraints.gridx = 0;
         gridBagContraints.gridy = 3;
         gridBagContraints.anchor = GridBagConstraints.LINE_START;

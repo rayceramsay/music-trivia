@@ -8,6 +8,7 @@ import java.beans.PropertyChangeSupport;
 public class FinishRoundViewModel extends ViewModel {
 
     public static final String STATE_PROPERTY = "finishRound";
+
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     public FinishRoundViewModel(String viewName) {

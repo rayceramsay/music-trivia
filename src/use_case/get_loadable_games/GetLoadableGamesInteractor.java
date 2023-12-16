@@ -6,20 +6,11 @@ import entity.Game;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Interactor which implements the Input Boundary for the GetLoadableGames use case
- */
 public class GetLoadableGamesInteractor implements GetLoadableGamesInputBoundary {
 
     private final GetLoadableGamesOutputBoundary presenter;
     private final GameDataAccessInterface gameDataAccessObject;
 
-    /**
-     * Constructor to initialize objects of GetLoadableGamesInteractor
-     *
-     * @param presenter            Output boundary for get loadable games use case
-     * @param gameDataAccessObject Data access interface for finish round use case
-     */
     public GetLoadableGamesInteractor(GetLoadableGamesOutputBoundary presenter,
                                       GameDataAccessInterface gameDataAccessObject) {
         this.presenter = presenter;

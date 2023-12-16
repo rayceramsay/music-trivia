@@ -1,41 +1,14 @@
 package entity;
 
 /**
- * Interface for Round
+ * Represents a single playable round in a game
  */
 public interface Round {
-    /**
-     * @return Prompt of round.
-     */
     String getQuestion();
-
-    /**
-     * @return Song of round.
-     */
     Song getSong();
-
-    /**
-     * @return Correct answer of round.
-     */
     String getCorrectAnswer();
-
-    /**
-     * @return User answer of round.
-     */
     String getUserAnswer();
-
-    /**
-     * @param userAnswer answer given by user
-     */
     void setUserAnswer(String userAnswer);
-
-    /**
-     * @return if answer given by user is correct.
-     */
     boolean isUserAnswerCorrect();
-
-    /**
-     * @return if round is finished.
-     */
     boolean isFinished();
 }

@@ -1,8 +1,5 @@
 package use_case.submit_answer;
 
-/**
- * Input boundary interface for SubmitAnswer use case
- */
 public interface SubmitAnswerInputBoundary {
     /**
      * Check the correctness of the user's answer and update/save the game accordingly. Report back the user's

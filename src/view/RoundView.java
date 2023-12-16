@@ -1,6 +1,5 @@
 package view;
 
-import interface_adapter.ViewManagerModel;
 import interface_adapter.exit_round.ExitRoundController;
 import interface_adapter.create_game.CreateGameViewModel;
 import interface_adapter.finish_round.FinishRoundController;
@@ -17,14 +16,12 @@ import interface_adapter.toggle_audio.ToggleAudioViewModel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class RoundView extends JPanel implements ActionListener, PropertyChangeListener {
+public class RoundView extends JPanel implements PropertyChangeListener {
 
     public final static String VIEW_NAME = "round";
 
@@ -40,21 +37,8 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
     private final JTextField answerInputField;
     private final JLabel loadingLabel;
     private final JPanel answerSection;
-    private final int borderWidth = 2;
 
-    /**
-     * Constructor to initialize objects of RoundView
-     *
-     * @param viewManagerModel       View manager model
-     * @param roundViewModel         View model for Round
-     * @param submitAnswerViewModel  View model for SubmitAnswer
-     * @param submitAnswerController Controller for SubmitAnswer
-     * @param finishRoundController  Controller for FinishRound
-     * @param toggleAudioViewModel   ViewModel for ToggleAudio
-     * @param toggleAudioController  Controller for ToggleAudio
-     */
-    public RoundView(ViewManagerModel viewManagerModel,
-                     RoundViewModel roundViewModel,
+    public RoundView(RoundViewModel roundViewModel,
                      SubmitAnswerViewModel submitAnswerViewModel,
                      ToggleAudioViewModel toggleAudioViewModel,
                      FinishRoundViewModel finishRoundViewModel,
@@ -131,6 +115,7 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         infoSection.setMaximumSize(new Dimension(getMaximumSize().width, 10));
         infoSection.setBackground(Color.darkGray);
         infoSection.setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
+        int borderWidth = 2;
         infoSection.setLayout(new GridLayout(1, 3, borderWidth, borderWidth));
 
         roundInfo = new JLabel("Round: ");
@@ -181,10 +166,6 @@ public class RoundView extends JPanel implements ActionListener, PropertyChangeL
         loadingLabel.setVisible(true); // showing loading label
         submit.setEnabled(false); // disable submit button while loading next round
         playSong.setEnabled(false); // disable play button while loading next round
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
     }
 
     @Override

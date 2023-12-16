@@ -5,19 +5,11 @@ import interface_adapter.toggle_audio.ToggleAudioViewModel;
 import use_case.submit_answer.SubmitAnswerOutputBoundary;
 import use_case.submit_answer.SubmitAnswerOutputData;
 
-/**
- * Implementation of SubmitAnswerOutputBoundary
- */
 public class SubmitAnswerPresenter implements SubmitAnswerOutputBoundary {
+
     private final SubmitAnswerViewModel submitAnswerViewModel;
     private final ToggleAudioViewModel toggleAudioViewModel;
 
-    /**
-     * Constructor to initialize objects of SubmitAnswerPresenter
-     *
-     * @param submitAnswerViewModel View model for submit answer interface adapter
-     * @param toggleAudioViewModel  View model for toggle audio interface adapter
-     */
     public SubmitAnswerPresenter(SubmitAnswerViewModel submitAnswerViewModel, ToggleAudioViewModel toggleAudioViewModel) {
         this.submitAnswerViewModel = submitAnswerViewModel;
         this.toggleAudioViewModel = toggleAudioViewModel;

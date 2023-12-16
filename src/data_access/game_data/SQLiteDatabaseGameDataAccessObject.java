@@ -1,7 +1,5 @@
 package data_access.game_data;
 
-import data_access.game_data.GameDataAccessInterface;
-import data_access.game_data.InMemoryGameDataAccessObject;
 import entity.*;
 import org.sqlite.SQLiteConfig;
 
@@ -11,6 +9,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementation of the Game DAO using an SQLite database
+ */
 public class SQLiteDatabaseGameDataAccessObject implements GameDataAccessInterface {
 
     private final static DateTimeFormatter sqliteDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");

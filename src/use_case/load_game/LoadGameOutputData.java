@@ -15,17 +15,6 @@ public class LoadGameOutputData {
     private final List<String> multipleChoiceAnswers;
     private final int score;
 
-    /**
-     * Constructor to initialize objects of LoadGameOutputData
-     *
-     * @param gameId             ID of game
-     * @param question           Prompt used throughout the game
-     * @param genre              genre of songs used in game
-     * @param initialLives       initial amount of lives in game
-     * @param currentLives       current amount of lives left
-     * @param maxRounds          maximum amount of rounds left
-     * @param currentRoundNumber current round
-     */
     public LoadGameOutputData(String gameId, String question, String genre, String difficulty, int initialLives, int currentLives,
                               int maxRounds, int currentRoundNumber, List<String> multipleChoiceAnswers, int score) {
         this.gameId = gameId;

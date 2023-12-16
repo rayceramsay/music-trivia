@@ -3,20 +3,10 @@ package use_case.statistics;
 import data_access.game_data.GameDataAccessInterface;
 import entity.LifetimeStatistics;
 
-/**
- * Interactor which implements the Input Boundary for the Statistics use case
- */
 public class StatisticsInteractor implements StatisticsInputBoundary {
 
     private final GameDataAccessInterface gameDataAccessObject;
     private final StatisticsOutputBoundary statisticsPresenter;
-
-    /**
-     * Constructor to initialize objects of StatisticsInteractor
-     *
-     * @param statisticsDataAccessInterface Data access interface for statistics use case
-     * @param statisticsOutputBoundary      Output boundary for statistics use case
-     */
 
     public StatisticsInteractor(GameDataAccessInterface statisticsDataAccessInterface,
                                 StatisticsOutputBoundary statisticsOutputBoundary) {
