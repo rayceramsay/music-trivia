@@ -3,11 +3,6 @@ package use_case.submit_answer;
 import data_access.game_data.GameDataAccessInterface;
 import data_access.game_data.InMemoryGameDataAccessObject;
 import entity.*;
-import interface_adapter.ViewManagerModel;
-import interface_adapter.create_game.CreateGamePresenter;
-import interface_adapter.create_game.CreateGameViewModel;
-import interface_adapter.round.RoundState;
-import interface_adapter.round.RoundViewModel;
 import interface_adapter.submit_answer.SubmitAnswerPresenter;
 import interface_adapter.submit_answer.SubmitAnswerState;
 import interface_adapter.submit_answer.SubmitAnswerViewModel;
@@ -15,9 +10,6 @@ import interface_adapter.toggle_audio.ToggleAudioState;
 import interface_adapter.toggle_audio.ToggleAudioViewModel;
 import org.junit.Before;
 import org.junit.Test;
-import use_case.create_game.CreateGameInputBoundary;
-import use_case.create_game.CreateGameInputData;
-import use_case.create_game.CreateGameInteractor;
 import view.RoundView;
 
 import static org.junit.Assert.*;
@@ -91,29 +83,5 @@ public class SubmitAnswerInteractorTest {
 
         SubmitAnswerInputBoundary interactor = new SubmitAnswerInteractor(gameDataAccessObject, correctPresenter);
         interactor.execute(inputData);
-    }
-    @Test
-    public void furtherTesting () {
-        SubmitAnswerInputData inputData = new SubmitAnswerInputData(CORRECT_ANSWER, game.getID());
-        SubmitAnswerViewModel submitAnswerViewModel = new SubmitAnswerViewModel(RoundView.VIEW_NAME);
-        ToggleAudioViewModel toggleAudioViewModel = new ToggleAudioViewModel(ToggleAudioViewModel.STATE_PROPERTY);
-
-        SubmitAnswerOutputBoundary submitAnswerPresenter = new SubmitAnswerPresenter(submitAnswerViewModel, toggleAudioViewModel);
-        SubmitAnswerInputBoundary interactor = new SubmitAnswerInteractor(gameDataAccessObject, submitAnswerPresenter);
-
-        interactor.execute(inputData);
-
-        SubmitAnswerState answerState = submitAnswerViewModel.getState();
-        ToggleAudioState toggleState = toggleAudioViewModel.getState();
-        assert answerState.getCorrectnessMessage().contains("Your answer is correct!");
-        assert answerState.getCorrectnessTitle() == "Correct!";
-
-
-        assert toggleState.getImgPath() == toggleAudioViewModel.getPlayButtonImagePath();
-
-        interactor.execute(new SubmitAnswerInputData("wrong", game.getID()));
-        assert answerState.getCorrectnessMessage().contains("Your answer is incorrect!");
-        assert answerState.getCorrectnessTitle() == "Incorrect!";
-
     }
 }

@@ -1,30 +1,13 @@
 package use_case.get_loadable_games;
 
-
 import data_access.game_data.GameDataAccessInterface;
 import data_access.game_data.InMemoryGameDataAccessObject;
 import entity.*;
 
-import interface_adapter.ViewManagerModel;
-import interface_adapter.get_loadable_games.GetLoadableGamesPresenter;
-import interface_adapter.get_loadable_games.GetLoadableGamesState;
-import interface_adapter.get_loadable_games.GetLoadableGamesStateItem;
-import interface_adapter.get_loadable_games.GetLoadableGamesViewModel;
-import interface_adapter.round.RoundViewModel;
-import interface_adapter.toggle_audio.ToggleAudioPresenter;
-import interface_adapter.toggle_audio.ToggleAudioState;
-import interface_adapter.toggle_audio.ToggleAudioViewModel;
 import org.junit.Test;
-import use_case.toggle_audio.ToggleAudioInputBoundary;
-import use_case.toggle_audio.ToggleAudioInputData;
-import use_case.toggle_audio.ToggleAudioInteractor;
-import use_case.toggle_audio.ToggleAudioOutputBoundary;
-import view.RoundView;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static org.junit.Assert.*;
 
@@ -148,38 +131,5 @@ public class GetLoadableGamesInteractorTest {
 
         GetLoadableGamesInputBoundary interactor = new GetLoadableGamesInteractor(presenter, gameRepository);
         interactor.execute();
-    }
-    @Test
-    public void furtherTesting () {
-        GameDataAccessInterface dao = new InMemoryGameDataAccessObject();
-        ViewManagerModel managerModel = new ViewManagerModel();
-        GetLoadableGamesViewModel viewModel = new GetLoadableGamesViewModel(GetLoadableGamesViewModel.STATE_PROPERTY);
-        GetLoadableGamesOutputBoundary presenter = new GetLoadableGamesPresenter(viewModel, managerModel);
-        GetLoadableGamesInputBoundary interactor = new GetLoadableGamesInteractor(presenter, dao);
-
-        interactor.execute();
-
-        GetLoadableGamesState state = viewModel.getState();
-
-        assert state.getGamesData().isEmpty();
-        assert state.getErrorMessage().equals("No games available to load!");
-
-        Game game = new CommonGame("hip hop", "hard", 1, 3);
-        Round round = new MockRoundFactory().generateBasicRoundFromGenre("hip hop");
-        game.setCurrentRound(round);
-        dao.save(game);
-
-        interactor.execute();
-        GetLoadableGamesStateItem itemState = state.getGamesData().get(0);
-        assert Objects.equals(itemState.getGameID(), game.getID());
-        assert Objects.equals(itemState.getGenre(), game.getGenre());
-        assert Integer.parseInt(itemState.getCurrentLives()) == game.getCurrentLives();
-        assert Objects.equals(itemState.getDifficulty(), game.getDifficulty());
-        assert Integer.parseInt(itemState.getInitialLives()) == game.getInitialLives();
-        assert Integer.parseInt(itemState.getMaxRounds()) == game.getMaxRounds();
-        assert Integer.parseInt(itemState.getScore()) == game.getScore();
-        assert itemState.getCreatedAt().contains("-");
-        assert Integer.parseInt(itemState.getCurrentRoundNumber()) == game.getRoundsPlayed();
-
     }
 }

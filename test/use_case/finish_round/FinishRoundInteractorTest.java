@@ -4,9 +4,6 @@ import data_access.game_data.GameDataAccessInterface;
 import data_access.game_data.InMemoryGameDataAccessObject;
 import entity.*;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.create_game.CreateGamePresenter;
-import interface_adapter.create_game.CreateGameViewModel;
-import interface_adapter.finish_round.FinishRoundController;
 import interface_adapter.finish_round.FinishRoundPresenter;
 import interface_adapter.finish_round.FinishRoundViewModel;
 import interface_adapter.game_over.GameOverState;
@@ -15,13 +12,8 @@ import interface_adapter.round.RoundState;
 import interface_adapter.round.RoundViewModel;
 import org.junit.Before;
 import org.junit.Test;
-import use_case.create_game.CreateGameInputBoundary;
-import use_case.create_game.CreateGameInputData;
-import use_case.create_game.CreateGameInteractor;
 import view.GameOverView;
 import view.RoundView;
-
-import java.util.Objects;
 
 import static org.junit.Assert.*;
 
@@ -264,7 +256,6 @@ public class FinishRoundInteractorTest {
     @Test
     public void nextEasyRoundGeneratedTest() {
         int initialLives = 3;
-        int maxRounds = 10;
         Game game = new CommonGame("pop", "easy", 4, initialLives);
         game.setCurrentRound(round);
         round.setUserAnswer("wrong");
@@ -293,7 +284,7 @@ public class FinishRoundInteractorTest {
                 assertEquals("Question", currRound.getQuestion());
                 assertEquals("title", currRound.getSong().getTitle());
                 assertEquals(round.getCorrectAnswer(), currRound.getCorrectAnswer());
-                assertEquals(false, currRound.isUserAnswerCorrect());
+                assertFalse(currRound.isUserAnswerCorrect());
 
                 // Verify output data
                 assertEquals(game.getGenre(), outputData.getGenre());
@@ -307,7 +298,7 @@ public class FinishRoundInteractorTest {
         interactor.execute(inputData);
     }
     @Test
-    public void nextRoundandGameOverTest() {
+    public void nextRoundAndGameOverTest() {
         // Game will create a next round
         Game game = new CommonGame("pop", "easy", 2, 2);
         game.setCurrentRound(round);

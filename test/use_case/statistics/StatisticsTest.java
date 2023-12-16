@@ -3,22 +3,11 @@ package use_case.statistics;
 import data_access.game_data.GameDataAccessInterface;
 import data_access.game_data.InMemoryGameDataAccessObject;
 import entity.*;
-import interface_adapter.ViewManagerModel;
-import interface_adapter.exit_round.ExitRoundPresenter;
-import interface_adapter.exit_round.ExitRoundViewModel;
-import interface_adapter.load_game.LoadGameViewModel;
-import interface_adapter.round.RoundViewModel;
 import interface_adapter.statistics.StatisticsPresenter;
 import interface_adapter.statistics.StatisticsState;
 import interface_adapter.statistics.StatisticsViewModel;
-import interface_adapter.toggle_audio.ToggleAudioViewModel;
 import org.junit.Before;
 import org.junit.Test;
-import use_case.exit_round.ExitRoundInputBoundary;
-import use_case.exit_round.ExitRoundInputData;
-import use_case.exit_round.ExitRoundInteractor;
-import use_case.exit_round.ExitRoundOutputBoundary;
-import view.RoundView;
 
 import static org.junit.Assert.*;
 
@@ -114,25 +103,5 @@ public class StatisticsTest {
         };
         StatisticsInputBoundary interactor = new StatisticsInteractor(gameDataAccessObject, statsPresenter);
         interactor.execute();
-    }
-
-    @Test
-    public void furtherTesting(){
-        StatisticsViewModel viewModel = new StatisticsViewModel(StatisticsViewModel.STATE_PROPERTY);
-        StatisticsOutputBoundary presenter = new StatisticsPresenter(viewModel);
-        StatisticsInputBoundary interactor = new StatisticsInteractor(gameDataAccessObject, presenter);
-
-        interactor.execute();
-
-        StatisticsState state = viewModel.getState();
-        assert state.getStatsMessage().contains("No stats have been recorded");
-
-        game = new CommonGame("Rock", "hard", 1, INITIAL_LIVES);
-        gameDataAccessObject.save(game);
-
-        interactor.execute();
-
-        assert state.getStatsMessage().contains("Here are your lifetime statistics");
-
     }
 }

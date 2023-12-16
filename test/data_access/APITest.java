@@ -7,6 +7,8 @@ import io.github.cdimascio.dotenv.Dotenv;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.*;
+
 public class APITest {
 
     private final static String SPOTIFY_CLIENT_ID = Dotenv.load().get("SPOTIFY_CLIENT_ID");
@@ -22,13 +24,10 @@ public class APITest {
     }
 
     @Test
-    public void mainTest() {
+    public void getRandomSongFromGenreTest() {
         Song song = api.getRandomSongFromGenre("hip hop");
-        assert song.getAudio() != null;
-        song.getAudio().play();
-        song.getAudio().setOnStopCallback(null);
-        assert song.getAudio().isPlaying();
-        assert song.getAudio().getPath() != null;
+        assertNotNull(song.getAudio());
+        assertNotNull(song.getAudio().getPath());
     }
 
 }

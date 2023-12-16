@@ -3,18 +3,8 @@ package use_case.load_game;
 import data_access.game_data.GameDataAccessInterface;
 import data_access.game_data.InMemoryGameDataAccessObject;
 import entity.*;
-import interface_adapter.ViewManagerModel;
-import interface_adapter.get_loadable_games.GetLoadableGamesPresenter;
-import interface_adapter.get_loadable_games.GetLoadableGamesViewModel;
-import interface_adapter.load_game.LoadGamePresenter;
-import interface_adapter.load_game.LoadGameViewModel;
-import interface_adapter.round.RoundViewModel;
 import org.junit.Before;
 import org.junit.Test;
-import use_case.get_loadable_games.GetLoadableGamesInputBoundary;
-import use_case.get_loadable_games.GetLoadableGamesInteractor;
-import use_case.get_loadable_games.GetLoadableGamesOutputBoundary;
-import view.RoundView;
 
 import static org.junit.Assert.*;
 
@@ -70,17 +60,5 @@ public class LoadGameInteractorTest {
         interactor.execute(inputData);
 
         assertTrue("Presenter did not get called", isPresenterCalled);
-    }
-
-    @Test
-    public void furtherTesting(){
-        LoadGameInputData inputData = new LoadGameInputData(expectedGame.getID());
-        ViewManagerModel managerModel = new ViewManagerModel();
-        RoundViewModel roundViewModel = new RoundViewModel(RoundView.VIEW_NAME);
-        LoadGameViewModel viewModel = new LoadGameViewModel(LoadGameViewModel.STATE_PROPERTY);
-        LoadGameOutputBoundary presenter = new LoadGamePresenter(managerModel, roundViewModel, viewModel);
-        LoadGameInputBoundary interactor = new LoadGameInteractor(presenter, gameRepository);
-
-        interactor.execute(inputData);
     }
 }

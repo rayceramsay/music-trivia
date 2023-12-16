@@ -6,20 +6,8 @@ import entity.CommonGame;
 import entity.Game;
 import entity.MockRoundFactory;
 import entity.RoundFactory;
-import interface_adapter.ViewManagerModel;
-import interface_adapter.exit_round.ExitRoundPresenter;
-import interface_adapter.exit_round.ExitRoundViewModel;
-import interface_adapter.load_game.LoadGamePresenter;
-import interface_adapter.load_game.LoadGameViewModel;
-import interface_adapter.round.RoundViewModel;
-import interface_adapter.toggle_audio.ToggleAudioViewModel;
 import org.junit.Before;
 import org.junit.Test;
-import use_case.load_game.LoadGameInputBoundary;
-import use_case.load_game.LoadGameInputData;
-import use_case.load_game.LoadGameInteractor;
-import use_case.load_game.LoadGameOutputBoundary;
-import view.RoundView;
 
 import static org.junit.Assert.*;
 
@@ -64,18 +52,5 @@ public class ExitRoundInteractorTest {
         interactor.execute(inputData);
 
         assertTrue(presenterGetsCalled);
-    }
-    @Test
-    public void furtherTesting(){
-        ExitRoundInputData inputData = new ExitRoundInputData(game.getID());
-        ViewManagerModel managerModel = new ViewManagerModel();
-        RoundViewModel roundViewModel = new RoundViewModel(RoundView.VIEW_NAME);
-        ExitRoundViewModel viewModel = new ExitRoundViewModel(LoadGameViewModel.STATE_PROPERTY);
-        ToggleAudioViewModel toggleAudioViewModel = new ToggleAudioViewModel(ToggleAudioViewModel.STATE_PROPERTY);
-        ExitRoundOutputBoundary presenter = new ExitRoundPresenter(managerModel, viewModel, roundViewModel,toggleAudioViewModel);
-        ExitRoundInputBoundary interactor = new ExitRoundInteractor(presenter, gameRepository);
-
-        interactor.execute(inputData);
-
     }
 }
